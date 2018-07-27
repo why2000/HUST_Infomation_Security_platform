@@ -8,9 +8,9 @@
 
 ```json
 {
-    "status": 200, // 状态码
+    "status": 200,
     "data": {
-        "data": "Some Data" // 数据
+        "data": "Some Data"
     }
 }
 ```
@@ -66,8 +66,8 @@ None
 
 ```json
 {
-    "filename": "测试.doc", // 文件名
-    "url": "http://someurl.com/somepath" // 文件URL()
+    "filename": "测试.doc",
+    "url": "http://someurl.com/somepath"
 }
 ```
 
@@ -102,10 +102,7 @@ Form表单，文件
 #### Response
 
 ```json
-{
-    "status": 200,
-    "data": {}
-}
+{}
 ```
 
 
@@ -135,10 +132,7 @@ None
 #### Response
 
 ```json
-{
-    "status": 200,
-    "data": {}
-}
+{}
 ```
 
 
