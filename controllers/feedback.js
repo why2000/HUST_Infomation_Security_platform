@@ -35,7 +35,7 @@ const saveStudentReport = (req, res) => {
         file.removeFile(result.file_id)
         feedback.removeReport(sid, mid);
     }
-    let fid = file.saveFile(req.file.upload.name, req.file.upload.path);
+    let fid = file.saveFile(req.file.upload.name, req.file.upload.path, "student:" + sid);
     feedback.insertReport(sid, mid, fid);
 
     res.json(response({}));
@@ -90,9 +90,9 @@ const deleteTeacherFeedback = (req, res) => {
 
     if(result) {
         feedback.removeFeedback(sid, mid);
-        return response({});
+        res.json(response({}));
     } else {
-        return response(404, 'Not found.');
+        res.json(response(404, 'Not found.'));
     }
 }
 

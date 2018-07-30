@@ -1,6 +1,7 @@
 var express = require('express');
-var router = express.Router();
 var feedback = require('../controllers/feedback')
+
+var router = express.Router();
 
 // 报告文件
 router.get('/report/:student_id/:module_id', feedback.getStudentReport);

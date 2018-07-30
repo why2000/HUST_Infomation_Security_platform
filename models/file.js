@@ -13,10 +13,17 @@ const genFileID = (file_name) => {
     return md5.update(md5).digest('hex').slice(9, 16);
 }
 
-const saveFile = (file_name, tmp_path) => {
+const getAllFiles = () => {
+
+}
+
+const getFile = (file_id) => {
+
+}
+
+const saveFile = (file_name, tmp_path, uploader) => {
     // return some file_id
-    
-    return 0
+    return "somefileid"
 }
 
 const removeFile = (file_id) => {
@@ -24,6 +31,8 @@ const removeFile = (file_id) => {
 }
 
 module.exports = {
+    getAllFiles,
+    getFile,
     saveFile,
     removeFile
 }

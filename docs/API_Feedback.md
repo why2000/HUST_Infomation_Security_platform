@@ -67,7 +67,7 @@ None
 ```json
 {
     "filename": "测试.doc",
-    "url": "http://someurl.com/somepath"
+    "file_id": "somefileid"
 }
 ```
 
@@ -97,7 +97,7 @@ None
 
 #### Request
 
-Form表单，文件
+Form表单，文件(id为upload)
 
 #### Response
 
