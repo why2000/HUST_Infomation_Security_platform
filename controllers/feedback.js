@@ -13,9 +13,9 @@ var cfg = require('../config/feedback.json');
 const getStudentReport = (req, res) => {
     let result = feedback.getFeedbackByStudentIDAndModuleID(req.params.student_id, req.params.module_id);
     if(result) {
-        res.json(response(result));
+        response(res, result);
     } else {
-        res.json(response(404, 'Not found.'));
+        response(res, 404, 'Not found.');
     }
 }
 
@@ -27,7 +27,7 @@ const saveStudentReport = (req, res) => {
     let result = feedback.getFeedbackByStudentIDAndModuleID(sid, mid);
 
     if(cfg.EXTENSIONS.indexOf(extname(req.file.upload.name)) == -1) { // 不在允许的扩展名内
-        res.json(response(400, 'File is not allowed to upload.'));
+        response(res, 400, 'File is not allowed to upload.');
         return;
     }
 
@@ -38,7 +38,7 @@ const saveStudentReport = (req, res) => {
     let fid = file.saveFile(req.file.upload.name, req.file.upload.path, "student:" + sid);
     feedback.insertReport(sid, mid, fid);
 
-    res.json(response({}));
+    response(res, {});
 }
 
 const deleteStudentReport = (req, res) => {
@@ -49,18 +49,18 @@ const deleteStudentReport = (req, res) => {
     if(result) {
         file.removeFile(result.file_id)
         feedback.removeReport(sid, mid);
-        res.json(response({}));
+        response(res, {});
     } else {
-        res.json(response(404, 'Not found.'))
+        response(res, 404, 'Not found.');
     }
 }
 
 const getTeacherFeedback = (req, res) => {
     let result = feedback.getFeedbackByStudentIDAndModuleID(req.params.student_id, req.params.module_id);
     if(result) {
-        res.json(response(result));
+        response(res, result);
     } else {
-        res.json(response(404, 'Not found.'));
+        response(res, 404, 'Not found.');
     }
 }
 
@@ -77,9 +77,9 @@ const saveTeacherFeedback = (req, res) => {
         }
         // 注意HTML转义的问题，先尝试在前端解决
         feedback.insertFeedback(sid, mid, req.body.score, req.body.text);
-        res.json(response({}));
+        response(res, {});
     } else {
-        res.json(response(400, 'Data error.'));
+        response(res, 400, 'Data error.');
     }
 }
 
@@ -90,9 +90,9 @@ const deleteTeacherFeedback = (req, res) => {
 
     if(result) {
         feedback.removeFeedback(sid, mid);
-        res.json(response({}));
+        response(res, {});
     } else {
-        res.json(response(404, 'Not found.'));
+        response(res, 404, 'Not found.');
     }
 }
 
