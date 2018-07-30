@@ -56,13 +56,13 @@ None
 #### Response
 
 ```json
-{
-    [
+[
+    {
     	"name": "file.doc",
     	"file_id": "somefileid"
     	"uploader": "student:1"
-    ]
-}
+    }
+]
 ```
 
 uploader:  \<身份\>:\<id\>
