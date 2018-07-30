@@ -107,7 +107,7 @@ Form表单，文件
 
 
 
-错误: 401, 400
+错误: 401, 400, 404
 
 
 
@@ -143,4 +143,99 @@ None
 
 ## 评价反馈
 
-### 
+### GET /judgement/:student_id/:module_id
+
+**获得学生该模块的教师评价**
+
+参数：
+
+​	student_id: 学生ID
+
+​	module_id: 模块ID
+
+权限: 学生(student_id符合)，教师&管理员(所有)
+
+#### Request
+
+None
+
+#### Response
+
+```json
+{
+    "score": 59,
+    "text": "Very good!!"
+}
+```
+
+
+
+错误: 401, 404
+
+
+
+### POST /judgement/:student_id/:module_id
+
+**提交学生该模块的教师评价(已有情况下会被覆盖)**
+
+参数：
+
+​	student_id: 学生ID
+
+​	module_id: 模块ID
+
+权限: 教师(所有)
+
+
+
+#### Request
+
+```json
+{
+    "score": 59,
+    "text": "Very good!!"
+}
+```
+
+#### Response
+
+```json
+{}
+```
+
+
+
+错误: 400, 401, 404
+
+
+
+### DELETE /judgement/:student_id/:module_id
+
+**删除学生该模块的教师评价**
+
+参数：
+
+​	student_id: 学生ID
+
+​	module_id: 模块ID
+
+权限: 教师&管理员(所有)
+
+
+
+#### Request
+
+None
+
+#### Response
+
+```json
+{}
+```
+
+
+
+错误: 400, 401, 404
+
+
+

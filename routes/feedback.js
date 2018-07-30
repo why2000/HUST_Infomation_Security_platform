@@ -1,7 +1,15 @@
-/* 反馈页面 路由 */
+var express = require('express');
+var router = express.Router();
+var feedback = require('../controllers/feedback')
 
-const express = require('express');
+// 报告文件
+router.get('/report/:student_id/:module_id', feedback.getStudentReport);
+router.post('/report/:student_id/:module_id', feedback.saveStudentReport);
+router.delete('/report/:student_id/:module_id', feedback.getStudentReport);
 
-router = express.Router();
+// 教师反馈
+router.get('/judgement/:student_id/:module_id', feedback.getTeacherFeedback);
+router.post('/judgement/:student_id/:module_id', feedback.saveTeacherFeedback);
+router.delete('/judgement/:student_id/:module_id', feedback.getTeacherFeedback);
 
 module.exports = router;
