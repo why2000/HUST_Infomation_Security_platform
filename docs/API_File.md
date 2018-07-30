@@ -59,7 +59,7 @@ None
 [
     {
     	"name": "file.doc",
-    	"file_id": "somefileid"
+    	"file_id": "somefileid",
     	"uploader": "student:1"
     }
 ]
