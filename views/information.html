@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>华中科技大学信息安全实验平台 - 查看个人信息</title>
+        <!-- load JS-->
+        <script type="text/javascript" src="../public/javascripts/jquery-3.2.1.slim.min.js"></script>
+        <script type="text/javascript" src="../public/javascripts/popper.min.js"></script>
+        <script type="text/javascript" src="../public/javascripts/bootstrap.min.js"></script>
+        <!-- load CSS -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300">  <!-- Google web font "Open Sans" -->
+        <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css">                                  <!-- https://getbootstrap.com/ -->
+        <link rel="stylesheet" href="../public/stylesheets/fontawesome/css/fontawesome-all.min.css">                <!-- https://fontawesome.com/ -->
+        <link rel="stylesheet" type="text/css" href="../public/stylesheets/slick/slick.css"/>                       <!-- http://kenwheeler.github.io/slick/ -->
+        <link rel="stylesheet" type="text/css" href="../public/stylesheets/slick/slick-theme.css"/>
+        <link rel="stylesheet" href="../public/stylesheets/tooplate-style.css">                               
+    
+        <script>document.documentElement.className="js";var supportsCssVars=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};supportsCssVars()||alert("Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");</script>
+        
+</head>
+
+<body>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #133AAC; ">
+                <div style="width: 1200px ;overflow: visible; margin: auto;">
+                        <img src="../public/images/logo.gif">
+                        <a class="navbar-brand" href="./catalog.html" style="padding-left: 10px; margin-left: 10px; color: white; border-left: 1px solid #7c8b99; font-size:24px;">华中科技大学信息安全实验平台</a>
+                                        <div class="dropdown" style="float:right; margin-top:6px;">
+                                                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                          您目前作为 伍瀚缘 登入。
+                                                                                                                </button>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                          <a class="dropdown-item" href="#" style="font-size:20px;">查看/修改个人信息</a>
+                                                          <a class="dropdown-item" href="#" style="font-size:20px;">登出</a>
+                                                        </div>
+                                                      </div>
+                                      </div>   
+                </div>
+     
+         </nav>
+         <br>
+
+         <div  style="width: 1200px ; margin: auto;">
+                 <div class="row">
+                                <div class="col-12">
+                        <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">个人信息 </h5>
+                        </div>
+                 </div>
+                <div class="row">
+                                <div class="col-12">
+                                <div class="card">
+                                                <div class="card-body">
+                                                                <form>
+                                                                                <small id="Help" class="form-text text-muted">修改信息：在框内填入您想修改的内容，并点击修改。</small>
+<br>
+                                                                                <div class="form-group">
+                                                                                  <label for="exampleInputEmail1" style="color:black; font-size:14px;">姓名</label>
+                                                                                  <input  class="form-control" style="background-color: white; border:#ced4da solid 1px; color:black;" id="exampleInputEmail1"  placeholder="伍瀚缘">
+</div>
+                                                                                  <div class="form-group">
+                                                                                                <label for="exampleInputEmail1" style="color:black; font-size:14px;">学院</label>
+                                                                                                <input  class="form-control" style="background-color: white; border:#ced4da solid 1px;color:black;" id="exampleInputEmail1"  placeholder="计算机科学与技术学院">
+                                                                                              </div>
+                                                                                              
+                                                                                <div class="form-group">
+                                                                                                <label for="exampleInputEmail1"style="color:black; font-size:14px;">学号</label>
+                                                                                                <input  class="form-control" style="background-color: white; border:#ced4da solid 1px;color:black;" id="exampleInputEmail1"  placeholder="U201714XXX">
+                                                                                              </div>
+                                                                                              
+                                                                                <div class="form-group">
+                                                                                                <label for="exampleInputEmail1"style="color:black; font-size:14px;">密码</label>
+                                                                                                <input  class="form-control" style="background-color: white; border:#ced4da solid 1px;color:black;" id="exampleInputEmail1"  placeholder="**********">
+                                                                                                
+                                                                                              </div>
+                                                                                              
+                                                                                <div class="form-group">
+                                                                                                <label for="exampleInputEmail1"style="color:black; font-size:14px;">确认密码</label>
+                                                                                                <input  class="form-control" style="background-color: white; border:#ced4da solid 1px;color:black;" id="exampleInputEmail1"  placeholder="**********">
+                                                                                              </div>
+                                                                                
+                                                                                <center><button type="submit" class="btn btn-primary" >修改</button></center>
+                                                                              </form>
+                </div>
+         </div>
+</body>

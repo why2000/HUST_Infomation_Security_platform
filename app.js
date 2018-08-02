@@ -3,24 +3,41 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var ejs = require('ejs');
 
+//basic
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// 自定义
+var teacherRouter = require('./routes/teacher');
+var studentRouter = require('./routes/student');
+var catalogRouter = require('./routes/catalog');
+var contactRouter = require('./routes/contact');
+
+
 
 var app = express();
 
+
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.engine('.html', ejs.__express);
+app.set('view engine', 'html');
 
+//basics
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
+//自定义
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/teacher', teacherRouter);
+app.use('/student', studentRouter);
+app.use('/catalog', catalogRouter);
+app.use('/contact', contactRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
