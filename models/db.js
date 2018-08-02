@@ -1,15 +1,27 @@
 var mongodb = require('mongodb');
-var config = require('../config/mongodb.json');
+var cfg = require('../config/mongodb.json');
 
 var client = mongodb.MongoClient;
-var db = mongodb.Db;
 
-client.connect(config.DATABASE_URL, function(err, client) {
+
+client.connect(cfg.DATABASE_URL, { useNewUrlParser: true }, (err, client) => {
+    console.log('connected!');
     if(err) {
-        db = undefined;
-        return; // Nothing to do.
+        console.log(err);
+        throw err;
     }
-    db = client.db(config.DATABASE_NAME);
+    db = client.db(cfg.DATABASE_NAME);
 });
 
-module.exports = db;
+/**
+ * 
+ * @param {string} name
+ * @returns {mongodb.Collection} collection 
+ */
+const collection = (name) => {
+    return db.collection(name);
+}
+
+module.exports = {
+    collection
+}

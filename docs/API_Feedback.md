@@ -66,7 +66,6 @@ None
 
 ```json
 {
-    "filename": "测试.doc",
     "file_id": "somefileid"
 }
 ```
@@ -238,4 +237,27 @@ None
 错误: 400, 401, 404
 
 
+
+# 数据表设计
+
+## IS_Report
+
+```json
+{
+    "student_id": "studentid",
+    "module_id": "moduleid",
+    "file_id": "fileid"
+}
+```
+
+## IS_Feedback
+
+```json
+{
+    "student_id": "studentid",
+    "module_id": "moduleid",
+    "score": 59,
+    "text": "Very good!!"
+}
+```
 

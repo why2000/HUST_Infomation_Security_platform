@@ -150,3 +150,19 @@ None
 
 
 错误: 401, 404
+
+
+
+# 数据库设计
+
+```json
+{
+    "name": "filename.doc",
+    "file_id": "somefileid",
+	"uploader": "student:yyy"
+}
+```
+
+
+
+文件保存位置：PATH + file_id

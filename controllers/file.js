@@ -10,7 +10,7 @@ const getAllFiles = (req, res) => {
 const uploadFile = (req, res) => {
     let identity, id // 等用户系统接入
 
-    let fid = file.saveFile(req.files.upload.name, req.files.upload.path, identity + ':' + id);
+    let fid = file.saveFile(req.files.upload.name, req.files.upload.path, `${identity}:${id}`);
     response(res, {
         file_id: fid
     });
@@ -34,9 +34,9 @@ const getFile = (req, res) => {
 }
 
 const deleteFile = (req, res) => {
-    let ok = file.removeFile(req.params.file_id);
+    let err = file.removeFile(req.params.file_id);
 
-    if(ok) {
+    if(!err) {
         response(res, {});
     } else {
         response(res, 404, "Not found.");

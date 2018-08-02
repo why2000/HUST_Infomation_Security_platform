@@ -1,23 +1,22 @@
 var db = require('./db');
-var fs = require('fs')
-var crypto = require('crypto')
+var fs = require('fs');
+var crypto = require('crypto');
+var cfg = require('../config/file.json');
 
-// 生成盐
-const genSalt = () => {
-    //Some digits
-    return Math.random().toString().slice(4, 9);
-}
+//TODO: 未完成
 
 // 生成FileID
-const genFileID = (file_name) => {
-    let s = file_name + genSalt();
+const genFileID = async (file_name) => {
+    let salt = Math.random().toString().slice(4, 9); // 盐
+    let s = file_name + salt;
     let md5 = crypto.createHash('md5');
-    return md5.update(md5).digest('hex').slice(9, 16);
+    return md5.update(s).digest('hex').slice(9, 17);
 }
 
 // 获得全部已上传的文件
-const getAllFiles = () => {
-
+const getAllFiles = async () => {
+    var colFiles = db.collection('IS_Files');
+    return colFiles.find({}).project({name: 1, file_id: 1, uploader: 1}).toArray();
 }
 
 /* 获得文件
@@ -26,19 +25,22 @@ const getAllFiles = () => {
     stream: Stream
 }
 */
-const getFile = (file_id) => {
-
+const getFile = async (file_id) => {
+    var colFiles = db.collection('IS_Files');
+    colFiles.findOne()
 }
 
 // 保存文件，返回一个file_id
-const saveFile = (file_name, tmp_path, uploader) => {
+const saveFile = async (file_name, tmp_path, uploader) => {
     // return some file_id
     return "somefileid"
 }
 
-// 删除文件，返回是否删除成功(不存在则删除失败)
-const removeFile = (file_id) => {
-
+// 删除文件
+const removeFile = async (file_id) => {
+    var colFiles = db.collection('IS_Files');
+    
+    return colFiles.deleteOne({file_id: file_id});
 }
 
 module.exports = {
