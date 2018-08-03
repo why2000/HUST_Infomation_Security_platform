@@ -13,6 +13,17 @@
         <link rel="stylesheet" href="/public/stylesheets/tooplate-style.css">                               
     
         <script>document.documentElement.className="js";var supportsCssVars=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};supportsCssVars()||alert("Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");</script>
+        <script type="text/javascript">
+            var sendmessage = '<%=success%>';
+            if(sendmessage){
+                if(sendmessage=="no"){
+                    alert("提交失败，请检查你的输入格式");
+                }else{
+                    alert("提交成功！");
+                }
+            }
+            sendmessage = null;
+        </script>
         
 </head>
 <body style="background-color: #2c2a35">                                                           
@@ -41,7 +52,7 @@
                                 </div>
                             </div>                                                        
                             <div class="form-group">
-                            <textarea id="contact_message" name="contact_message" class="form-control" rows="9" placeholder="反馈信息" required></textarea>
+                            <textarea id="contact_message" name="contact_message" class="form-control" rows="9" placeholder="反馈信息（包含单/双引号及特定符号的信息无效）" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary tm-btn-submit">提交</button>
                         </form>
@@ -49,5 +60,6 @@
                 </div>
             </div>                                            
     </div>
+    
 </body>
 </html>

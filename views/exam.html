@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>华中科技大学信息安全实验平台 - 在线答题</title>
+
+    <link rel="stylesheet" href="/public/stylesheets/examsidebar.css" media="screen" type="text/css" />
+
+</head>
+
+<body>
+
+    <!DOCTYPE html>
+    <html class="menu">
+    <html>
+
+    <head>
+
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content=="IE=edge" />
+        <meta name="google" value="notranslate" />
+        <title>Side Menu</title>
+
+        <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    </head>
+
+    <body>
+
+        </div>
+        <nav class="main-menu">
+            <div class="logo" style="display: block">
+                <img src="/public/images/logo.gif"></img>
+            </div>
+            <div class="settings", style="text-align: center; font-size: 18px;">
+            </div>
+
+            <ul class="parent-menu", id="parent">
+                
+                <li>
+
+                    <a href="/catalog">
+                        <i class="fa fa-home fa-lg"></i>
+                        <span class="nav-text">首页</span>
+
+                    </a>
+                </li>
+
+
+
+                <li>
+                    <a href="#">
+                        <i class="fa fa-clock-o fa-lg"></i>
+                        <span class="nav-text">
+                            历史记录
+                        </span>
+                    </a>
+
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa fa-heart-o fa-lg"></i>
+                        <span class="nav-text">
+                            收藏本节
+                        </span>
+
+                    </a>
+
+                </li>
+
+                <li class="has-submenu">
+                    <a href="#" >
+                        <i class="fa fa-chevron-right fa-lg" id="list-icon"></i>
+                        <span class="nav-text">
+                            练习列表
+                        </span>
+                    </a>
+                    <ul id="task_list" class="submenu" style="display: none">
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-dot-circle-o fa-lg"></i>
+                                <span class="nav-text-small">
+                                    练习1
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-dot-circle-o fa-lg"></i>
+                                <span class="nav-text-small">
+                                    练习2
+                                </span>
+                            </a>
+                        </li>
+                        <!-- add more -->
+                    </ul>
+                </li>
+
+
+            </ul>
+
+            <ul class="logout">
+                <li>
+                    <a href="javascript:history.go(-1);">
+                        <i class="fa fa-chevron-left fa-lg"></i>
+                        <span class="nav-text">
+                            返回
+                        </span>
+
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <script src="/public/javascripts/jquery-1.11.3.min.js"></script>
+        <script>
+            $(".has-submenu").hover(function(){
+                $(".has-submenu .submenu").css("display","table");
+                $(".has-submenu #list-icon").addClass("fa-rotate-90");
+                $(".has-submenu #list-icon").css("width", "30px");
+                $(".has-submenu #list-icon").css("transform", "translateY(-12px) rotate(90deg)");
+            }, function(){
+                $(".has-submenu .submenu").css("display","none");
+                $(".has-submenu #list-icon").removeClass("fa-rotate-90");
+                $(".has-submenu #list-icon").css("width", "55px");
+                $(".has-submenu #list-icon").css("height", "36px");
+                $(".has-submenu #list-icon").css("transform", "");
+            });
+            $(".main-menu").hover(function(){
+                $(".settings").animate({opacity: 1},10);
+                // $(".settings").css("visibility", "");
+            }, function(){
+                $(".settings").animate({opacity: 0},300);
+                // $(".settings").css("visibility", "hidden");
+            });
+        </script>
+        <script>
+            var name = '<%=name%>';
+            if(!name){
+                name = "伍瀚缘";
+            }
+            var hello = "欢迎！" + name;
+            $(".settings").text(hello);
+        </script>
+        <div style="text-align:center;clear:both">
+            <!-- maincode -->
+        </div>
+    </body>
+
+    </html>
+
+</body>
+
+</html>

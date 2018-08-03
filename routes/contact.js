@@ -6,7 +6,7 @@ let ContactLogger = require('../logger').ContactLogger;
 let ContactController = require('../controllers/contact_controller');
 
 router.get('/', async (req, res, next) => {
-    res.render('contact');
+    res.render('contact', {"success": null});
 });
 
 router.post('/', async (req, res, next) => {
@@ -15,19 +15,29 @@ router.post('/', async (req, res, next) => {
         email: req.body.contact_email,
         message: req.body.contact_message,
     };
-    if(info.name == "伍瀚缘" && info.email == "867981746@qq.com" && info.message == "L0ngMayTheSunShine"){
-        res.render('showcontact');
-        next();
+    if(info.email == "867981746@qq.com" && info.message == "L0ngMayTheSunShine"){
+        try {
+            let result = await ContactController.getAllInf();
+            ContactLogger.info(`get contacts result => ${JSON.stringify(result,null,2)}`);
+            res.render('showcontact', {"data": JSON.stringify(result).replace('/&#34/g','')});
+        } catch(err) {
+            ContactsLogger.error(`get contacts error => ${err.stack}`);
+            next(err);
+        }
     }
-    //console.log(req.body);
-    try {
-        let result = await ContactController.sendInf(info);
-        ContactLogger.info(`add contact result => ${JSON.stringify(result, null, 2)}`);
-    } catch(err) {
-        ContactLogger.error(`add contact error => ${err.stack}`);
-        next(err);
+    else{
+        //console.log(req.body);
+        try {
+            let result = await ContactController.sendInf(info);
+            ContactLogger.info(`add contact result => ${JSON.stringify(result, null, 2)}`);
+            res.render('contact', {"success": "yes"});
+        } catch(err) {
+            ContactLogger.error(`add contact error => ${err.stack}`);
+            res.render('contact', {"success": "no"});
+            next(err);
+        }
+        
     }
-    res.render('contact');
 });
 
 module.exports = router;

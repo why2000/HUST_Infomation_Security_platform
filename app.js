@@ -8,11 +8,9 @@ var ejs = require('ejs');
 //basic
 var indexRouter = require('./routes/index');
 // 自定义
-var teacherRouter = require('./routes/teacher');
-var studentRouter = require('./routes/student');
 var catalogRouter = require('./routes/catalog');
 var contactRouter = require('./routes/contact');
-
+var examRouter = require('./routes/exam');
 
 
 var app = express();
@@ -34,10 +32,9 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 //自定义
 app.use('/', indexRouter);
-app.use('/teacher', teacherRouter);
-app.use('/student', studentRouter);
 app.use('/catalog', catalogRouter);
 app.use('/contact', contactRouter);
+app.use('/exam', examRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

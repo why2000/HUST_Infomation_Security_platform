@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET info page. */
+/* GET exam page. */
 router.get('/', function(req, res, next) {
-  res.render('infomation');
+  res.render('exam', {name: null});
 });
 
 module.exports = router;

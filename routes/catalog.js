@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var UserController = require('./controllers/user_controller');
+var UserController = require('../controllers/user_controller');
 
 router.get('/', function(req, res, next) {
     var info = {
+        uid: req.body.uid,
         username: req.body.username,
         password: req.body.password,
-        college: req.body.college,
+        teacher: req.body.teacher,
     };
     if(req.cookies.teacher){
         UserController.createUser(info);
@@ -17,7 +18,7 @@ router.get('/', function(req, res, next) {
         res.render('catalog');
     }
     else{
-        //这里改成index
+        //这里改成pass.hust.edu.cn
         res.render('catalog');
     }
 });

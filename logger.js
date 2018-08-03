@@ -9,3 +9,23 @@ exports.ContactLogger = winston.createLogger({
         new (winston.transports.Console)()
     ]
 })
+
+exports.UserLogger = winston.createLogger({
+    level: "verbose",
+    transports: [
+        new (winston.transports.File)({
+            filename: 'logs/user.log'
+        }),
+        new (winston.transports.Console)()
+    ]
+})
+
+exports.UserLogger = winston.createLogger({
+    level: "verbose",
+    transports: [
+        new (winston.transports.File)({
+            filename: 'logs/user.log'
+        }),
+        new (winston.transports.Console)()
+    ]
+})

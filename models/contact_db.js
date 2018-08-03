@@ -31,18 +31,21 @@ exports.sendInf = async function(params) {
     var contact = db.collection('contact');
     var data = params;
     //console.log(data);
-    if(contact.stats().count <= 2000){
-        contact.insert(data, function(err, result){
-            if(err){
-                ContactLogger.error(`database error => ${err.stack}`);
-                throw err;
-            } else {
-                data = result;
-            }
-        });
-    } else {
-        throw ErrorUtil.createError(ErrorUtil.ErrorSet.TOO_MUCH_CONTACT);
-    }
     
+    contact.insert(data, function(err, result){
+        if(err){
+            ContactLogger.error(`database error => ${err.stack}`);
+            throw err;
+        } else {
+            data = result;
+        }
+    });
+    
+    return data;
+}
+
+exports.getAllInf = async function() {
+    var collection = db.collection('contact');
+    var data = collection.find().toArray();
     return data;
 }

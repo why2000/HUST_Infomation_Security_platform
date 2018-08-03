@@ -3,7 +3,7 @@
 let ConfigSet = require('../config/user.json');
 let ErrorSet = require('../utils/error_util');
 let Joi = require('joi');
-let ContactsLogger = require('../logger').ContactsLogger;
+let UserLogger = require('../logger').UserLogger;
 let MongoDB = require('mongodb');
 let MongoClient = MongoDB.MongoClient;
 let IsEmpty = require('is-empty');
@@ -11,13 +11,13 @@ let IsEmpty = require('is-empty');
 let db;
 MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
     if (err) {
-        ContactsLogger.error(`database error => ${err.stack}`);
+        UserLogger.error(`database error => ${err.stack}`);
         throw err;
     } else {
         db = client.db(ConfigSet.DATABASE_NAME);
         db.createCollection(ConfigSet.COLLECTION_NAME, function(err, res) {
             if (err) {
-                ContactsLogger.error(`database error => ${err.stack}`);
+                UserLogger.error(`database error => ${err.stack}`);
                 throw err;
             } else {
                 //console.log("Successfully creat col");
@@ -33,7 +33,7 @@ exports.addUser = async function(params) {
     //console.log(data);
     user.insert(data, function(err, result){
         if(err){
-            ContactsLogger.error(`database error => ${err.stack}`);
+            UserLogger.error(`database error => ${err.stack}`);
             throw err;
         } else {
             data = result;
