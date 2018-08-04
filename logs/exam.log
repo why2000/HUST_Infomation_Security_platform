@@ -227,3 +227,6 @@
 {"message":"add favor result => {\n  \"type\": \"task-favor\",\n  \"taskindex\": \"1\",\n  \"userid\": \"U201714635\",\n  \"favor\": true,\n  \"_id\": \"5b65e2eed9d2223effb5e89d\"\n}","level":"info"}
 {"message":"delete favor result => {\n  \"taskindex\": \"2\",\n  \"userid\": \"U201714635\",\n  \"favor\": true\n}","level":"info"}
 {"message":"add favor result => {\n  \"type\": \"task-favor\",\n  \"taskindex\": \"2\",\n  \"userid\": \"U201714635\",\n  \"favor\": true,\n  \"_id\": \"5b65e2f4d9d2223effb5e89e\"\n}","level":"info"}
+{"message":"delete favor result => {\n  \"taskindex\": \"2\",\n  \"userid\": \"U201714635\",\n  \"favor\": true\n}","level":"info"}
+{"message":"delete favor result => {\n  \"taskindex\": \"1\",\n  \"userid\": \"U201714635\",\n  \"favor\": true\n}","level":"info"}
+{"message":"add favor result => {\n  \"type\": \"task-favor\",\n  \"taskindex\": \"2\",\n  \"userid\": \"U201714635\",\n  \"favor\": true,\n  \"_id\": \"5b65e3a1d9d2223effb5e89f\"\n}","level":"info"}
