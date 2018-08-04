@@ -20,11 +20,11 @@ exports.UserLogger = winston.createLogger({
     ]
 })
 
-exports.UserLogger = winston.createLogger({
+exports.ExamLogger = winston.createLogger({
     level: "verbose",
     transports: [
         new (winston.transports.File)({
-            filename: 'logs/user.log'
+            filename: 'logs/exam.log'
         }),
         new (winston.transports.Console)()
     ]

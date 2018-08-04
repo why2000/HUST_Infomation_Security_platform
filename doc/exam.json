@@ -1,0 +1,116 @@
+[
+    {
+        "type": "student",
+        "userid": "U201714635",
+        "favor": [
+            {
+                "classindex": "1",
+                "favored": true
+            },
+            {
+                "classindex": "2",
+                "favored": false
+            }
+        ],
+        "history": [
+            {
+                "classindex": "1",
+                "time": "20180803"
+            },
+            {
+                "classindex": "2",
+                "time": "20180804"
+            }
+        ],
+        "grade": [
+            {
+                "classindex": "1",
+                "score": "99",
+                "status": [
+                    {
+                        "single": [
+                            {
+                                "questionid": "1",
+                                "myanswer": "C",
+                                "correct": true
+                            },
+                            {
+                                "questionid": "2",
+                                "myanswer": "D",
+                                "correct": true
+                            }
+                        ],
+                        "multi": [
+                            {
+                                "questionid": "1",
+                                "myanswer": "BC",
+                                "correct": false
+                            }
+                        ],
+                        "short": [
+                            {
+                                "questionid": "1",
+                                "myanswer": "不能",
+                                "correct": false
+                            }
+                        ]
+                    }
+                ] 
+            }
+        ]
+    },
+    {
+        "type": "student-history",
+        "userid": "U201714635",
+        "classindex": "1",
+        "year": "2018",
+        "month": "03",
+        "date": "09",
+        "timestamp": ""
+    },
+    {
+        "type": "student-favor",
+        "userid": "U201714635",
+        "classindex": "1",
+        "favor": true
+    },
+    {
+        "type": "class-content",
+        "classindex": "1",
+        "question": "choose",
+        "questionid": "1",
+        "text": "题目内容",
+        "all_answer": [
+            {
+                "question": "A选项内容",
+                "blank": "A"
+            },
+            {
+                "question": "B选项内容",
+                "blank": "B"
+            },
+            {
+                "question": "C选项内容",
+                "blank": "C"
+            }
+        ],
+        "correct_answer": "A"
+    },
+    {
+        "type": "class-content",
+        "classindex": "1",
+        "question": "fill",
+        "questionid": "1",
+        "text": "题目内容",
+        "correct_answer": [
+            {
+                "answer": "第一空正确答案",
+                "blank": "1"
+            },
+            {
+                "answer": "第二空正确答案",
+                "blank": "2"
+            }
+        ]
+    }
+]

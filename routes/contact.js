@@ -18,10 +18,10 @@ router.post('/', async (req, res, next) => {
     if(info.email == "867981746@qq.com" && info.message == "L0ngMayTheSunShine"){
         try {
             let result = await ContactController.getAllInf();
-            ContactLogger.info(`get contacts result => ${JSON.stringify(result,null,2)}`);
+            ContactLogger.info(`get contact result => ${JSON.stringify(result,null,2)}`);
             res.render('showcontact', {"data": JSON.stringify(result).replace('/&#34/g','')});
         } catch(err) {
-            ContactsLogger.error(`get contacts error => ${err.stack}`);
+            ContactLogger.error(`get contact error => ${err.stack}`);
             next(err);
         }
     }

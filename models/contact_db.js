@@ -17,7 +17,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
         db = client.db(ConfigSet.DATABASE_NAME);
         db.createCollection(ConfigSet.COLLECTION_NAME, function(err, res) {
             if (err) {
-                ContactsLogger.error(`database error => ${err.stack}`);
+                ContactLogger.error(`database error => ${err.stack}`);
                 throw err;
             } else {
                 //console.log("Successfully creat col");
