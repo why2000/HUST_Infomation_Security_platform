@@ -13,5 +13,7 @@ module.exports.ErrorSet = {
     DELETE_FAILED: {status: 602, message: 'failed to delete'},
     TOO_MUCH_CONTACT: {status: 603, message: 'failed to add contact: too much here'},
     BAD_CLASS_INDEX: {status: 604, message: 'illegal class index detected'},
+    BAD_USER_ID: {status: 605, message: 'illegal user id detected'},
+    
     
 };

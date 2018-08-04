@@ -3,11 +3,12 @@ var router = express.Router();
 let ExamLogger = require('../logger').ExamLogger;
 let ExamController = require('../controllers/exam_controller');
 
-var favor = "no";
+
+
 /* GET exam page. */
 router.get('/', async (req, res, next) => {
   var page = "exam";
-  var classindex = req.params.classindex;
+  var taskindex = req.params.taskindex;
   if(req.cookies.teacher){
     await UserController.createUser(info);
     page += "_teacher"
@@ -19,12 +20,14 @@ router.get('/', async (req, res, next) => {
     //这里改成redirect: /
     // res.redirect("/");
   }
-  res.render(page, {name: null, favor: "no", classinfo: null});
+  res.render(page, {name: null});
 });
 
-router.get('/:classindex', async(req, res, next) => {
+
+
+router.get('/:taskindex', async(req, res, next) => {
   var page = "exam";
-  var classindex = req.params.classindex.toString(); // String
+  var taskindex = req.params.taskindex.toString(); // String
   var userid = "U201714635";
   var favor = "no";
   if(req.cookies.teacher){
@@ -39,29 +42,58 @@ router.get('/:classindex', async(req, res, next) => {
     // res.redirect("/");
   }
   try{
-    var params = {
-      "classindex": classindex,
-      "userid": userid
-    }
-    if(await ExamController.getFavor(params)){
-      favor = "yes";
-    }else{
-      favor = "no";
-    }
-    var classinfo = await ExamController.getClassInfo(classindex);
-    res.render(page, {name: null, favor: favor, classinfo: classinfo});
+    res.render(page, {name: null});
   }catch(err){
-    res.render(page, {name: null, favor: "no", classinfo: classinfo});
+    res.render(page, {name: null});
     next(err);
   }
 });
 
-router.post('/:classindex', async (req, res, next) => {
-  var classindex = req.params.classindex;
+
+// TaskList
+router.get('/*/tasklist', async (req, res, next) => {
+  var userid = "U201714635";
+  var params = {
+    "userid": userid
+  }
+  tasklist = await ExamController.getTaskList(params);
+  res.json({result: {tasklist: tasklist}});
+});
+
+
+
+// FavorList
+router.get('/*/favorlist', async(req, res, next) => {
+  var userid = "U201714635";
+  var params = {
+    "userid": userid
+  }
+  favorlist = await ExamController.getFavorList(params);
+  // console.log(favorlist);
+  res.json({result: {favorlist: favorlist}});
+});
+
+
+
+// Favor
+router.get('/:taskindex/favor', async (req, res, next) => {
+  var taskindex = req.params.taskindex;
+  var userid = "U201714635";
+  var params = {
+    "taskindex": taskindex,
+    "userid": userid
+  }
+  favor = await ExamController.getFavor(params)
+  res.json({result: {favor: favor}});
+});
+
+
+router.post('/:taskindex/favor', async (req, res, next) => {
+  var taskindex = req.params.taskindex;
   var userid = "U201714635";
   var params ={
     "favor": req.body.favor,
-    "classindex": classindex,
+    "taskindex": taskindex,
     "userid": userid
   }
   //console.log(req.body);
@@ -73,14 +105,17 @@ router.post('/:classindex', async (req, res, next) => {
       ExamLogger.error(`add favor error => ${err.stack}`);
       next(err);
   }
-})
+});
 
-router.delete('/:classindex', async (req, res, next) => {
-  var classindex = req.params.classindex;
+
+
+
+router.delete('/:taskindex/favor', async (req, res, next) => {
+  var taskindex = req.params.taskindex;
   var userid = "U201714635";
   var params ={
     "favor": req.body.favor,
-    "classindex": classindex,
+    "taskindex": taskindex,
     "userid": userid
   }
   //console.log(req.body);
@@ -92,6 +127,17 @@ router.delete('/:classindex', async (req, res, next) => {
       ExamLogger.error(`delete favor error => ${err.stack}`);
       next(err);
   }
-})
+});
+
+router.get('/:taskindex/taskinfo', async (req, res, next) => {
+  var taskindex = req.params.taskindex;
+  var userid = "U201714635";
+  var params = {
+    "taskindex": taskindex,
+    "userid": userid
+  }
+  var taskinfo = await ExamController.getTaskInfo(params);
+  res.json({result: {taskinfo: taskinfo}});
+});
 
 module.exports = router;

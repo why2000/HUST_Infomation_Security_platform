@@ -38,13 +38,15 @@ function getTime(){
     return timeinfo;
 }
 
+
+// Favor
 exports.getFavor = async params => {
     var exam = db.collection('exam');
-    var classindex = params.classindex;
+    var taskindex = params.taskindex;
     var userid = params.userid;
     var whyere = {
-        "type": "student-favor",
-        "classindex": classindex,
+        "type": "task-favor",
+        "taskindex": taskindex,
         "userid": userid
     };
     var favor = false;
@@ -62,11 +64,12 @@ exports.getFavor = async params => {
 
 exports.postFavor = async params => {
     var exam = db.collection('exam');
-    var classindex = params.classindex;
+    var taskindex = params.taskindex;
     var userid = params.userid;
+    var taskname = params.taskname;
     var data = {
-        "type": "student-favor",
-        "classindex": classindex,
+        "type": "task-favor",
+        "taskindex": taskindex,
         "userid": userid,
         "favor": true
     };
@@ -83,10 +86,10 @@ exports.postFavor = async params => {
 
 exports.deleteFavor = async params => {
     var exam = db.collection('exam');
-    var classindex = params.classindex;
+    var taskindex = params.taskindex;
     var userid = params.userid;
     var data = {
-        "classindex": classindex,
+        "taskindex": taskindex,
         "userid": userid,
         "favor": true
     }
@@ -103,12 +106,12 @@ exports.deleteFavor = async params => {
 
 exports.postHistory = async params => {
     var exam = db.collection('exam');
-    var classindex = params.classindex;
+    var taskindex = params.taskindex;
     var userid = params.userid;
     var timeinfo = getTime();
     var data = {
         "type": "student-history",
-        "classindex": classindex,
+        "taskindex": taskindex,
         "userid": userid,
         "year": timeinfo.year,
         "month": timeinfo.month,
@@ -129,12 +132,12 @@ exports.postHistory = async params => {
 
 exports.deleteHistory = async params => {
     var exam = db.collection('exam');
-    var classindex = params.classindex;
+    var taskindex = params.taskindex;
     var userid = params.userid;
     var timestamp = params.timestamp;
     var whyere = {
         "type": "student-history",
-        "classindex": classindex,
+        "taskindex": taskindex,
         "userid": userid,
         "timestamp": timestamp
     };
@@ -149,20 +152,52 @@ exports.deleteHistory = async params => {
     return data;
 }
 
-exports.getClassList = async params => {
+
+// TaskList
+exports.getTaskList = async params => {
     var exam = db.collection('exam');
     var whyere = {
-        "type": "class-list"
+        "type": "task-name"
     };
-    var favor = false;
-    var result = await exam.findOne(whyere, {"favor": 1});
-    if(result){
-        favor = true;
-    }
-    else{
-        favor = false;
-    }
+    var result = await exam.find(whyere, {"index": 1, "name": 1}).toArray();
     // console.log(result);
     // console.log(whyere);
-    return favor;
+    return result;
+}
+
+
+//FavorList
+exports.getFavorList = async params => {
+    var exam = db.collection('exam');
+    var userid = params.userid;
+    var whyere = {
+        "type": "task-favor",
+        "userid": userid
+    };
+    var indexes = await exam.find(whyere, {"index": 1, "name":  1}).toArray();
+    // console.log(indexes);
+    var favors = new Array();
+    var length = 0;
+    if(indexes){
+        length = indexes.length;
+    }
+    for(var i = 0; i < length; i++){
+        var single = indexes[i];
+        var index = parseInt(single.taskindex);
+        var namewhere = {
+            "type": "task-name",
+            "index": index.toString()
+        };
+        var namecol = await exam.findOne(namewhere, {"index": 1, "name": 1});
+        favors[index] = {
+            "index": namecol.index,
+            "name": namecol.name
+        }
+    }
+    
+    var result = favors.filter( function(currentValue) { 
+        return currentValue!= null;
+    });
+    console.log(result);
+    return result;
 }

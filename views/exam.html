@@ -50,52 +50,35 @@
 
 
 
-                <li>
-                    <a href="history">
-                        <i class="fa fa-clock-o fa-lg"></i>
+                
+
+                <li class="has-submenu">
+                    <a>
+                        <i class="fa fa-chevron-right fa-lg list-icon" id="favor-list-icon"></i>
                         <span class="nav-text">
-                            历史记录
+                            我的收藏
                         </span>
                     </a>
-
+                    <ul id="favor-list" class="submenu" style="display: none">
+                    </ul>
                 </li>
-
                 <li>
                     <a href="###" class="favor", id="favor">
                         <i class="fa fa-heart-o fa-lg" id="favor-icon"></i>
                         <span class="nav-text">
                             收藏本节
                         </span>
-
                     </a>
 
                 </li>
-
                 <li class="has-submenu">
-                    <a >
-                        <i class="fa fa-chevron-right fa-lg" id="list-icon"></i>
+                    <a>
+                        <i class="fa fa-chevron-right fa-lg list-icon" id="task-list-icon"></i>
                         <span class="nav-text">
                             练习列表
                         </span>
                     </a>
-                    <ul id="task_list" class="submenu" style="display: none">
-                        <li>
-                            <a href="/exam/1">
-                                <i class="fa fa-dot-circle-o fa-lg"></i>
-                                <span class="nav-text-small">
-                                    练习1
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/exam/2">
-                                <i class="fa fa-dot-circle-o fa-lg"></i>
-                                <span class="nav-text-small">
-                                    练习2
-                                </span>
-                            </a>
-                        </li>
-                        <!-- add more -->
+                    <ul id="task-list" class="submenu" style="display: none">
                     </ul>
                 </li>
 
@@ -107,7 +90,7 @@
                     <a href="javascript:history.go(-1);">
                         <i class="fa fa-chevron-left fa-lg"></i>
                         <span class="nav-text">
-                            返回
+                            后退
                         </span>
 
                     </a>
@@ -117,78 +100,35 @@
         <script src="/public/javascripts/jquery-1.11.3.min.js"></script>
         <script src="/public/javascripts/exam.js"></script>
         <script>
-            var name = '<%=name%>';
             if(!name){
-                name = "伍瀚缘";
+                name = "伍瀚缘testingtestingtesting";
             }
-            // name += '<%=classinfo%>'; //debug
             var hello = "欢迎！" + name;
             $(".settings").text(hello);
         </script>
         <script>
-            var favor = '<%=favor%>';
-            if(favor == "yes"){
-                $("#favor-icon").css("color", "#f544f5");
-                $("#favor-icon").removeClass("fa-heart-o");
-                $("#favor-icon").addClass("fa-heart");
-            }else{
-                $("#favor-icon").css("color", "");
-                $("#favor-icon").removeClass("fa-heart");
-                $("#favor-icon").addClass("fa-heart-o");
-            }
+            getTaskList(setTaskList);
+            getFavorList(setFavorList);
+            getFavor();
         </script>
         <script>
-            var favor = '<%=favor%>';
-            function postFavor(){
-                var data = {
-                        favor: true
-                };
-                RESTful("POST", window.location.href, JSON.stringify(data), function() {
-                    if (xmlhttp.readyState == 4) {
-                        if (xmlhttp.status == 200) {
-                            console.log("post success" + xmlhttp.status);
-                            $("#favor-icon").css("color", "#f544f5");
-                            $("#favor-icon").removeClass("fa-heart-o");
-                            $("#favor-icon").addClass("fa-heart");
-                            favor = "yes";
-                        } else {
-                            console.log("发生错误" + xmlhttp.status);
-                        }
-                    }
-                });
-            }
-            function deleteFavor(){
-                var data = {
-                        favor: true
-                };
-                RESTful("DELETE", window.location.href, JSON.stringify(data), function() {
-                    if (xmlhttp.readyState == 4) {
-                        if (xmlhttp.status == 200) {
-                            console.log("delete success" + xmlhttp.status);
-                            $("#favor-icon").css("color", "");
-                            $("#favor-icon").removeClass("fa-heart");
-                            $("#favor-icon").addClass("fa-heart-o");
-                            favor = "no";
-                        } else {
-                            console.log("发生错误" + xmlhttp.status);
-                        }
-                    }
-                });
-            }
             $("#favor").click(function(){
-                if(favor == "no"){
+                // alert(favor);
+                if(!favor){
                     postFavor();
+                    getFavorList(setFavorList);
                 }else{
                     deleteFavor();
+                    getFavorList(setFavorList);
                 }
-            })
-        </script>
-        <script>
-            var classinfo = '<%=classinfo%>';
+            });
         </script>
         <div style="text-align:center;clear:both">
             <!-- maincode -->
         </div>
+        <script>
+            // getTaskInfo();
+        </script>
     </body>
 
     </html>
