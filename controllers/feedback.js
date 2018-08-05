@@ -8,7 +8,7 @@ var fs = require('fs');
 /* 
     还有用户认证
     以及，没有考虑到数据库部分的错误
-    考虑添加一个全局的ErrorHandler(如果有这种玩意儿a)
+    考虑添加一个全局的ErrorHandler(如果有这种玩意儿)
     TODO: 添加函数注释，以及已经写过注释的按照标准重写
 */
 
@@ -60,6 +60,7 @@ const saveStudentReport = (req, res) => {
             response(res, {});
         })
         .catch(err => {
+            console.log(err);
             response(res, 500, 'Server error.');
         });
 }

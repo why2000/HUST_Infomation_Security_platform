@@ -44,7 +44,7 @@ const insertReport = async (student_id, module_id, file_id) => {
 // 更新或插入报告
 const upsertReport = async (student_id, module_id, file_id) => {
     let colReport = db.collection('IS_Reports');
-    return colReport.updateOne({student_id: student_id, module_id, module_id}, {file_id: file_id}, {upsert: true})
+    return colReport.updateOne({student_id: student_id, module_id, module_id}, {$set : {file_id: file_id}}, {upsert: true})
 }
 
 // 移除报告
@@ -96,7 +96,7 @@ const insertJudgement = async (student_id, module_id, score, text) => {
 // 更新或插入评价
 const upsertJudgement = async (student_id, module_id, score, text) => {
     let colReport = db.collection('IS_Judgements');
-    return colReport.updateOne({student_id: student_id, module_id, module_id}, {score: score, text: text}, {upsert: true})
+    return colReport.updateOne({student_id: student_id, module_id, module_id}, {$set: {score: score, text: text}}, {upsert: true})
 }
 
 // 移除评价
