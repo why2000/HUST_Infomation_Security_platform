@@ -89,17 +89,18 @@ const deleteStudentReport = (req, res) => {
 }
 
 const getTeacherJudgement = (req, res) => {
-    feedback.getJudgementsByStudentIDAndModuleID(req.params.student_id, req.params.module_id)
-        .catch(err => {
-            //need a logger
-            response(res, 500, "Server error.");
-        })
+    feedback.getJudgementByStudentIDAndModuleID(req.params.student_id, req.params.module_id)
         .then(result => {
             if(result) {
                 response(res, result);
             } else {
                 response(res, 404, 'Not found.');
             }
+        })
+        .catch(err => {
+            //need a logger
+            console.log(err)
+            response(res, 500, "Server error.");
         });
 }
 

@@ -60,8 +60,8 @@ const getJudgementByStudentIDAndModuleID = async (student_id, module_id) => {
     let res = await colJudgement.findOne({student_id: student_id, module_id: module_id});
     if(res) {
         ret = {
-            score: result.score,
-            text: result.text
+            score: res.score,
+            text: res.text
         };
     }
 
@@ -71,13 +71,13 @@ const getJudgementByStudentIDAndModuleID = async (student_id, module_id) => {
 // 通过学生ID获得所有评价
 const getJudgementsByStudentID = async (student_id) => {
     let colJudgement = db.collection('IS_Judgements');
-    return colJudgement.find({student_id: student_id}).project({score: 1, text: 1, module_id: 1}).toArray();
+    return colJudgement.find({student_id: student_id}).project({_id: 0}).toArray();
 }
 
 // 通过模块ID获得所有评价
 const getJudgementsByModuleID = async (module_id) => {
     let colJudgement = db.collection('IS_Judgements');
-    return colJudgement.find({module_id: module_id}).project({score: 1, text: 1, student_id: 1}).toArray();
+    return colJudgement.find({module_id: module_id}).project({_id: 0}).toArray();
 }
 
 // 插入评价

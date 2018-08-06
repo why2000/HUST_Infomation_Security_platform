@@ -2,12 +2,10 @@ var file = require('../models/file')
 var response = require('../utils/response')
 
 const getAllFiles = (req, res) => {
-    let result = file.getAllFiles()
-                     .then(result => {
-                        res.json(response(result));
-                     })
-    
-
+    file.getAllFiles()
+        .then(result => {
+            response(res, result);
+        });
 }
 
 const uploadFile = (req, res) => {

@@ -9,11 +9,11 @@ var router = express.Router();
 // 报告文件
 router.get('/report/:student_id/:module_id', feedback.getStudentReport);
 router.post('/report/:student_id/:module_id', upload.single('upload'), feedback.saveStudentReport);
-router.delete('/report/:student_id/:module_id', feedback.getStudentReport);
+router.delete('/report/:student_id/:module_id', feedback.deleteStudentReport);
 
 // 教师反馈
 router.get('/judgement/:student_id/:module_id', feedback.getTeacherJudgement);
 router.post('/judgement/:student_id/:module_id', feedback.saveTeacherJudgement);
-router.delete('/judgement/:student_id/:module_id', feedback.getTeacherJudgement);
+router.delete('/judgement/:student_id/:module_id', feedback.deleteTeacherJudgement);
 
 module.exports = router;

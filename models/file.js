@@ -20,7 +20,7 @@ const genFileID = (file_name) => {
 // 获得全部已上传的文件
 const getAllFiles = async () => {
     let colFiles = db.collection('IS_Files');
-    return colFiles.find({}).project({name: 1, file_id: 1, uploader: 1}).toArray();
+    return colFiles.find({}).project({_id: 0}).toArray();
 }
 
 /* 获得文件
