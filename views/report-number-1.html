@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+        <head>
+                <title>Title</title>
+                <!-- Required meta tags -->
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <meta http-equiv="X-UA-Compatible" content=="IE=edge" />
+                <meta name="google" value="notranslate" />
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+                <script src="../public/javascripts/sidebar.js"></script>
+                <script src="../public/javascripts/report_upload.js"></script>
+                <link rel="stylesheet" href="../public/stylesheets/examsidebar.css">
+                <!-- Bootstrap CSS -->
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
+                    crossorigin="anonymous">
+                <link rel="stylesheet" href="stylesheets/tooplate-style.css">
+                <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+                <link rel="stylesheet" href="../public/stylesheets/report.css">
+            </head>
+            
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #133AAC; z-index: 0 ">
+        <div style="width: 1200px ;overflow: visible; margin: auto;">
+            <img src="./images/logo.gif">
+            <a class="navbar-brand" href="./catalog.html" style="padding-left: 10px; margin-left: 10px; color: white; border-left: 1px solid #7c8b99; font-size:24px;">华中科技大学信息安全实验平台</a>
+
+            <div class="dropdown" style="float:right; margin-top:6px;">
+
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    您目前作为 伍瀚缘 登入。
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#" style="font-size:20px;">查看/修改个人信息</a>
+                    <a class="dropdown-item" href="#" style="font-size:20px;">登出</a>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    </nav>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="catalog.html">Home</a>
+            </li>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item" style="margin-left: auto; margin-right: auto;">
+                        <a class="nav-link" href="#">数据加密原理</a>
+                    </li>
+                    <li class="nav-item" style="margin-left: auto; margin-right: auto;">
+                        <a class="nav-link" href="#">防火墙的原理</a>
+                    </li>
+                    <li class="nav-item" style="margin-left: auto; margin-right: auto;">
+                        <a class="nav-link" href="#">计算机病毒</a>
+                    </li>
+                </ul>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <form class="form-inline" action="/action_page.php" style="margin-right: 0px;">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                <button class="btn btn-success" type="submit">搜索</button>
+            </form>
+
+        </ul>
+    </nav>
+
+
+
+    <div class="container-fluid " style="position: relative; margin:auto ; height: auto;top: 0px;bottom: 0px; top: 50%; float:right;">
+        <div class="row">
+            <nav class="main-menu" style="z-index:10; min-height: 450px; ">
+
+                <div class="logo" style="display: block">
+                    <img src="/public/images/logo.gif"></img>
+                </div>
+                <div class="settings" , style="text-align: center; font-size: 18px;">
+                </div>
+
+                <ul class="parent-menu" , id="parent">
+
+                    <li>
+
+                        <a href="/catalog">
+                            <i class="fa fa-home fa-lg"></i>
+                            <span class="nav-text">首页</span>
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-clock-o fa-lg"></i>
+                            <span class="nav-text">
+                                历史记录
+                            </span>
+                        </a>
+
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-heart-o fa-lg"></i>
+                            <span class="nav-text">
+                                收藏本节
+                            </span>
+
+                        </a>
+
+                    </li>
+
+                    <li class="has-submenu">
+                        <a href="#">
+                            <i class="fa fa-chevron-right fa-lg" id="list-icon"></i>
+                            <span class="nav-text">
+                                练习列表
+                            </span>
+                        </a>
+                        <ul id="task_list" class="submenu" style="display: none">
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-dot-circle-o fa-lg"></i>
+                                    <span class="nav-text-small">
+                                        练习1
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-dot-circle-o fa-lg"></i>
+                                    <span class="nav-text-small">
+                                        练习2
+                                    </span>
+                                </a>
+                            </li>
+                            <!-- add more -->
+                        </ul>
+                    </li>
+
+
+                </ul>
+
+                <ul class="logout">
+                    <li>
+                        <a href="javascript:history.go(-1);">
+                            <i class="fa fa-chevron-left fa-lg"></i>
+                            <span class="nav-text">
+                                返回
+                            </span>
+
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="container marketing" style="position:relative;align-items: center;padding: 30px;z-index: 1">
+                <div class="row"> 
+                <div class="container col-md-8">
+                    <div class="d-block ">
+                        <div class="card">
+
+
+                        <h2 class="mb-3" style="display: block;margin: 5%;">报告标题</h2>
+                        <div class="border-top" style="padding: 3%;">
+                           
+                            <P >描述 </P>
+                            <p>相关信息</p>
+                        </div>
+                        </div>
+                        <div>
+                            <form id="UploadForm" method="post" enctype="multipart/form-data">
+                            
+                                <div class="file-uploader-wrap">
+                                
+                                    <input type="file" class="file-uploader" name="uploadDataField" id="FileUploader" />
+                                    <div class="file-uploader-wrap-fake">
+                                    
+                                        <input type="text" id="PathDisplayer" class="input-text" disabled >
+                                         <a href="javascript:void(0)" >选择文件</a>
+                                        </input>
+                                    </div>
+                                    <button id="uploadButton">上传</button>
+                                </div>
+                                </form>
+                                </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-3 " style="margin-left: auto; margin-right: auto;">
+                    <h4 class="d-flex">
+                        报告反馈
+                    </h4>
+                    <ul class="list-group mb-3">
+                           
+                                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                      <div>
+                                        <h6 class="my-0">得分</h6>
+                                        <small class="text-muted">优/良/差</small>
+                                      </div>
+                                      <span style="font-size: 20;font-weight: bold;">100</span>
+                                    </li>
+                             
+                                
+                             
+                        <li class="list-group-item d-flex ">
+                            <div>
+                            <h6 >
+                                教师评语
+                            </h5>
+                            </div>
+                            <div >
+                            <p  > 不错不错 不错不错<br> 不错不错<br> 不错不错</p>
+                            </div>
+                            
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+
+        </div>
+        <footer class="container">
+            <p class="float-right">
+                <a href="#">Back to top</a>
+            </p>
+            <p>© 2017-2018 Company, Inc. ·
+                <a href="#">Privacy</a> ·
+                <a href="#">Terms</a>
+            </p>
+        </footer>
+    </div>
+
+</body>

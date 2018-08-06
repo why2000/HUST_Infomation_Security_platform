@@ -1,0 +1,52 @@
+
+body{ 
+    font-size: 12px; 
+    text-align: left; 
+    } 
+    .input-text{ 
+    height: 23px; 
+    width: 315px; 
+    line-height: 23px; 
+    vertical-align: middle; 
+    background: #FAFBFD; 
+    border:1px solid #d4d4d4; 
+    } 
+    .link-btn{ 
+    width: 78px; 
+    height: 25px; 
+    display: inline-block; 
+    line-height: 25px; 
+    text-align: center; 
+    vertical-align: middle; 
+    background: url('./images/btn.png') 0 -110px; 
+    color: #6d767f; 
+    text-decoration: none; 
+    } 
+    .file-uploader-wrap{ 
+    position: relative; 
+    width: 405px; 
+    height: 27px; 
+    margin-top: 20px; 
+    } 
+    .file-uploader-wrap-fake{ 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    z-index: 1; 
+    height: 27px; 
+    _display : none; 
+    } 
+    .file-uploader-wrap .file-uploader{ 
+    position: relative; 
+    width: 400px; 
+    height: 27px; 
+    text-align: right; 
+    filter : alpha(opacity = 0); 
+    opacity: 0; 
+    z-index: 2; 
+    cursor: pointer; 
+    _filter : none; 
+    _text-align : left; 
+    _line-height : 27px; 
+    } 
+    
