@@ -82,6 +82,7 @@ width:55px;
 overflow:hidden;
 -webkit-transition:width .2s linear;
 transition:width .2s linear;
+transform:translateZ(0) scale(1,1);
 -webkit-transform:translateZ(0) scale(1,1);
 box-shadow: 1px 0 15px rgba(0, 0, 0, 0.07);
   opacity:1;
@@ -108,9 +109,10 @@ border-spacing:0;
 color:#959595;
 font-size: 14px;
 text-decoration:none;
+transform:translateZ(0) scale(1,1);
 -webkit-transform:translateZ(0) scale(1,1);
--webkit-transition:all .14s linear;
 transition:all .14s linear;
+-webkit-transition:all .14s linear;
 font-family: 'Strait', sans-serif;
 border-top:1px solid #F0F0F0;
 box-shadow:inset 0 1px 1px #FAFAFA;
@@ -149,8 +151,6 @@ font-family: 'Titillium Web', sans-serif;
   font-family: 'Titillium Web', sans-serif;
   }
 
-.main-menu .share {
-}
 
 
 
