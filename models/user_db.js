@@ -27,28 +27,49 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
     }
 })
 
-exports.addUser = async function(params) {
+exports.creatUser = async function(params) {
     var user = db.collection('user');
-    var data = params;
-    //console.log(data);
-    user.insert(data, function(err, result){
-        if(err){
-            UserLogger.error(`database error => ${err.stack}`);
-            throw err;
-        } else {
-            data = result;
+    var whyere = {
+        "type": "userid-username",
+        "userid": params.userid
+    }
+    if(user.find(whyere).length){
+        var data = {
+            "type": "userid-username",
+            "userid": params.userid,
+            "username": params.username,
+            "usertype": params.usertype
         }
-    });
-    return data;
+        user.insert(data, function(err, result){
+            if(err){
+                UserLogger.error(`database error => ${err.stack}`);
+                throw err;
+            } else {
+                data = result;
+            }
+        });
+        return data;
+    }
+    return false;
 }
 
-exports.findUser = async function(username){
+exports.findUserByName = async function(username){
     var user = db.collection('user');
-    var doc = user.findOne(username);
+    var doc = user.find(username);
     if(!doc){
         return false;
     }
     else{
-        return true;
+        return doc;
+    }
+}
+
+exports.findUserById = async function(userid){
+    var user = db.collection('user');
+    var doc = user.findOne({userid: userid});
+    if(!doc){
+        return false;
+    }else{
+        return doc;
     }
 }

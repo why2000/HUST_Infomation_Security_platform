@@ -72,7 +72,8 @@ opacity:1;
 .main-menu {
 background:#F7F7F7;
 border-right:1px solid #e5e5e5;
-position:absolute;
+position:fixed;
+float: left;
 top:0;
 bottom:0;
 height:100%;
@@ -84,6 +85,7 @@ transition:width .2s linear;
 -webkit-transform:translateZ(0) scale(1,1);
 box-shadow: 1px 0 15px rgba(0, 0, 0, 0.07);
   opacity:1;
+  z-index: 10;
 }
 
 .main-menu>ul {
@@ -205,7 +207,7 @@ padding:0;
 /* 鼠标滑过变色 */
 .main-menu li:hover>a,nav.main-menu li.active>a,.dropdown-menu>li>a:hover,.dropdown-menu>li>a:focus,.dropdown-menu>.active>a,.dropdown-menu>.active>a:hover,.dropdown-menu>.active>a:focus,.no-touch .dashboard-page nav.dashboard-menu ul li:hover a,.dashboard-page nav.dashboard-menu ul li.active a {
 color:#fff;
-background-color:#00bbbb;
+background-color:#206db0;
 text-shadow: 0px 0px 0px; 
 }
 
@@ -220,5 +222,5 @@ height: 100%;
   font-family: 'Titillium Web';
   font-style: normal;
   font-weight: 300;
-  src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
+  src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(/public/fonts/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
 }

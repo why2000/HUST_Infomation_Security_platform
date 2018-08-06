@@ -50,7 +50,12 @@ exports.getFavor = async params => {
         "userid": userid
     };
     var favor = false;
-    var result = await exam.findOne(whyere, {"favor": 1});
+    try{
+        var result = await exam.findOne(whyere, {"favor": 1});
+    } catch(err){
+        ExamLogger.error(`database error => ${err.stack}`);
+        throw err;
+    }
     if(result){
         favor = true;
     }
@@ -104,54 +109,6 @@ exports.deleteFavor = async params => {
     return data
 }
 
-exports.postHistory = async params => {
-    var exam = db.collection('exam');
-    var taskindex = params.taskindex;
-    var userid = params.userid;
-    var timeinfo = getTime();
-    var data = {
-        "type": "student-history",
-        "taskindex": taskindex,
-        "userid": userid,
-        "year": timeinfo.year,
-        "month": timeinfo.month,
-        "date": timeinfo.date,
-        "timestamp": timeinfo.timestamp
-        
-    };
-    exam.insert(data, function(err, res){
-        if(err){
-            ExamLogger.error(`database error => ${err.stack}`);
-            throw err;
-        } else {
-            data = res;
-        }
-    });
-    return data;
-}
-
-exports.deleteHistory = async params => {
-    var exam = db.collection('exam');
-    var taskindex = params.taskindex;
-    var userid = params.userid;
-    var timestamp = params.timestamp;
-    var whyere = {
-        "type": "student-history",
-        "taskindex": taskindex,
-        "userid": userid,
-        "timestamp": timestamp
-    };
-    exam.deleteMany(whyere, function(err, res){
-        if(err){
-            ExamLogger.error(`database error => ${err.stack}`);
-            throw err;
-        } else {
-            data = res;
-        }
-    });
-    return data;
-}
-
 
 // TaskList
 exports.getTaskList = async params => {
@@ -159,7 +116,15 @@ exports.getTaskList = async params => {
     var whyere = {
         "type": "task-name"
     };
-    var result = await exam.find(whyere, {"index": 1, "name": 1}).toArray();
+    var result;
+    await exam.find(whyere, {"index": 1, "name": 1}, function(err, res) {
+        if (err) {
+            ExamLogger.error(`database error => ${err.stack}`);
+            throw err;
+        } else {
+            result = res.toArray();
+        }
+    });
     // console.log(result);
     // console.log(whyere);
     return result;
@@ -174,13 +139,18 @@ exports.getFavorList = async params => {
         "type": "task-favor",
         "userid": userid
     };
-    var indexes = await exam.find(whyere, {"index": 1, "name":  1}).toArray();
-    // console.log(indexes);
+    try{
+        var indexes = await exam.find(whyere, {"index": 1, "name":  1}).toArray();
+    } catch(err){
+        ExamLogger.error(`database error => ${err.stack}`);
+        throw err;
+    }
     var favors = new Array();
     var length = 0;
     if(indexes){
         length = indexes.length;
     }
+    // console.log(length);
     for(var i = 0; i < length; i++){
         var single = indexes[i];
         var index = parseInt(single.taskindex);
@@ -188,7 +158,12 @@ exports.getFavorList = async params => {
             "type": "task-name",
             "index": index.toString()
         };
-        var namecol = await exam.findOne(namewhere, {"index": 1, "name": 1});
+        try{
+            var namecol = await exam.findOne(namewhere, {"index": 1, "name": 1});
+        } catch(err){
+            ExamLogger.error(`database error => ${err.stack}`);
+            throw err;
+        }
         favors[index] = {
             "index": namecol.index,
             "name": namecol.name
@@ -196,8 +171,23 @@ exports.getFavorList = async params => {
     }
     
     var result = favors.filter( function(currentValue) { 
-        return currentValue!= null;
+        return currentValue && currentValue!= null && currentValue != undefined;
     });
-    console.log(result);
+    // console.log(result);
+    return result;
+}
+
+// IndexInfo
+exports.getIndexInfo = async params => {
+    var exam = db.collection('exam');
+    var whyere = {
+        "type": "index-info"
+    }
+    try{
+        var result = await exam.findOne(whyere);
+    } catch(err){
+        ExamLogger.error(`database error => ${err.stack}`);
+        throw err;
+    }
     return result;
 }

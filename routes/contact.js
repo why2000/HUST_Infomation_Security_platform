@@ -4,6 +4,8 @@ let express = require('express');
 let router = express.Router();
 let ContactLogger = require('../logger').ContactLogger;
 let ContactController = require('../controllers/contact_controller');
+let UserLogger = require('../logger').UserLogger;
+let UserController = require('../controllers/user_controller');
 
 router.get('/', async (req, res, next) => {
     res.render('contact', {"success": null});
