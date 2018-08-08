@@ -8,7 +8,6 @@ var fs = require('fs');
 /* 
     还有用户认证
     考虑添加一个全局的ErrorHandler(如果有这种玩意儿)
-    TODO: 添加函数注释，以及已经写过注释的按照标准重写
 */
 
 const getStudentReport = (req, res) => {
@@ -47,7 +46,7 @@ const saveStudentReport = (req, res) => {
     feedback.getReportByStudentIDAndModuleID(sid, mid)
         .then(result => {
             if(result) {
-                // 这儿就异步了
+                // 注意，这里是异步
                 file.removeFile(result.file_id);
             }
             return file.saveFile(req.file.originalname, req.file.path, `student:${sid}`);
@@ -97,8 +96,6 @@ const getTeacherJudgement = (req, res) => {
             }
         })
         .catch(err => {
-            //need a logger
-            console.log(err)
             response(res, 500, "Server error.");
         });
 }
@@ -108,8 +105,9 @@ const saveTeacherJudgement = (req, res) => {
     let sid = req.params.student_id;
     let mid = req.params.module_id;
 
-    // 参数类型检查 其实很丑，看看有什么比较好看的解决方案
-    if(typeof(req.body.score) == 'number' && typeof(req.body.body == 'string')) {
+    // 参数类型检查和范围检查 其实很丑，看看有什么比较好看的解决方案
+    if(typeof(req.body.score) == 'number' && typeof(req.body.body == 'string') && (req.body.score >= 0 && req.body.score <= 100)) {
+        req.body.score = Math.floor(req.body.score);//取整
         // 注意HTML转义的问题，先尝试在前端解决
         feedback.upsertJudgement(sid, mid, req.body.score, req.body.text)
             .then(() => {

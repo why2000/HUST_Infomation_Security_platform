@@ -5,11 +5,15 @@ var crypto = require('crypto');
 var cfg = require('../config/file.json');
 
 
+// 判断文件保存目录是否存在，不存在则创建
 if(!fs.existsSync(cfg.PATH)) {
     fs.mkdir(cfg.PATH);
 }
 
-// 生成FileID
+/**
+ * 生成FileID
+ * @param {string} file_name 
+ */
 const genFileID = (file_name) => {
     let salt = Math.random().toString().slice(4, 9); // 盐
     let s = file_name + salt;
@@ -17,19 +21,20 @@ const genFileID = (file_name) => {
     return md5.update(s).digest('hex').slice(9, 17);
 }
 
-// 获得全部已上传的文件
+/**
+ * 获得全部已上传的文件
+ */
 const getAllFiles = async () => {
     let colFiles = db.collection('IS_Files');
     return colFiles.find({}).project({_id: 0}).toArray();
 }
 
-/* 获得文件
-{
-    name: String,
-    stream: Stream
-}
-如果没找到文件返回null
-*/
+
+/**
+ * 获得文件
+ * 如果没找到文件则返回null
+ * @param {string} file_id 文件ID
+ */
 const getFile = async (file_id) => {
     var colFiles = db.collection('IS_Files');
     return colFiles.findOne({file_id: file_id})
@@ -43,11 +48,16 @@ const getFile = async (file_id) => {
                } else {
                    return null;
                }
-           })
+           });
 
 }
 
-// 保存文件，返回一个file_id
+/**
+ * 保存文件并返回文件ID
+ * @param {string} file_name 文件名
+ * @param {string} tmp_path 文件存储的临时目录
+ * @param {string} uploader 上传者
+ */
 const saveFile = async (file_name, tmp_path, uploader) => {
     // return some file_id
     let colFiles = db.collection('IS_Files');
@@ -57,11 +67,14 @@ const saveFile = async (file_name, tmp_path, uploader) => {
            .then(() => file_id)
 }
 
-// 删除文件
+/**
+ * 删除文件
+ * @param {string} file_id 
+ */
 const removeFile = async (file_id) => {
     var colFiles = db.collection('IS_Files');
     fs.unlinkSync(path.join(cfg.PATH, file_id))
-    return colFiles.deleteOne({file_id: file_id});
+    return colFiles.deleteOne({file_id: file_id}).then(res => res.result.ok == 1);
 }
 
 module.exports = {

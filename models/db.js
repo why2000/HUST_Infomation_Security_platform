@@ -14,9 +14,9 @@ client.connect(cfg.DATABASE_URL, { useNewUrlParser: true }, (err, client) => {
 });
 
 /**
- * 
- * @param {string} name
- * @returns {mongodb.Collection} collection 
+ * 获得Collection
+ * @param {string} name Collection名称
+ * @returns {mongodb.Collection} Collection
  */
 const collection = (name) => {
     return db.collection(name);
