@@ -1,13 +1,6 @@
 'use strict'
 
 
-/* User */
-exports._checkuserexists = async params => {
-    var username = params.username;
-    return UserDB.findUser(username);
-}
-
-
 /* Exam */
 exports._validatetaskindex = async params => {
     var indexPattern = /^[0-9]{1,50}$/;
@@ -17,8 +10,18 @@ exports._validatetaskindex = async params => {
     return false;
 }
 
+
+/* User */
 // Debug，直接返回true
 exports._validateuserid = async params => {
+    var indexPattern = /^[0-9]{1,50}$/;
+    if(indexPattern.test(params)){
+        return true;
+    }
+    return true;
+}
+// Debug，直接返回true
+exports._validatepassword = async params => {
     var indexPattern = /^[0-9]{1,50}$/;
     if(indexPattern.test(params)){
         return true;

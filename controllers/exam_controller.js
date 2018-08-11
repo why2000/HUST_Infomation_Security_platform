@@ -1,81 +1,234 @@
-let ExamDB = require('../models/exam_db');
-let Joi = require('joi');
-let IsEmpty = require('is-empty');
-let ErrorUtil = require('../utils/error_util');
+'use strict';
+
+var express = require('express');
+var router = express.Router();
 let ExamLogger = require('../logger').ExamLogger;
-let Validator = require('./validator');
+let ExamValidator = require('../validators/exam_validator');
+let UserLogger = require('../logger').UserLogger;
+let UserValidator = require('../validators/user_validator');
 
 
 
-
-
-
-// Favor
-exports.getFavor = async params => {
-    if(!await Validator._validatetaskindex(params.taskindex)||!await Validator._validateuserid(params.userid)){
-        var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ExamLogger.error(`controller error => ${err.stack}`);
-    }else{
-        return await ExamDB.getFavor(params);
-    }
+exports.getIndexPage = async (req, res, next) => {
+    var page = "exam";
+    var session = req.session;
+    var userid = "U201714635";
+    var usertype = "student";
+    var taskindex = req.params.taskindex;
+    var info = {
+        userid: userid,
+        username: "",
+        usertype: usertype
+    };
     
-}
-
-exports.postFavor = async params => {
-    if(!await Validator._validatetaskindex(params.taskindex)||!await Validator._validateuserid(params.userid)||!await Validator._validatefavortype(params.favor)){
-        var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ExamLogger.error(`controller error => ${err.stack}`);
-        return false
+    if(!req.session.loginUser){
+        res.redirect('/');
     }else{
-        return await ExamDB.postFavor(params);
-    }
-    
-}
-
-exports.deleteFavor = async params => {
-    if(!await Validator._validatetaskindex(params.taskindex)||!await Validator._validateuserid(params.userid)||!await Validator._validatefavortype(params.favor)){
-        var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ExamLogger.error(`controller error => ${err.stack}`);
-        return false
-    }else {
-        return await ExamDB.deleteFavor(params);
+        if(await UserValidator.getUserTypeById(req.session.loginUser) == "teacher"){
+            page += "_teacher"
+        }
+        else if(await UserValidator.getUserTypeById(req.session.loginUser) == "student"){
+            ;
+        }
+        res.render(page);
     }
 }
 
-// IndexInfo
-exports.getIndexInfo = async params => {
-    return await ExamDB.getIndexInfo(params);
+exports.getIndexInfo = async (req, res, next) => {
+    try{
+        var info = await ExamValidator.getIndexInfo();
+    }catch(err){
+        ExamLogger.error(`get index info error => ${err.stack}`);
+        next(err);
+    }
+    res.json({
+        result: {
+            info: info
+        }
+    });
 }
 
+// UserName
+exports.getUserNameById = async (req, res, next) => {
+    var userid = "U201714635";
+    try{
+        var username = await UserValidator.getUserNameById(userid);
+    }catch(err){
+        ExamLogger.error(`get username error => ${err.stack}`);
+        next(err);
+    }
+    // console.log(favorlist);
+    res.json({
+        result: {
+            username: username
+        }
+    });
+}
 
-
-// TaskInfo
-exports.getTaskInfo = async params => {
-    return null;
+exports.getTaskPage = async (req, res, next) => {
+    var page = "exam";
+    var taskindex = req.params.taskindex.toString(); // String
+    var success;
+    var userid = "U201714635";
+    var usertype = "student";
+    var taskindex = req.params.taskindex;
+    var info = {
+        userid: userid,
+        username: "",
+        usertype: usertype
+    };
+    if (req.cookies.teacher) {
+        success = await UserValidator.createUser(info);
+        page += "_teacher"
+    } else if (req.cookies.student) {
+        success = await UserValidator.createUser(info);
+    } else {
+        //这里改成redirect: /
+        // res.redirect("/");
+    }
+    res.render(page);
 }
 
 // TaskList
-exports.getTaskList = async params => {
-    if(!await Validator._validateuserid(params.userid)){
-        var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ExamLogger.error(`controller error => ${err.stack}`);
-        return false;
-    }else{
-        return await ExamDB.getTaskList(params);
+exports.getTaskList = async (req, res, next) => {
+    var userid = "U201714635";
+    var params = {
+        "userid": userid
     }
+    try{
+        var tasklist = await ExamValidator.getTaskList(params);
+    }catch(err){
+        ExamLogger.error(`get task list error => ${err.stack}`);
+        next(err);
+    }
+    res.json({
+        result: {
+            tasklist: tasklist
+        }
+    });
 }
 
 
 // FavorList
-exports.getFavorList = async params => {
-    if(!await Validator._validateuserid(params.userid)){
-        var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ExamLogger.error(`controller error => ${err.stack}`);
-        return false;
-    }else{
-        return await ExamDB.getFavorList(params);
+exports.getFavorList = async (req, res, next) => {
+    var userid = "U201714635";
+    var params = {
+        "userid": userid
     }
+    try{
+        var favorlist = await ExamValidator.getFavorList(params);
+    }catch(err){
+        ExamLogger.error(`get favor list error => ${err.stack}`);
+        next(err);
+    }
+    // console.log(favorlist);
+    res.json({
+        result: {
+            favorlist: favorlist
+        }
+    });
 }
 
 
+// Favor
+exports.getFavor = async (req, res, next) => {
+    var taskindex = req.params.taskindex;
+    var userid = "U201714635";
+    var params = {
+        "taskindex": taskindex,
+        "userid": userid
+    }
+    try{
+        var favor = await ExamValidator.getFavor(params);
+    }catch(err){
+        ExamLogger.error(`get favor error => ${err.stack}`);
+        next(err);
+    }
+    res.json({
+        result: {
+            favor: favor
+        }
+    });
+}
 
+exports.postFavor = async (req, res, next) => {
+    var taskindex = req.params.taskindex;
+    var userid = "U201714635";
+    var params = {
+        "favor": req.body.favor,
+        "taskindex": taskindex,
+        "userid": userid
+    }
+    //console.log(req.body);
+    try {
+        let result = await ExamValidator.postFavor(params);
+        ExamLogger.info(`add favor result => ${JSON.stringify(result, null, 2)}`);
+        res.json({
+            "result": result
+        });
+    } catch (err) {
+        ExamLogger.error(`add favor error => ${err.stack}`);
+        next(err);
+    }
+}
+
+exports.deleteFavor = async (req, res, next) => {
+    var taskindex = req.params.taskindex;
+    var userid = "U201714635";
+    var params = {
+        "favor": req.body.favor,
+        "taskindex": taskindex,
+        "userid": userid
+    }
+    //console.log(req.body);
+    try {
+        let result = await ExamValidator.deleteFavor(params);
+        ExamLogger.info(`delete favor result => ${JSON.stringify(result, null, 2)}`);
+        res.json({
+            "result": result
+        });
+    } catch (err) {
+        ExamLogger.error(`delete favor error => ${err.stack}`);
+        next(err);
+    }
+}
+
+exports.getTaskInfo = async (req, res, next) => {
+    var taskindex = req.params.taskindex;
+    var userid = "U201714635";
+    var params = {
+        "taskindex": taskindex,
+        "userid": userid
+    }
+    try{
+        var taskinfo = await ExamValidator.getTaskInfo(params);
+    }catch(err){
+        ExamLogger.error(`get task error => ${err.stack}`);
+        next(err);
+    }
+    res.json({
+        result: {
+            taskinfo: taskinfo
+        }
+    });
+}
+
+exports.submitTask = async (req, res, next) => {
+    var taskindex = req.params.taskindex;
+    var userid = "U201714635";
+    var params = {
+        "taskindex": taskindex,
+        "userid": userid
+    }
+    try{
+        var taskinfo = await ExamValidator.getTaskInfo(params);
+    }catch(err){
+        ExamLogger.error(`submit task error => ${err.stack}`);
+        next(err);
+    }
+    res.json({
+        result: {
+            taskinfo: req.body
+        }
+    });
+}

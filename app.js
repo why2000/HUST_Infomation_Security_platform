@@ -1,3 +1,4 @@
+// 依赖包
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -6,13 +7,16 @@ var logger = require('morgan');
 var ejs = require('ejs');
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
-//basic
-var indexRouter = require('./routes/index');
+var session = require('express-session');
+var FileStore = require('session-file-store')(session);
+
+
 // 自定义
+var indexRouter = require('./routes/index');
 var catalogRouter = require('./routes/catalog');
 var contactRouter = require('./routes/contact');
 var examRouter = require('./routes/exam');
-
+var loginRouter = require('./routes/login');
 
 var app = express();
 
@@ -31,8 +35,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+//session
+app.use(session({
+  name: 'usersession',
+  secret: 'testing',
+  store: new FileStore(),
+  saveUninitialized: false,
+  resave: true,
+  cookie: {
+    maxAge: 1000 * 60 * 5
+  }
+}));
+
 //自定义
 app.use('/', indexRouter);
+app.use('/login', loginRouter);
 app.use('/catalog', catalogRouter);
 app.use('/contact', contactRouter);
 app.use('/exam', examRouter);

@@ -184,7 +184,7 @@ exports.getIndexInfo = async params => {
         "type": "index-info"
     }
     try{
-        var result = await exam.findOne(whyere);
+        var result = await exam.findOne(whyere, {"_id": 0});
     } catch(err){
         ExamLogger.error(`database error => ${err.stack}`);
         throw err;
