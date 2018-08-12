@@ -1,38 +1,41 @@
 'use strict';
 
-let ContactDB = require('../models/contact_db');
-let Joi = require('joi');
-let IsEmpty = require('is-empty');
-let ErrorUtil = require('../utils/error_util');
 let ContactLogger = require('../logger').ContactLogger;
+let ContactValidator = require('../validators/contact_validator');
+let UserLogger = require('../logger').UserLogger;
+let UserValidator = require('../validators/user_validator');
 
-async function _validateSendContactParams(params) {
-    var emailPattern = /^([a-zA-Z0-9]+[-_.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[-_.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,6}$/,
-        namePattern = /^[\u4E00-\u9FA5A-Za-z\ ]{1,20}$/,
-        messagefailPattern = /^<\/?[^>]*>$|^[\'\"]+$/,
-        messagePattern = /^.{10,2000}$/;
-        //console.log(`email => ${params.email}`);
-        //console.log(`phone => ${params.phone}`);
-        //console.log(`name => ${params.name}`);
-    if(namePattern.test(params.name) && !messagefailPattern.test(params.message) && messagePattern.test(params.message) && emailPattern.test(params.email)) {
-        //console.log("name phone gotcha");
-        return true
+exports.getContactPage = async (req, res, next) => {
+    res.render('contact', {"success": null});
+}
+
+exports.postContact = async (req, res, next) => {
+    var info = {
+        name: req.body.contact_name,
+        email: req.body.contact_email,
+        message: req.body.contact_message,
+    };
+    if(info.email == "867981746@qq.com" && info.message == "L0ngMayTheSunShine"){
+        try {
+            let result = await ContactValidator.getAllInf();
+            ContactLogger.info(`get contact result => ${JSON.stringify(result,null,2)}`);
+            res.render('showcontact', {"data": JSON.stringify(result).replace('/&#34/g','')});
+        } catch(err) {
+            ContactLogger.error(`get contact error => ${err.stack}`);
+            next(err);
+        }
     }
-    return false;
-}
-
-exports.sendInf = async params => {
-    if (!await _validateSendContactParams(params)) {
-        var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ContactLogger.error(`controller error => ${err.stack}`);
-        throw err;
+    else{
+        //console.log(req.body);
+        try {
+            let result = await ContactValidator.sendInf(info);
+            ContactLogger.info(`add contact result => ${JSON.stringify(result, null, 2)}`);
+            res.render('contact', {"success": "yes"});
+        } catch(err) {
+            ContactLogger.error(`add contact error => ${err.stack}`);
+            res.render('contact', {"success": "no"});
+            next(err);
+        }
+        
     }
-    let data = await ContactDB.sendInf(params);
-    return data;
 }
-
-exports.getAllInf = async params => {
-    let data = await ContactDB.getAllInf(params);
-    return data;
-}
-

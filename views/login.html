@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content=="IE=edge" />
+    <meta name="google" value="notranslate" />
+    <title>华中科技大学信息安全实验平台 - 用户登录</title>
+</head>
+
+<body>
+    <form action='login' method='POST' class="login-form">
+        <ul>
+            <li>
+                <input type="text" id="userid" name="userid" placeholder="请输入学号">
+            </li>
+
+            <li>
+                <input type="text" id="password" name="password" placeholder="密码">
+            </li>
+            <button type='submit'>登录</button>
+        </ul>
+    </form>
+    <script>
+        $('#login').click(function(evt){
+            evt.preventDefault();
+            $.ajax({
+                url: 'login',
+                type: 'POST',
+                data: {
+                    name: $('#userid').val(),
+                    password: $('#password').val()
+                },
+                success: function(data){
+                    if(data.ret_code === 0){
+                        location.reload();
+                    }else{
+                        alert(data.ret_msg);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

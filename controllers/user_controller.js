@@ -1,21 +1,41 @@
-'use strict';
+'use strict'
 
-let UserDB = require('../models/user_db');
-let Joi = require('joi');
-let IsEmpty = require('is-empty');
-let ErrorUtil = require('../utils/error_util');
 let UserLogger = require('../logger').UserLogger;
+let UserValidator = require('../validators/user_validator');
 
-async function _checkuserexists(params) {
-    username = params.username;
-    return UserDB.findUser(username);
+exports.getLoginPage = async (req, res, next) => {
+    res.render('login');
 }
 
-exports.createUser = async params => {
-    if (!await _checkuserexists(params)) {
-        let data = await UserDB.createUser(params);
-        return data;
+
+// 之后记得在前端对密码用get传递的key加密然后在这里解
+exports.postLoginInfo = async (req, res, next) => {
+    var info = {
+        userid: req.body.userid,
+        password: req.body.password
     }
-    return false;
+    if (!await UserValidator.loginCheck(info)) {
+        res.json({
+            ret_code: 1,
+            ret_msg: '账号或密码错误'
+        });
+    } else {
+        req.session.regenerate(function (err) {
+            if (err) {
+                return res.json({
+                    ret_code: 2,
+                    ret_msg: '登录失败'
+                });
+            }else{
+                req.session.loginUser = info.userid;
+                res.redirect('/catalog');
+            }
+        });
+    }
 }
 
+
+exports.getLogout = async (req, res, next) => {
+    req.session.loginUser = null;
+    res.redirect('/');
+}
