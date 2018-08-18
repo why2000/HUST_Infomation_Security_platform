@@ -14,7 +14,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="../public/javascripts/sidebar.js"></script>
+
     <link rel="stylesheet" href="../public/stylesheets/examsidebar.css">
+    <link rel="stylesheet" href="../public/stylesheets/frame.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
         crossorigin="anonymous">
@@ -23,63 +25,61 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #133AAC; z-index: 0 ">
-        <div style="width: 1200px ;overflow: visible; margin: auto;">
-            <img src="./images/logo.gif">
-            <a class="navbar-brand" href="./catalog.html" style="padding-left: 10px; margin-left: 10px; color: white; border-left: 1px solid #7c8b99; font-size:24px;">华中科技大学信息安全实验平台</a>
-
-            <div class="dropdown" style="float:right; margin-top:6px;">
-
-                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                    您目前作为 伍瀚缘 登入。
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#" style="font-size:20px;">查看/修改个人信息</a>
-                    <a class="dropdown-item" href="#" style="font-size:20px;">登出</a>
+        <div>
+            <nav id="headbar-1" class="navbar navbar-expand-lg navbar-light" style="background-color: #133AAC; z-index: 0; top:0; ">
+                <div style="width: 1200px ;overflow: visible; margin: auto;">
+                    <img src="../images/logo.gif">
+                    <a class="navbar-brand" href="./catalog.html" style="padding-left: 10px; margin-left: 10px; color: white; border-left: 1px solid #7c8b99; font-size:24px;">华中科技大学信息安全实验平台</a>
                 </div>
-            </div>
-        </div>
-        </div>
-
-    </nav>
-
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="catalog.html">Home</a>
-            </li>
-            <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                <ul class="navbar-nav">
-                    <li class="nav-item" style="margin-left: auto; margin-right: auto;">
-                        <a class="nav-link" href="#">数据加密原理</a>
+            </nav>
+        
+            <nav id="headbar-2" class="navbar navbar-expand-sm bg-dark navbar-dark" style="z-index: 20;position:relative;top:0;">
+                <ul class="navbar-nav" style="position: relative; margin: 0;width: 100%;">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="catalog.html">Home</a>
                     </li>
-                    <li class="nav-item" style="margin-left: auto; margin-right: auto;">
-                        <a class="nav-link" href="#">防火墙的原理</a>
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="navbar-nav">
+                            <li class="nav-item" style="margin-left: auto; margin-right: auto;">
+                                <a class="nav-link" href="#">数据加密原理</a>
+                            </li>
+                            <li class="nav-item" style="margin-left: auto; margin-right: auto;">
+                                <a class="nav-link" href="#">防火墙的原理</a>
+                            </li>
+                            <li class="nav-item" style="margin-left: auto; margin-right: auto;">
+                                <a class="nav-link" href="#">计算机病毒</a>
+                            </li>
+                        </ul>
+                    </div>
+        
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <li class="nav-item dropdown" style="padding: 5px 10px 0px 10px;">
+                        <a class="nav_link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            伍瀚缘
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">查看/修改个人信息</a>
+                            <a class="dropdown-item" href="#">登出</a>
+                        </div>
                     </li>
-                    <li class="nav-item" style="margin-left: auto; margin-right: auto;">
-                        <a class="nav-link" href="#">计算机病毒</a>
-                    </li>
+                    <form class="form-inline" action="/action_page.php" style="margin-right: 0px;">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                        <button class="btn btn-success" type="submit">搜索</button>
+                    </form>
+        
+        
                 </ul>
-            </div>
+            </nav>
+        </div>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <form class="form-inline" action="/action_page.php" style="margin-right: 0px;">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                <button class="btn btn-success" type="submit">搜索</button>
-            </form>
-
-        </ul>
-    </nav>
+   
 
 
-
-    <div class="container-fluid " style="position: relative; margin:auto ; height: auto;top: 0px;bottom: 0px; top: 50%; float:right;">
+    <div class="container-fluid " style="position: relative; margin:auto ; height: auto;top: 0px;bottom: 0px; float:right;">
         <div class="row">
-            <nav class="main-menu" style="z-index:10">
+            <nav id="sidebar-1" class="main-menu" style="z-index:10">
 
                 <div class="logo" style="display: block">
                     <img src="/public/images/logo.gif"></img>
@@ -168,7 +168,7 @@
                     <ul class="list-group">
                         <li class="d-md-flex" style="padding: 5px;">
                             <div class="card" style="position: relative; width: 600px;">
-                                <a href="tutorial-video-1.html">
+                                <a href="tutorial-page1.html">
                                     <div class="card-header">课程名称1</div>
                                 </a>
                                 <div class="card-body">课程简介</div>
@@ -187,15 +187,15 @@
                             </div>
                         </li>
                         <li class="d-md-flex" style="padding: 5px;">
-                                <div class="card" style="position: relative; width: 600px;">
-                                    <a href="#">
-                                        <div class="card-header">课程名称1</div>
-                                    </a>
-                                    <div class="card-body">课程简介</div>
-                                    <p></p>
-                                    <div class="card-footer">来源，信息</div>
-                                </div>
-                            </li>
+                            <div class="card" style="position: relative; width: 600px;">
+                                <a href="#">
+                                    <div class="card-header">课程名称1</div>
+                                </a>
+                                <div class="card-body">课程简介</div>
+                                <p></p>
+                                <div class="card-footer">来源，信息</div>
+                            </div>
+                        </li>
                     </ul>
 
 
@@ -204,9 +204,68 @@
 
         </div>
         <footer class="container">
-                <p class="float-right"><a href="#">Back to top</a></p>
-                <p>© 2017-2018 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
-              </footer>
+            <p class="float-right">
+                <a href="#">Back to top</a>
+            </p>
+            <p>© 2017-2018 Company, Inc. ·
+                <a href="#">Privacy</a> ·
+                <a href="#">Terms</a>
+            </p>
+        </footer>
+        <script type="text/javascript" >
+            var ha = new Array();
+            var fixHight = 0; //由于postion变动高度变成不计算
+            function menuFixed(preid,id){
+            var obj = document.getElementById(id); //当前div ID对象
+            var preobj = document.getElementById(preid); //前一个DIV ID对象
+            var _getTop = obj.offsetTop-fixHight; //当前div距离顶端距离
+            var _preTop = preobj.offsetTop;//前一个DIV距离顶端距离
+            var _preHeight = preobj.offsetHeight;//前一个DIV高度
+            fixHight = fixHight+obj.offsetHeight;
+            console.log('preid:'+preid+" _preHeight:"+_preHeight);
+            ha.push({id:id,_getTop:_getTop,_preTop:_preTop,_preHeight:_preHeight,preid:preid});
+            console.log("arry:"+JSON.stringify(ha));
+            }
+            window.onscroll = function(){
+                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                var i = getIndex(scrollTop);
+                console.log('index:'+i);
+                
+                changePos(ha[i].preid,ha[i]._preHeight,ha[i].id,ha[i]._getTop,scrollTop);
+            }
+            function getIndex(scrollTop){
+                var length = ha.length;
+                for(var i=0;i<length;i++){
+                    if(ha[i]._getTop >= scrollTop && scrollTop >= ha[i]._preTop)
+                        return i;
+                }
+                return length-1;
+            }
+            function changePos(preid,preheight,id,gettop,scrollTop){
+            var obj = document.getElementById(id);
+            var preobj = document.getElementById(preid);
+            console.log('scrollTop:'+scrollTop+' gettop:'+gettop);
+            if(scrollTop < gettop){
+                preobj.style.position = 'fixed';
+                obj.style.position = 'relative';
+                if(scrollTop-gettop <= 0 && scrollTop-gettop >= -preheight){
+                    preobj.style.top = gettop - preheight - scrollTop + 'px';
+                }else if(scrollTop-gettop <= 0){
+                    preobj.style.top = 0;
+                }else{
+                    preobj.style.top = -preheight+'px';
+                }
+            }else{
+                obj.style.position = 'fixed';
+                console.log('id:'+id);
+            }
+            }
+            </script>
+            <script type="text/javascript">
+            window.onload = function(){
+            menuFixed('headbar1','headbar2');
+            }
+            </script>
     </div>
 
 </body>

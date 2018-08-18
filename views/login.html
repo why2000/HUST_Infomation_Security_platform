@@ -1,32 +1,41 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="zh-cmn-Hans">
 
 <head>
-    <meta charset="UTF-8" />
+    <title>华中科技大学信息安全实验平台 - 用户登录</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content=="IE=edge" />
     <meta name="google" value="notranslate" />
-    <title>华中科技大学信息安全实验平台 - 用户登录</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="stylesheets/tooplate-style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
+        crossorigin="anonymous">
+    <link href="../public/stylesheets/login.css" rel="stylesheet" />
 </head>
 
-<body>
-    <form action='login' method='POST' class="login-form">
-        <ul>
-            <li>
-                <input type="text" id="userid" name="userid" placeholder="请输入学号">
-            </li>
+<body style="background: url(../public/images/back2.jpg);background-repeat: no-repeat; background-size:cover; ">
+    <div class="form">
 
-            <li>
-                <input type="password" id="password" name="password" placeholder="密码">
-            </li>
-            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-        </ul>
-    </form>
+        <div id="logo">
+            <img src="../public/images/logo.gif" style="display: block; margin: 0 auto;width: 60px; height: 48px;">
+            <span>信息安全实验平台</span>
+        </div>
+        <div id="land_area">
+            <form action='login' method='POST' class="login-form">
+                <div class="input_area">
+                    <input class="login_box_input" id="userid" name="userid" size="25" tabindex="1" autocomplete="off" htmlescape="true" placeholder="学号 (ID)"
+                        style="line-height: 30px; margin: 5px">
+                    <input type="password" class="login_box_input" id="password" name="password" size="25" tabindex="2" placeholder="密码 (Password)" style="line-height: 30px;margin: 5px">
+                </div>
+                <button id="login" type="submit" class="btn btn-primary btn-lg">登陆</button>
+            </form>
+        </div>
+    </div>
     <script>
-        $('#login').click(function(evt){
+        $('#login').click(function (evt) {
             evt.preventDefault();
             $.ajax({
                 url: 'login',
@@ -35,20 +44,25 @@
                     name: $('#userid').val(),
                     password: $('#password').val()
                 },
-                success: function(data){
-                    if(data.ret_code === 0){
+                success: function (data) {
+                    if (data.ret_code === 0) {
                         location.reload();
-                    }else{
+                    } else {
                         alert(data.ret_msg);
                     }
                 }
             });
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-  </body>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+        crossorigin="anonymous"></script>
 </body>
+
 
 </html>

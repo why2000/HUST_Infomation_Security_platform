@@ -1,5 +1,10 @@
 'use strict'
 
 exports.getIndexPage = async (req, res, next) => {
-    res.render('index');
+    if(!req.session.loginUser){
+        res.render('index');
+    }
+    else{
+        res.redirect('/catalog');        
+    }
 }
