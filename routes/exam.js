@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
 });
 
 // Logout
-router.get('/*logout', UserController.getLogout)
+router.get('/*logout', UserController.getLogout);
 
 /* GET exam page. */
 router.get('/index', ExamController.getIndexPage);
