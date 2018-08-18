@@ -17,11 +17,9 @@ var catalogRouter = require('./routes/catalog');
 var contactRouter = require('./routes/contact');
 var examRouter = require('./routes/exam');
 var loginRouter = require('./routes/login');
+var simulatorRouter = require('./routes/simulator')
 
 var app = express();
-
-
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -53,6 +51,7 @@ app.use('/login', loginRouter);
 app.use('/catalog', catalogRouter);
 app.use('/contact', contactRouter);
 app.use('/exam', examRouter);
+app.use('/simulator', simulatorRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
