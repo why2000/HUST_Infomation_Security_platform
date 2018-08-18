@@ -1,14 +1,19 @@
 .container{
-    width: 1200px;
+    position: relative;
+    width: 900px;
+    /* margin-left: 200px; */
     margin: 0 auto 0;
     padding: 10px 0 0 0;
     clear: both;
     overflow:visible;
     float: left;
+    
 }
 .main_content{
-    width: 1200px;
+    position: relative;
+    width: 900px;
     margin: 0 auto 0;
+    /* margin-left: 200px; */
     padding: 10px 0 0 0;
     clear: both;
     overflow:visible;
@@ -61,7 +66,8 @@
 }
 
 .info {
-    float: right;
+    position: relative;
+    float: left;
     width: 900px;
     margin-top: 60px;
     min-height: 448px;  
@@ -79,7 +85,7 @@
     margin: 0 auto;
     overflow: hidden;
     padding-bottom: 30px;
-    width: 958px;
+    width: 900px;
 }
 
 .audit_notice_content .notice_title_01 {
@@ -113,7 +119,7 @@
     font-size: 14px;
     margin: 15px 40px 0;
     padding-bottom: 20px;
-    width: 878px;
+    width: 848px;
     float: left;
     word-break: break-all;
     word-wrap: break-word;

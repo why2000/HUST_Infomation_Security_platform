@@ -88,10 +88,16 @@
         "correct_answer": "A"
     },
     {
-        "type": "class-content",
+        "type": "class-info",
         "classindex": "1",
-        "question": "fill",
         "questionid": "1",
+        "content": [
+            {
+                "type": "mc",
+                "text": "",
+                "contend": 0
+            }
+        ],
         "text": "题目内容",
         "correct_answer": [
             {
