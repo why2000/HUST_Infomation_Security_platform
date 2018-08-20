@@ -31,5 +31,13 @@ html, body
     min-height: 100%;
     text-align: center;
 }
-
+.fix-div{ 
+    margin: 0 auto;
+    position: fixed;
+    width: 80%; 
+    top: 0;      
+    left: 0; 
+    right: 0;
+    z-index: 99999;
+}
 
