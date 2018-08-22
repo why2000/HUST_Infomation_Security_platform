@@ -7,7 +7,7 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content=="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="google" value="notranslate" />
     <title>华中科技大学信息安全实验平台 - 在线答题</title>
     <link href="/public/stylesheets/examindex.css" rel="stylesheet" type="text/css" />
@@ -37,7 +37,7 @@
     </div>
     <nav class="main-menu">
         <div class="logo" style="display: block">
-            <img src="/public/images/logo.gif"></img>
+            <img src="/public/images/logo.gif" />
         </div>
         <div class="settings" , style="text-align: center; font-size: 18px;">
         </div>
@@ -47,6 +47,13 @@
                 <a href="/catalog">
                     <i class="fa fa-home fa-lg"></i>
                     <span class="nav-text">首页</span>
+
+                </a>
+            </li>
+            <li>
+                <a id='exam-to-class'>
+                    <i class="fa fa-book fa-lg"></i>
+                    <span class="nav-text">转到课程</span>
 
                 </a>
             </li>
@@ -100,35 +107,6 @@
 
 
 
-    <div layoutid="onecolumn" class="main_content" id="index-main" style="margin-left: 15% !important;">
-        <div class="foo">
-            <div id="pimShowWidget" widget_id="pimShowWidget" class="widget" style="visibility: visible;">
-                <div id="pimShowWidget-content" class="widget-content">
-                    <div class="info" id="index-info" style="margin-left: 15% !important;">
-                        <div class="depart_content_02">
-                            <div class="audit_notice_content">
-                                <span class="notice_title_01 audit_notice_span" style="padding-bottom: 16px;"></span>
-                                <div class="notice_mess_bar">
-                                    <span class="info-author"></span>
-                                    <span class="">&nbsp;|&nbsp;</span>
-                                    <span class="info-category"></span>
-                                    <span class="">&nbsp;|&nbsp;</span>
-                                    <span class="info-time"></span>
-                                    <span class="">&nbsp;|&nbsp;</span>
-                                    <span class="info-hot"></span>
-                                </div>
-                                <div class="notice_content_01" id="pim_content">
-                                    <p style="text-indent: 2em;" dir="ltr">
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
 
 
@@ -142,7 +120,39 @@
 
 
     <div class="main" style="clear: both">
-        <div class="test_main">
+        <div class="index-main">
+            <div layoutid="onecolumn" class="main_content" style="margin-left: 15% !important;">
+                <div class="foo">
+                    <div id="pimShowWidget" widget_id="pimShowWidget" class="widget" style="visibility: visible;">
+                        <div id="pimShowWidget-content" class="widget-content">
+                            <div class="info" id="index-info" style="margin-left: 15% !important;">
+                                <div class="depart_content_02">
+                                    <div class="audit_notice_content">
+                                        <span class="notice_title_01 audit_notice_span" style="padding-bottom: 16px;"></span>
+                                        <div class="notice_mess_bar">
+                                            <span class="info-author"></span>
+                                            <span class="">&nbsp;|&nbsp;</span>
+                                            <span class="info-category"></span>
+                                            <span class="">&nbsp;|&nbsp;</span>
+                                            <span class="info-time"></span>
+                                            <!-- <span class="">&nbsp;|&nbsp;</span> -->
+                                            <!-- <span class="info-hot"></span> -->
+                                        </div>
+                                        <div class="notice_content_01" id="pim_content">
+                                            <form>
+                                            <p style="text-indent: 2em;" dir="ltr">
+                                            </p>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="test-main">
             <div layoutid="onecolumn" class="main_content">
                 <div class="foo">
                     <div id="pimShowWidget" widget_id="pimShowWidget" class="widget" style="visibility: visible;">
@@ -161,84 +171,90 @@
                                             <span class="info-hot"></span>
                                         </div>
                                         <div class="notice_content_01" id="pim_content">
-                                            <p style="text-indent: 2em;" dir="ltr">
-                                            </p>
-                                            
-                                                        <!-- <li id="task-3" class="sc">123</li>
-                                            <li id="task-3" class="sc">123</li> -->
-                                                </div>
+                                            <form method="POST" id="exam-form">
+                                                <p style="text-indent: 2em;" dir="ltr">
+                                                </p>
+                                            </form>
                                         </div>
+
+                                        <!-- <li id="task-3" class="sc">123</li>
+                                            <li id="task-3" class="sc">123</li> -->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="nr_right">
-                    <div class="nr_rt_main">
-                        <div class="rt_nr1">
-                            <div class="rt_nr1_title">
-                                <a href="###" id="all-start" class="waiting">
-                                    <i class="icon iconfont">&#xe692;</i>
-                                    <span>开始答题</span>
-                                </a>
-                                <p class="test_time">
-                                    <i class="icon iconfont">&#xe6fb;</i>
-                                    <b class="alt-1"></b>
+                <div class="test_footer">
+                    <p class="test_time">
+                        <i class="icon iconfont">&#xe6fb;</i>
+                        <b class="alt-1"></b>
+                    </p>
+                    <button type="submit" id="exam-submit" name="exam-submit" value="交卷" form="exam-form">提交</button>
+                </div>
+            </div>
+            <div class="nr_right">
+                <div class="nr_rt_main">
+                    <div class="rt_nr1">
+                        <div class="rt_nr1_title">
+                            <button type="button" id="exam-start" class="waiting">
+                                <i class="icon iconfont">&#xe692;</i>
+                                <span></span>
+                            </button>
+                            <p class="test_time">
+                                <i class="icon iconfont">&#xe6fb;</i>
+                                <b class="alt-1"></b>
+                            </p>
+                        </div>
+
+                        <div class="rt_content" id="rt_content_sc">
+                            <div class="rt_content_tt">
+                                <h2>单选题</h2>
+                                <p>
+                                    <span>共</span>
+                                    <i class="content_lit"></i>
+                                    <span>题</span>
                                 </p>
                             </div>
-
-                            <div class="rt_content" id="rt_content_sc">
-                                <div class="rt_content_tt">
-                                    <h2>单选题</h2>
-                                    <p>
-                                        <span>共</span>
-                                        <i class="content_lit"></i>
-                                        <span>题</span>
-                                    </p>
-                                </div>
-                                <div class="rt_content_nr answerSheet">
-                                    <ul>
-                                    </ul>
-                                </div>
+                            <div class="rt_content_nr answerSheet">
+                                <ul>
+                                </ul>
                             </div>
+                        </div>
 
-                            <div class="rt_content" id="rt_content_mc">
-                                <div class="rt_content_tt">
-                                    <h2>多选题</h2>
-                                    <p>
-                                        <span>共</span>
-                                        <i class="content_lit"></i>
-                                        <span>题</span>
-                                    </p>
-                                </div>
-                                <div class="rt_content_nr answerSheet">
-                                    <ul>
-                                    </ul>
-                                </div>
+                        <div class="rt_content" id="rt_content_mc">
+                            <div class="rt_content_tt">
+                                <h2>多选题</h2>
+                                <p>
+                                    <span>共</span>
+                                    <i class="content_lit"></i>
+                                    <span>题</span>
+                                </p>
                             </div>
-                            <div class="rt_content" id="rt_content_fb">
-                                <div class="rt_content_tt">
-                                    <h2>填空题</h2>
-                                    <p>
-                                        <span>共</span>
-                                        <i class="content_lit"></i>
-                                        <span>题</span>
-                                    </p>
-                                </div>
-                                <div class="rt_content_nr answerSheet">
-                                    <ul>
-                                    </ul>
-                                </div>
+                            <div class="rt_content_nr answerSheet">
+                                <ul>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rt_content" id="rt_content_fb">
+                            <div class="rt_content_tt">
+                                <h2>填空题</h2>
+                                <p>
+                                    <span>共</span>
+                                    <i class="content_lit"></i>
+                                    <span>题</span>
+                                </p>
+                            </div>
+                            <div class="rt_content_nr answerSheet">
+                                <ul>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!--nr end-->
-            <div class="foot"></div>
         </div>
-
+    </div>
 
 </body>
 

@@ -14,7 +14,6 @@ exports.getIndexPage = async (req, res, next) => {
     var session = req.session;
     var userid = "U201714635";
     var usertype = "student";
-    var taskindex = req.params.taskindex;
     var info = {
         userid: userid,
         username: "",
@@ -34,11 +33,40 @@ exports.getIndexPage = async (req, res, next) => {
     }
 }
 
-exports.getIndexInfo = async (req, res, next) => {
+exports.getTimeLimit = async (req, res, next) => {
+    var taskindex = req.params.taskindex;
+    if(taskindex == "index"){
+        res.json({
+            result:{
+                timelimit: null
+            }
+        });
+    }
+    var params = {
+        taskindex: taskindex
+    }
     try{
-        var info = await ExamValidator.getIndexInfo();
+        var info = await ExamValidator.getTimeLimit(params);
     }catch(err){
-        ExamLogger.error(`get index info error => ${err.stack}`);
+        ExamLogger.error(`get time limit error => ${err.stack}`);
+        next(err);
+    }
+    res.json({
+        result: {
+            timelimit: timelimit
+        }
+    });
+}
+
+exports.getInfo = async (req, res, next) => {
+    var taskindex = req.params.taskindex;
+    var params = {
+        taskindex: taskindex
+    }
+    try{
+        var info = await ExamValidator.getInfo(params);
+    }catch(err){
+        ExamLogger.error(`get info error => ${err.stack}`);
         next(err);
     }
     res.json({
@@ -203,7 +231,7 @@ exports.getTaskInfo = async (req, res, next) => {
     try{
         var taskinfo = await ExamValidator.getTaskInfo(params);
     }catch(err){
-        ExamLogger.error(`get task error => ${err.stack}`);
+        ExamLogger.error(`get taskinfo error => ${err.stack}`);
         next(err);
     }
     res.json({

@@ -1,6 +1,6 @@
 'use strict';
 
-var UserLogger = require('../logger').UserLogger;
+var CatalogLogger = require('../logger').CatalogLogger;
 var UserValidator = require('../validators/user_validator');
 
 exports.getCatalogPage = async (req, res, next) => {

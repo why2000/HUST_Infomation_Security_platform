@@ -28,7 +28,11 @@ exports.postLoginInfo = async (req, res, next) => {
                 });
             }else{
                 req.session.loginUser = info.userid;
-                res.redirect('/catalog');
+                res.json({
+                    ret_code: 0,
+                    ret_msg: '登录成功'
+                });
+                // res.redirect('/catalog');
             }
         });
     }

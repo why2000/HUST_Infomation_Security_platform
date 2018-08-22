@@ -113,6 +113,88 @@ exports.deleteFavor = async params => {
 // TaskList
 exports.getTaskList = async params => {
     var exam = db.collection('exam');
+    async function foo(pass){
+        var test = {
+        type: "index-info",
+        content: [
+            {
+                type: "text",
+                text: "因主校区东边泵房升级改造施工，定于8月3日23:30——8月4日2:00停水，主校区大部分区域停水（喻园小区、西边高层小区、紫菘学生公寓与紫菘教师小区不受影响），请各单位和各住户做好储水备用，早完工，早送水，不便之处敬请谅解。",
+                indents: 0,
+            },
+            {
+                type: "text",
+                text: "",
+                indents: 0,
+            },
+            {
+                type: "sc",
+                text: "测试单选",
+                indents: 0,
+                options: [
+                    {
+                        src: "",
+                        text: "第一个答案测试",
+                        choice: "A"
+                    },
+                    {
+                        src: "",
+                        text: "第二个答案测试",
+                        choice: "B"
+                    }
+                ]
+            },
+            {
+                type: "text",
+                text: "后勤集团建安总公司",
+                indents: 15,
+            },
+            {
+                type: "text",
+                text: "2018年8月3日",
+                indents: 15,
+            },
+            {
+                type: "mc",
+                text: "测试多选题如果很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长",
+                indents: 0,
+                options:[
+                    {
+                        text: "第一个多选项",
+                        choice: "A"
+                    },
+                    {
+                        text: "第二个",
+                        choice: "B"
+                    }
+                ]
+            },
+            {
+                type: "img",
+                src: "",
+            },
+            {
+                type: "fb",
+                text: "这是一道_____题",
+                indents: 0,
+                options: [
+                    {
+                        src: "",
+                        text: "",
+                        choice: "1"
+                    }
+                ]
+            }
+        ],
+        title: '主校区短时停水通知',
+        author: 'why',
+        category: '通知',
+        time: '2018-08-03 15:52',
+        hot: '111'
+    }
+        await exam.insertOne(test);
+    }
+    // await foo();
     var whyere = {
         "type": "task-name"
     };
@@ -178,10 +260,18 @@ exports.getFavorList = async params => {
 }
 
 // IndexInfo
-exports.getIndexInfo = async params => {
+exports.getInfo = async params => {
     var exam = db.collection('exam');
-    var whyere = {
-        "type": "index-info"
+    if(params.taskindex == "index"){
+        var whyere = {
+            "type": "index-info"
+        }
+    }
+    else{
+        var whyere = {
+            "type": "exam-info",
+            "taskindex": params.taskindex
+        }
     }
     try{
         var result = await exam.findOne(whyere, {"_id": 0});
@@ -190,4 +280,8 @@ exports.getIndexInfo = async params => {
         throw err;
     }
     return result;
+}
+
+exports.getTimeLimit = async params => {
+
 }

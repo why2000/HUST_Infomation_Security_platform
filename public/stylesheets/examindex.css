@@ -126,7 +126,11 @@
     font-family: "microsoft yahei" !important;
 }
 
-.notice_content_01 p span {
+.notice_content_01 form p{
+    text-align: left;
+}
+
+.notice_content_01 form p span {
     color: #000;
     font-family: "microsoft yahei" !important;
 }

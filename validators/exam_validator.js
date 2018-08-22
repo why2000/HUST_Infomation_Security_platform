@@ -42,9 +42,25 @@ exports.deleteFavor = async params => {
     }
 }
 
-// IndexInfo
-exports.getIndexInfo = async params => {
-    return await ExamDB.getIndexInfo(params);
+// Info
+exports.getInfo = async params => {
+    if(params.taskindex != 'index' && !await Validator._validatetaskindex(params.taskindex)){
+        var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
+        ExamLogger.error(`controller error => ${err.stack}`);
+        return false
+    }else {
+        return await ExamDB.getInfo(params);
+    }
+}
+
+exports.getTimeLimit = async params => {
+    if(params.taskindex != 'index' && !await Validator._validatetaskindex(params.taskindex)){
+        var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
+        ExamLogger.error(`controller error => ${err.stack}`);
+        return false
+    }else {
+        return await ExamDB.getTimeLimit(params);
+    }
 }
 
 

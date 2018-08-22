@@ -42,11 +42,13 @@ exports.findUserByName = async function(username){
 
 exports.findUserById = async function(userid){
     var user = db.collection('user');
-    var doc = user.findOne({type: 'user-info', userid: userid});
-    if(!doc){
-        return false;
-    }else{
-        return doc;
+    console.log(userid);
+    try{
+        var result = await user.findOne({type: 'user-info', userid: userid});
+    }catch(err){
+        UserLogger.error(`database error => ${err.stack}`);
+        throw err
     }
+    return result;
 }
 

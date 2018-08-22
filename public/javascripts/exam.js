@@ -1,11 +1,13 @@
 'use strict';
 
+let classindex;
 let favor;
 let username;
 let tasklist;
 let favorlist;
+// let timelimit = '0:00:05';
 let timelimit;
-let indexinfo;
+let info;
 let taskinfo;
 let current_url_valid = window.location.protocol + window.location.pathname;
 
@@ -73,6 +75,8 @@ function Logout(callback){
 /* SideBar */
 
 $(function sideBarInit() {
+    classindex = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')+1 ,window.location.pathname.length);
+    $('#exam-to-class').attr('href', `/class/${classindex}`)
     $(".has-submenu").hover(function () {
         var height;
         var current_list = $(this).find('.submenu').attr("id");
@@ -99,11 +103,10 @@ $(function sideBarInit() {
         }, 300);
         // $(".settings").css("visibility", "hidden");
     });
-    getUserName(setUserName);
-    setUserName();
+    getUserName();
     getFavor();
-    getTaskList(setTaskList);
-    getFavorList(setFavorList);
+    getTaskList();
+    getFavorList();
     onFavorClicked();
 });
 
@@ -116,6 +119,7 @@ function getUserName(callback) {
                 username = JSON.parse(xmlhttp.responseText).result.username;
                 // alert(tasklist);
                 // setTaskList(tasklist);
+                setUserName();
                 if (callback) {
                     callback();
 
@@ -141,10 +145,8 @@ function onFavorClicked() {
         if (!isIndex())
             if (!favor) {
                 postFavor();
-                getFavorList(setFavorList);
             } else {
                 deleteFavor();
-                getFavorList(setFavorList);
             }
     });
 }
@@ -159,6 +161,7 @@ function getTaskList(callback) {
                 tasklist = JSON.parse(xmlhttp.responseText).result.tasklist;
                 // alert(tasklist);
                 // setTaskList(tasklist);
+                setTaskList();
                 if (callback) {
                     callback();
 
@@ -199,6 +202,7 @@ function getFavorList(callback) {
                 favorlist = JSON.parse(xmlhttp.responseText).result.favorlist;
                 // alert(favorlist);
                 // setTaskList(tasklist);
+                setFavorList()
                 if (callback) {
                     callback();
 
@@ -267,6 +271,7 @@ function postFavor(callback) {
                 $("#favor-icon").removeClass("fa-star-o");
                 $("#favor-icon").addClass("fa-star");
                 favor = true;
+                getFavorList();
                 if (callback) {
                     callback();
                 }
@@ -291,6 +296,7 @@ function deleteFavor(callback) {
                 $("#favor-icon").removeClass("fa-star");
                 $("#favor-icon").addClass("fa-star-o");
                 favor = false;
+                getFavorList();
                 if (callback) {
                     callback();
                 }
@@ -305,12 +311,12 @@ function deleteFavor(callback) {
 /* MainPart */
 
 $(function mainPartInit() {
-    getIndex(setInfo);
-    $('form').attr('action', creatURL([current_url_valid, "submit"]));
+    getInfo();
+    $('#exam-form').attr('action', creatURL([current_url_valid, "submit"]));
     $('.test').prepend(`<p id="start-helper" >点击右侧按钮开始答题</span>`);
     setTimeLimit();
-    setAnswerSheet();
-    onAnswerClicked();
+    // setAnswerSheet();
+    // onAnswerClicked();
     
 });
 
@@ -323,38 +329,39 @@ function isIndex() {
     }
 }
 
-function getIndex(callback) {
+function getInfo(callback) {
     if (isIndex()) {
-        $('.test_main').remove();
-        var xmlhttp = setXmlHttp();
-        RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'indexinfo']), null, true, function () {
-            if (xmlhttp.readyState == 4) {
-                if (xmlhttp.status == 200) {
-                    // alert(xmlhttp.responseText);
-                    indexinfo = JSON.parse(xmlhttp.responseText).result.info;
-                    // alert(tasklist);
-                    // setTaskList(tasklist);
-                    if (callback) {
-                        callback();
-                    }
-                } else {
-                    console.log("发生错误" + xmlhttp.status);
-                }
-            }
-        });
+        $('.test-main').remove();
     }else {
-        getTaskInfo(callback);
+        $('.index-main').remove();
     }
+    var xmlhttp = setXmlHttp();
+    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'info']), null, true, function () {
+        if (xmlhttp.readyState == 4) {
+            if (xmlhttp.status == 200) {
+                // alert(xmlhttp.responseText);
+                info = JSON.parse(xmlhttp.responseText).result.info;
+                // alert(tasklist);
+                // setTaskList(tasklist);
+                setInfo();
+                if (callback) {
+                    callback();
+                }
+            } else {
+                console.log("发生错误" + xmlhttp.status);
+            }
+        }
+    });
 }
 
 // TaskInfo
 function getTaskInfo(callback) {
-    $('#index-main').remove();
     var xmlhttp = setXmlHttp();
     RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'taskinfo']), null, true, function () {
         if (xmlhttp.readyState == 4) {
             if (xmlhttp.status == 200) {
                 taskinfo = JSON.parse(xmlhttp.responseText).result.info;
+                setInfo();
                 if (callback) {
                     callback();
                 }
@@ -368,8 +375,10 @@ function getTaskInfo(callback) {
 function setInfo() {
 
     // Testing
-
-    indexinfo = {
+    function foo (pass){
+    /* info = {
+        type: "exam-info",
+        taskindex: "1",
         content: [
             {
                 type: "text",
@@ -384,13 +393,15 @@ function setInfo() {
             {
                 type: "sc",
                 text: "测试单选",
-                indents: 10,
+                indents: 0,
                 options: [
                     {
+                        src: "",
                         text: "第一个答案测试",
                         choice: "A"
                     },
                     {
+                        src: "",
                         text: "第二个答案测试",
                         choice: "B"
                     }
@@ -406,24 +417,56 @@ function setInfo() {
                 text: "2018年8月3日",
                 indents: 15,
             },
+            {
+                type: "mc",
+                text: "测试多选题如果很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长",
+                indents: 0,
+                options:[
+                    {
+                        text: "第一个多选项",
+                        choice: "A"
+                    },
+                    {
+                        text: "第二个",
+                        choice: "B"
+                    }
+                ]
+            },
+            {
+                type: "img",
+                src: "",
+            },
+            {
+                type: "fb",
+                text: "这是一道_____题",
+                indents: 0,
+                options: [
+                    {
+                        src: "",
+                        text: "",
+                        choice: "1"
+                    }
+                ]
+            }
         ],
         title: '主校区短时停水通知',
         author: 'why',
         category: '通知',
         time: '2018-08-03 15:52',
         hot: '111'
+    } */
     }
-    var title = indexinfo.title;
-    var content = indexinfo.content;
-    var author = '发布者：' + indexinfo.author;
-    var time = indexinfo.time;
-    var category = '通知分类：' + indexinfo.category;
-    var hot = '访问量：' + indexinfo.hot;
+    var title = info.title;
+    var content = info.content;
+    var author = '发布者：' + info.author;
+    var time = info.time;
+    var category = '分类：' + info.category;
+    // var hot = '访问量：' + info.hot;
     $('.main_content .notice_title_01').empty().text(title);
     $('.main_content .notice_mess_bar .info-author').empty().text(author);
     $('.main_content .notice_mess_bar .info-category').empty().text( category);
     $('.main_content .notice_mess_bar .info-time').empty().text(time);
-    $('.main_content .notice_mess_bar .info-hot').empty().text(hot);
+    // $('.main_content .notice_mess_bar .info-hot').empty().text(hot);
     var length;
     if(content.length){
         length = content.length;   
@@ -437,20 +480,24 @@ function setInfo() {
             for(var j = 0; j<content[i].indents; j++){
                 indents = indents + "&#12288;&#12288;";
             }
-            $('.main_content .notice_content_01>p').append(`<span style="font-size: 18px !important;">${indents}${content[i].text}</span><br>`);
+            $('.main_content .notice_content_01>form>p').append(`<span style="font-size: 18px !important;">${indents}${content[i].text}</span><br>`);
+        }else if(content[i].type == "img"){
+
         }else{
             quenumber += 1;
             content[i].quenumber = quenumber;
             if(content[i].type == "sc"){
-                $('.main_content .notice_content_01>p').append(`<li id="task-${quenumber}" class="${content[i].type}"></li>`);
+                $('.main_content .notice_content_01>form>p').append(`<li id="task-${quenumber}" class="${content[i].type}"></li>`);
             }else if(content[i].type == "mc"){
-                $('.main_content .notice_content_01>p').append(`<li id="task-${quenumber}" class="${content[i].type}"></li>`);
+                $('.main_content .notice_content_01>form>p').append(`<li id="task-${quenumber}" class="${content[i].type}"></li>`);
             }else if(content[i].type == "fb"){
-                $('.main_content .notice_content_01>p').append(`<li id="task-${quenumber}" class="${content[i].type}"></li>`);
+                $('.main_content .notice_content_01>form>p').append(`<li id="task-${quenumber}" class="${content[i].type}"></li>`);
             }
             setQuestion(content[i]);
         }
     }
+    setAnswerSheet();
+    onAnswerClicked();
     // $('.main_content .notice_content_01 p').append(content);
 }
 
@@ -460,9 +507,9 @@ function setQuestion(params){
     var quenumber = params.quenumber;
     var type = params.type;
     var options = params.options;
-    var current = $(`.main_content .notice_content_01>p li#task-${quenumber}`);
+    var current = $(`.main_content .notice_content_01>form>p li#task-${quenumber}`);
     var needed = `<div class="test_content_nr_tt">
-    <a>${text}</a>
+    <a>${quenumber}. ${text}</a>
     </div>
     <div class="test_content_nr_main">
     `
@@ -479,17 +526,18 @@ function setQuestion(params){
             needed = needed + `<li class="option"> 
             <input type="radio" class="radioOrCheck" name="task-${quenumber}" id="task-${quenumber}-option-${option.choice}" value="${option.choice}" />
             <label for="task-${quenumber}-option-${option.choice}">${option.choice}.
-            <p class="ue" style="display: inline;">${option.text}</p></label><li>`
+            <p class="ue" style="display: inline;">${option.text}</p></label></li>`
         }else if(type == "mc"){
             needed = needed + `<li class="option"> 
             <input type="checkbox" class="radioOrCheck" name="task-${quenumber}" id="task-${quenumber}-option-${option.choice}" value="${option.choice}" />
             <label for="task-${quenumber}-option-${option.choice}">${option.choice}.
-            <p class="ue" style="display: inline;">${option.text}</p></label><li>`
+            <p class="ue" style="display: inline;">${option.text}</p></label></li>`
         }else if(type == "fb"){
             needed = needed + `<li class="fb_text"> 
-            <input type="text" class="fb_text_input" name="task-${quenumber}" id="task-${quenumber}-option-${option.choice}" value="${option.choice}" />
             <label for="task-${quenumber}-option-${option.choice}">${option.choice}.
-            <p class="ue" style="display: inline;">${option.text}</p></label><li>`
+            <p class="ue" style="display: inline;">${option.text}</p></label>
+            <input type="text" class="fb_text_input" name="task-${quenumber}" id="task-${quenumber}-option-${option.choice}" style="border: 0;border-bottom:1px solid #666666; outline: none;" />
+            </li>`
         }
     }
     needed = needed + `</div>`
@@ -511,20 +559,28 @@ function findCheckedAnswer(examId) {
 }
 
 function onAnswerClicked() {
-    $('li.option label').click(function () {
+    $('li.option label,input').on('change', function () {
+        // alert("!")
         // debugger;
         var currentExam = $(this).closest('.test_content_nr_main').closest('li');
         var examId = currentExam.attr('id'); // 得到题目ID
-        var cardLi = $('a[href=#' + examId + ']'); // 根据题目ID找到对应答题卡
+        // alert(examId);
+        var cardLi = $(`a[href=#${examId}]`); // 根据题目ID找到对应答题卡
         // 设置已答题
         if (!cardLi.hasClass('hasBeenAnswer')) {
             cardLi.addClass('hasBeenAnswer');
         } else {
             var answered = findCheckedAnswer(examId)
+            // alert("!")
             // alert(answered);
             // alert($.inArray($(this).prev('.radioOrCheck').attr('value'), answered));
             // alert($(this).prev('.radioOrCheck').attr('class'));
-            if (answered.length == 1 && $.inArray($(this).prev('.radioOrCheck').attr('value'), answered) != -1 && currentExam.find('.radioOrCheck').attr('type') == 'checkbox') {
+            // alert(answered.length)
+            // alert($.inArray($(this).prev('.radioOrCheck').attr('value'), answered))
+            // alert(currentExam.find('.radioOrCheck').attr('type') == 'checkbox')
+            if (answered.length == 0 && currentExam.find('.radioOrCheck').attr('type') == 'checkbox') {
+                cardLi.removeClass('hasBeenAnswer');
+            }else if($(this).attr('type') == 'text' && !$(this).val()){
                 cardLi.removeClass('hasBeenAnswer');
             }
         }
@@ -556,21 +612,42 @@ function formatTime(timeArray) {
     return result;
 }
 
-function setTimeLimit(callback) {
-    if (!timelimit) {
-        timelimit = formatTime([0, 0, 30]);
-    }
-    $('.alt-1').text(timelimit);
-    $('#all-start').click(function () {
-        if ($(this).hasClass('waiting')) {
-            $(this).removeClass('waiting');
-            $('#start-helper').remove();
-            startTimeCountDown(callback);
-            $('.alt-1').on('time.elapsed', function () {
-                $('#all-submit').trigger('click')
-            });
+function getTimeLimit(){
+    var xmlhttp = setXmlHttp();
+    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'timelimit']), null, true, function () {
+        if (xmlhttp.readyState == 4) {
+            if (xmlhttp.status == 200) {
+                timelimit = JSON.parse(xmlhttp.responseText).result.timelimit;
+                setTimeLimit();
+                if (callback) {
+                    callback();
+                }
+            } else {
+                console.log("发生错误" + xmlhttp.status);
+            }
         }
     });
+}
+
+function setTimeLimit(callback) {
+    if (!timelimit) {
+        $('#exam-start span').text('提交');
+        $('#exam-start').attr('type', 'submit').attr('form', 'exam-form');
+        $('.alt-1').closest('p').find('i').css('display', 'none');
+    }else{
+        $('#exam-start span').text('开始答题');
+        $('.alt-1').text(timelimit);
+        $('#exam-start').click(function () {
+            if ($(this).hasClass('waiting')) {
+                $(this).removeClass('waiting');
+                $('#start-helper').remove();
+                startTimeCountDown(callback);
+                $('.alt-1').on('time.elapsed', function () {
+                    $('#exam-submit').trigger('click')
+                });
+            }
+        });
+    }
 }
 
 function startTimeCountDown(callback) {
@@ -591,9 +668,9 @@ function startTimeCountDown(callback) {
 }
 
 function setAnswerSheet(callback) {
-    var sc = $('li[class*="sc"]');
-    var mc = $('li[class*="mc"]');
-    var fb = $('li[class*="fb"]');
+    var sc = $('li[class="sc"]');
+    var mc = $('li[class="mc"]');
+    var fb = $('li[class="fb"]');
     var answersheet = $('.rt_nr1');
     var all = new Array('sc', 'mc', 'fb');
     $.each(all, function (index, value) {
@@ -607,7 +684,7 @@ function setAnswerSheet(callback) {
                 var reg = /[0-9]*$/;
                 var hrefindex = reg.exec($(this).attr('id'));
                 //这里的空格不能删
-                objsheet.append(` <li><a href="#${value}${hrefindex}">${hrefindex}</a></li>`);
+                objsheet.append(` <li><a href="#task-${hrefindex}">${hrefindex}</a></li>`);
             });
         } else {
             length = 0;
