@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -71,3 +72,9 @@ typings/
 
 # Serverless directories
 .serverless
+=======
+/node_modules/*
+.eslintrc.json
+tmp/
+files/
+>>>>>>> d88af4f68166806e3ad52c035e3acc656f020397

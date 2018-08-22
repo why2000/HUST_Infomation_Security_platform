@@ -1,0 +1,4 @@
+{
+    "MULTER_TMP_FILE_PATH" : "tmp/",
+    "PATH": "files/"
+}
