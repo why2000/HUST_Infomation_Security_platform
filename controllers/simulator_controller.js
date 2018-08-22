@@ -6,16 +6,16 @@ var port = 8000;
 
 function checkAlive(ip_add) {
   if (ipMap.has(ip_add)) {
-    if (ipAlive.get(clientIp) == true) {
-      ipAlive.set(clientIp, false);
+    if (ipAlive.get(ip_add) == true) {
+      ipAlive.set(ip_add, false);
       setTimeout(checkAlive, 30000, ip_add);
     } else {
-      if (ipMap.has(clientIp)) {
-        simulatorProcess = pidMap.get(clientIp);
+      if (ipMap.has(ip_add)) {
+        simulatorProcess = pidMap.get(ip_add);
         simulatorProcess.kill('SIGHUP');
-        pidMap.delete(clientIp);
-        ipMap.delete(clientIp);
-        ipAlive.delete(clientIp);
+        pidMap.delete(ip_add);
+        ipMap.delete(ip_add);
+        ipAlive.delete(ip_add);
       }
     }
   }
@@ -44,6 +44,7 @@ exports.getStart = async (req, res, next) => {
   } else {
     ipAlive.set(clientIp, true);
     ipMap.set(clientIp, port);
+
     simulatorProcess = process.spawn("ttyd", ["-p", port.toString(), "docker", "run", "-it", "--rm", "ubuntu"]);
     pidMap.set(clientIp, simulatorProcess);
     res.json({ result: { port: port } });

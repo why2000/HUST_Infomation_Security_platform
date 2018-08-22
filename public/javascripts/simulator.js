@@ -62,9 +62,6 @@ function getTasks() {
             if (xmlhttp.status == 200) {
                 tasks = JSON.parse(xmlhttp.responseText).result.tasks;
                 setTasks(tasks);
-                if (callback) {
-                    callback();
-                }
             } else {
                 console.log("发生错误" + xmlhttp.status);
                 setTasks("加载失败");
@@ -75,28 +72,32 @@ function getTasks() {
 
 function keepAlive() {
     if (local_connect_flag) {
+        console.log('sending Heartbeat');
+        var xmlhttp = setXmlHttp();
+        xmlhttp.timeout = 2000;
         RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'keep']), null, true, function () {
             if (xmlhttp.readyState == 4) {
                 if (xmlhttp.status == 200) {
                     hb_try = 0;
                     console.log("Heartbeat success");
-                    setTimeout(keepAlive, 24000);
-                    return;
-                }
-            } else {
-                console.log("Heartbeat fail");
-                if (hb_try < 5) {
-                    hb_try = hb_try + 1;
-                    console.log("try %d time", hb_try + 1);
-                    setTimeout(keepAlive, 1000);
-                } else {
-                    console.log("connection lost");
-                    connectToCon();
+                    setTimeout(keepAlive, 10000);
                 }
             }
         })
+        xmlhttp.ontimeout = function () {
+            console.log("Heartbeat fail");
+            if (hb_try < 5) {
+                hb_try = hb_try + 1;
+                console.log("try %d time", hb_try);
+                setTimeout(keepAlive, 1000);
+            } else {
+                console.log("connection lost");
+                connectToCon();
+            }
+        }
     }
 }
+
 
 function connectToCon() {
     if (local_connect_flag == false) {
@@ -113,12 +114,11 @@ function connectToCon() {
                     document.getElementById("start_stop_sim_button").style.background = "#ff4949";
                     document.getElementById("start_stop_sim_statue").innerText = "连接成功";
                     local_connect_flag = true;
-                    setTimeout(keepAlive, 25000);
-                    return;
+                    setTimeout(keepAlive, 10000);
+                } else {
+                    console.log("发生错误" + xmlhttp.status);
+                    document.getElementById("start_stop_sim_statue").innerText = "出现错误";
                 }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-                document.getElementById("start_stop_sim_statue").innerText = "出现错误";
             }
         });
     } else {
@@ -134,15 +134,17 @@ function connectToCon() {
                     document.getElementById("start_stop_sim_button").style.background = "#206db0";
                     document.getElementById("start_stop_sim_statue").innerText = "断开成功";
                     local_connect_flag = false;
-                    return;
+                } else {
+                    console.log("发生错误" + xmlhttp.status);
+                    document.getElementById("start_stop_sim_statue").innerText = "出现错误";
                 }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-                document.getElementById("start_stop_sim_statue").innerText = "出现错误";
             }
         });
     }
 }
+
+/* tasks init */
+getTasks();
 
 /* SideBar */
 
