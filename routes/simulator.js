@@ -11,6 +11,8 @@ router.get('/tasks', SimulatorController.getTasks);
 
 router.get('/start', SimulatorController.getStart);
 
+router.get('/keep', SimulatorController.getKeep);
+
 router.get('/stop', SimulatorController.getStop);
 
 /* sidebar control */
