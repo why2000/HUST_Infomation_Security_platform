@@ -1,4 +1,4 @@
-var db = require('./db');
+var db = require('./report_db');
 var fs = require('fs');
 var path = require('path')
 var crypto = require('crypto');
@@ -6,8 +6,8 @@ var cfg = require('../config/file.json');
 
 
 // 判断文件保存目录是否存在，不存在则创建
-if(!fs.existsSync(cfg.PATH)) {
-    fs.mkdir(cfg.PATH);
+if(!fs.existsSync(path.resolve(cfg.PATH))) {
+    fs.mkdir(path.resolve(cfg.PATH),function(){});
 }
 
 /**

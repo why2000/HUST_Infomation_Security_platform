@@ -1,4 +1,4 @@
-var db = require('./db');
+var db = require('./report_db');
 
 // 复用连接是不是有点问题啊
 

@@ -2,6 +2,7 @@ var process = require('child_process');
 var ipAlive = new Map();
 var ipMap = new Map();
 var pidMap = new Map();
+let UserValidator = require('../validators/user_validator');
 var port = 8000;
 
 function checkAlive(ip_add) {
@@ -22,7 +23,10 @@ function checkAlive(ip_add) {
 }
 
 exports.getIndex = async (req, res, next) => {
-  res.render('simulator');
+  if (!req.session.loginUser) {
+    res.redirect('/');
+  } else
+    res.render('simulator');
 };
 
 exports.getTasks = async (req, res, next) => {

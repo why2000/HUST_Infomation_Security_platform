@@ -1,5 +1,5 @@
 var mongodb = require('mongodb');
-var cfg = require('../config/mongodb.json');
+var cfg = require('../config/report.json');
 
 var client = mongodb.MongoClient;
 
