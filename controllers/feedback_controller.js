@@ -39,7 +39,7 @@ const getStudentReport = (req, res) => {
             if (result) {
                 response(res, result);
             } else {
-                response(res, 404, 'Not found.');
+                res.redirect('error');
             }
         });
 }
@@ -100,7 +100,7 @@ const deleteStudentReport = (req, res) => {
                         response(res, 500, 'Server error.');
                     });
             } else {
-                response(res, 404, 'Not found.');
+                res.redirect('error');
             }
         });
 }
@@ -108,10 +108,20 @@ const deleteStudentReport = (req, res) => {
 const getTeacherJudgement = (req, res) => {
     feedback.getJudgementByStudentIDAndModuleID(req.params.student_id, req.params.module_id)
         .then(result => {
+
+            // test data
+            /*
+            result ={
+                score: null,
+                text: 'nice',
+                name: '赵喜娜'
+            };
+            */
+
             if (result) {
-                response(res, result);
+                res.render('judge-upload',{ inputScore: result.score, inputText: result.text,studentName: result.name})
             } else {
-                response(res, 404, 'Not found.');
+                res.redirect('/error');
             }
         })
         .catch(err => {
