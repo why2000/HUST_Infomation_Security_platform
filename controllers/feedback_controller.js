@@ -8,22 +8,24 @@ var fs = require('fs');
 var UserValidator = require('../validators/user_validator');
 
 /* 
-    还有用户认证
     考虑添加一个全局的ErrorHandler(如果有这种玩意儿)
 */
 
+// *用户验证已经加入
+// TODO:尚无入口URL，尤其是教师如何进入
+
 const getIndexPageByUserType = (req, res) => {
-    var page='report-index';
-    if(!req.session.loginUser){
+    if (!req.session.loginUser) {
         res.redirect('/');
-    }else{
-        if(UserValidator.getUserTypeById(req.session.loginUser) == "teacher"){
-            page = 'judge-upload';
+    } else {
+        if (UserValidator.getUserTypeById(req.session.loginUser) == "student") {
+            res.render('report-index');
         }
-        else if(UserValidator.getUserTypeById(req.session.loginUser) == "student"){
-            ;
+        // !需要修正
+        /*else if(UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+            res.render('report-judge');
         }
-        res.render(page);
+        */
     }
 }
 

@@ -6,6 +6,7 @@ var cfg = require('../config/file.json');
 
 
 // 判断文件保存目录是否存在，不存在则创建
+// mkdir必须跟一回调，否者报错
 if(!fs.existsSync(path.resolve(cfg.PATH))) {
     fs.mkdir(path.resolve(cfg.PATH),function(){});
 }
