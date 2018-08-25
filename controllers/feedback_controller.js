@@ -13,19 +13,34 @@ var UserValidator = require('../validators/user_validator');
 
 // *用户验证已经加入
 // TODO:尚无入口URL，尤其是教师如何进入
-
-const getIndexPageByUserType = (req, res) => {
+const getIndex = (req, res) => {
     if (!req.session.loginUser) {
         res.redirect('/');
     } else {
         if (UserValidator.getUserTypeById(req.session.loginUser) == "student") {
             res.render('report-index');
         }
-        // !需要修正
-        /*else if(UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
-            res.render('report-judge');
+        // TODO
+        /*
+        else if (UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+            res.redirect('judge-index');
         }
         */
+    }
+}
+
+const getPageByUserType = (req, res) => {
+    if (!req.session.loginUser) {
+        res.redirect('/');
+    } else {
+        if (UserValidator.getUserTypeById(req.session.loginUser) == "student") {
+            res.render('report-upload');
+        }
+        // !未经测试
+        else if (UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+            res.redirect('/feedback/judgement/:' + req.params.student_id + req.params.module_id);
+        }
+
     }
 }
 
@@ -119,7 +134,7 @@ const getTeacherJudgement = (req, res) => {
             */
 
             if (result) {
-                res.render('judge-upload',{ inputScore: result.score, inputText: result.text,studentName: result.name})
+                res.render('judge-upload', { inputScore: result.score, inputText: result.text, studentName: result.name })
             } else {
                 res.redirect('/error');
             }
@@ -165,7 +180,8 @@ const deleteTeacherJudgement = (req, res) => {
 }
 
 module.exports = {
-    getIndexPageByUserType,
+    getIndex,
+    getPageByUserType,
     getStudentReport,
     saveStudentReport,
     deleteStudentReport,

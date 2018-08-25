@@ -6,7 +6,8 @@ var tmp_path = require('../config/file.json').MULTER_TMP_FILE_PATH; // 问题很
 var upload = multer({dest: tmp_path});
 var router = express.Router();
 
-router.get('/', feedback.getIndexPageByUserType);
+router.get('/', feedback.getIndex);
+router.get('/:student_id/:module_id', feedback.getPageByUserType);
 
 // 报告文件
 router.get('/report/:student_id/:module_id', feedback.getStudentReport);
