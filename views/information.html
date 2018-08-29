@@ -20,35 +20,38 @@
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
   <!-- http://kenwheeler.github.io/slick/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
-  <link rel="stylesheet" href="/public/stylesheets/tooplate-style.css">
 
   <script>document.documentElement.className = "js"; var supportsCssVars = function () { var e, t = document.createElement("style"); return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS.supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e }; supportsCssVars() || alert("Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");</script>
 
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #133AAC; ">
-    <div style="width: 1200px ;overflow: visible; margin: auto;">
-      <img src="/public/images/logo.gif">
-      <a class="navbar-brand" href="./catalog" style="padding-left: 10px; margin-left: 10px; color: white; border-left: 1px solid #7c8b99; font-size:24px;">华中科技大学信息安全实验平台</a>
-      <div class="dropdown" style="float:right; margin-top:6px;">
-        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">
-          您目前作为 <%=student_name%> 登入。
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="/information" style="font-size:20px;">查看/修改个人信息</a>
-          <a class="dropdown-item" href="javascript:void(0);" onclick="logout()" style="font-size:20px;">登出</a>
+  <div style="position: relative;z-index: 1">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #133AAC; z-index: 0">
+        <img src="../public/images/logo.gif">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/catalog" style="padding-left: 10px; margin-left: 10px; color: white; border-left: 1px solid #7c8b99; font-size:24px;">华中科技大学信息安全实验平台</a>
         </div>
-      </div>
-    </div>
-    </div>
+        <div style="width: 100% ;overflow: visible;"></div>
+        <div class="dropdown" style="margin-right: 10%">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                您目前作为 <%=student_name%> 登入。
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                    <a class="dropdown-item" href="/information" style="font-size:20px;">查看/修改个人信息</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="javascript:void(0);" onclick="logout()" style="font-size:20px;">登出</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
 
-  </nav>
-  <br>
-
-  <div style="width: 1200px ; margin: auto;">
-    <div class="row">
+  <div class="container" style="width: 1200px ; margin-top: auto;">
+    <div class="row" style="margin-top:20px">
       <div class="col-12">
         <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">个人信息 </h5>
       </div>
