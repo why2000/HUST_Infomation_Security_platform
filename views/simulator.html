@@ -10,101 +10,44 @@
     <meta http-equiv="X-UA-Compatible" content=="IE=edge" />
     <meta name="google" value="notranslate" />
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="stylesheets/tooplate-style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
         crossorigin="anonymous">
     <link rel="stylesheet" href="../public/stylesheets/examsidebar.css">
 </head>
 
 <body>
-    <nav class="main-menu">
-        <div class="logo" style="display: block">
-            <img src="/public/images/logo.gif">
-        </div>
-        <div class="settings" , style="text-align: center; font-size: 18px;">
-        </div>
-        <ul class="parent-menu" , id="parent">
-            <li>
-                <a href="/index">
-                    <i class="fa fa-home fa-lg"></i>
-                    <span class="nav-text">首页</span>
-
-                </a>
-            </li>
-            <li class="has-submenu" id="favor-list-parent">
-                <a>
-                    <i class="fa fa-chevron-right fa-lg list-icon" id="favor-list-icon"></i>
-                    <span class="nav-text">
-                        我的收藏
-                    </span>
-                </a>
-                <ul id="favor-list" class="submenu" style="display: none">
+    <div style="position: relative;z-index: 1">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #133AAC; z-index: 0">
+            <img src="../public/images/logo.gif">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/catalog" style="padding-left: 10px; margin-left: 10px; color: white; border-left: 1px solid #7c8b99; font-size:24px;">华中科技大学信息安全实验平台</a>
+            </div>
+            <div style="width: 100% ;overflow: visible;"></div>
+            <div class="dropdown" style="margin-right: 10%">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    您目前作为 <%=student_name%> 登入。
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li>
+                        <a class="dropdown-item" href="/information" style="font-size:20px;">查看/修改个人信息</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="javascript:void(0);" onclick="logout()" style="font-size:20px;">登出</a>
+                    </li>
                 </ul>
-            </li>
-            <li>
-                <a href="###" class="favor" , id="favor">
-                    <i class="fa fa-star-o fa-lg" id="favor-icon"></i>
-                    <span class="nav-text">
-                        收藏本节
-                    </span>
-                </a>
-            </li>
-            <li class="has-submenu" id="task-list-parent">
-                <a>
-                    <i class="fa fa-chevron-right fa-lg list-icon" id="task-list-icon"></i>
-                    <span class="nav-text">
-                        练习列表
-                    </span>
-                </a>
-                <ul id="task-list" class="submenu" style="display: none">
-                </ul>
-            </li>
-        </ul>
-        <ul class="logout">
-            <li>
-                <a href="javascript:history.go(-1);">
-                    <i class="fa fa-chevron-left fa-lg"></i>
-                    <span class="nav-text">
-                        后退
-                    </span>
-
-                </a>
-            </li>
-        </ul>
-    </nav>
-
-    <div style="padding-left: 55px">
-        <div style="position:relative; z-index:1">
-            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #133AAC; z-index: 0">
-                <img src="../public/images/logo.gif">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="./catalog.html" style="padding-left: 10px; margin-left: 10px; color: white; border-left: 1px solid #7c8b99; font-size:24px;">华中科技大学信息安全实验平台</a>
-                </div>
-                <div style="width: 100% ;overflow: visible; margin: auto;"></div>
-                <div class="dropdown">
-                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                        您目前作为 XXX 登入。
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li>
-                            <a class="dropdown-item" href="#" style="font-size:20px;">查看/修改个人信息</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#" style="font-size:20px;">登出</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-        <div class="container" style="position:relative; z-index:0">
+            </div>
+        </nav>
+    </div>
+    <div style="position: relative;z-index: 0">
+        <div class="container">
             <div class="row">
-                <div class="col-sm-8" style="background-color: black">
+                <div class="col-sm-8" style="margin-top:20px;background-color: black">
                     <div class="embed-responsive embed-responsive-4by3">
                         <iframe id="simulator_window" class="embed-responsive-item" src="" style="display: none"></iframe>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-4" style="margin-top:20px;">
                     <div class="control_panel" style="height: 90%; margin-left:50px; margin-top: 20px; border: 2px solid #838383">
                         <div class="connect_panel" style="height:45px">
                             <a id="start_stop_sim_a" href="javascript:void(0);" onclick="connectToCon()">
@@ -123,21 +66,15 @@
                     </div>
                 </div>
             </div>
-            <footer>
-                <p class="float-right">
-                    <a href="#">Back to top</a>
-                </p>
-                <p style="width: 100%; text-align: center">© 2017-2018 Company, Inc. ·
-                    <a href="#">Privacy</a> ·
-                    <a href="#">Terms</a>
-                </p>
-            </footer>
         </div>
+        <footer>
+            <p style="width: 100%; text-align: center">© 2017-2018 Company, Inc. ·
+                <a href="#">Privacy</a> ·
+                <a href="#">Terms</a>
+            </p>
+        </footer>
     </div>
-    
-    <!-- Optional JavaScript -->
-    <script src="../public/javascripts/simulator.js"></script>
-    <script src="../public/javascripts/sidebar.js"></script>
+
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -145,6 +82,8 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>
+    <!-- Optional JavaScript -->
+    <script src="../public/javascripts/simulator.js"></script>
 </body>
 
 </html>

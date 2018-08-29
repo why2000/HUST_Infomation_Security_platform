@@ -12,8 +12,8 @@ exports.loginCheck = async params => {
     console.log(params);
     var userid = params.userid;
     var password = params.password;
-    if(userid == '123' && password == '123')
-    return true;
+    //if(userid == '123' && password == '123')
+    //return true;
     
     if(!await Validator._validateuserid(userid)||!await Validator._validatepassword(password)){
         var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);

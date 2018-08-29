@@ -1,7 +1,6 @@
 $('document').ready(function () {
 
     let localURLArgs = location.href.split('/')
-
     var mid = localURLArgs.pop(), sid = localURLArgs.pop();
 
     $('#submit').click(function () {

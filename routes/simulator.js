@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let SimulatorController = require('../controllers/simulator_controller');
-let ExamController = require('../controllers/exam_controller');
+let UserController = require('../controllers/user_controller');
 
 router.get('/', SimulatorController.getIndex);
 
@@ -15,12 +15,8 @@ router.get('/keep', SimulatorController.getKeep);
 
 router.get('/stop', SimulatorController.getStop);
 
-/* sidebar control */
+/* logout control */
 
-router.get('/favor', ExamController.getFavor);
-
-router.post('/favor', ExamController.postFavor);
-
-router.delete('/favor', ExamController.deleteFavor);
+router.get('/logout', UserController.getLogout);
 
 module.exports = router;

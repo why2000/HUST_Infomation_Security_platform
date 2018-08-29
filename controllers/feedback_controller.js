@@ -21,7 +21,6 @@ const getIndex = (req, res) => {
         if (UserValidator.getUserTypeById(req.session.loginUser) == "student") {
             res.render('report-index');
         }
-        
         // TODO
         /*
         else if (UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
@@ -35,6 +34,7 @@ const getPageByUserType = (req, res) => {
     if (!req.session.loginUser) {
         res.redirect('/');
     } else {
+        res.render('report-upload');
         if (UserValidator.getUserTypeById(req.session.loginUser) == "student") {
             res.render('report-upload');
         }
@@ -125,15 +125,6 @@ const deleteStudentReport = (req, res) => {
 const getTeacherJudgement = (req, res) => {
     feedback.getJudgementByStudentIDAndModuleID(req.params.student_id, req.params.module_id)
         .then(result => {
-
-            // test data
-            /*
-            result ={
-                score: null,
-                text: 'nice',
-                name: '赵喜娜'
-            };
-            */
 
             if (result) {
                 res.render('judge-upload', { inputScore: result.score, inputText: result.text, studentName: result.name })

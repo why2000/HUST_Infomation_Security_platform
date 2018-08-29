@@ -2,8 +2,8 @@ var process = require('child_process');
 var ipAlive = new Map();
 var ipMap = new Map();
 var pidMap = new Map();
-let UserValidator = require('../validators/user_validator');
 var port = 8000;
+var user = require('../validators/user_validator');
 
 function checkAlive(ip_add) {
   if (ipMap.has(ip_add)) {
@@ -25,8 +25,9 @@ function checkAlive(ip_add) {
 exports.getIndex = async (req, res, next) => {
   if (!req.session.loginUser) {
     res.redirect('/');
-  } else
-    res.render('simulator');
+  } else {
+    res.render('simulator', { student_name:await user.getUserTypeById(req.session.loginUser) });
+  }
 };
 
 exports.getTasks = async (req, res, next) => {

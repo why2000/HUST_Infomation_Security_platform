@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+  let localURLArgs = location.href.split('/')
   var mid = localURLArgs.pop(), sid = localURLArgs.pop();
 
   $.getJSON({
@@ -9,6 +10,7 @@ $(document).ready(function () {
       $('#fileUploaded').show();
     }
   })
+  
   $('#upload').on('change', function () {
     var fileName = $(this)[0].files[0]['name'];
     $('#fileHelpId').html(fileName);
