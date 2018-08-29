@@ -14,7 +14,6 @@ var UserValidator = require('../validators/user_validator');
 // *用户验证已经加入
 // TODO:尚无入口URL，尤其是教师如何进入
 const getIndex = (req, res) => {
-    res.render('report-index');
     
     if (!req.session.loginUser) {
         res.redirect('/');
