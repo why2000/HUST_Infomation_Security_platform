@@ -25,10 +25,11 @@
 <body>
     <div class="header">
         <div class="headerb">
-            <div class="top-logo" title="App:app42.dc.hust.edu.cn:app421" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
+            <div class="top-logo" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
             <div class="headern">
                 华中科技大学信息安全实验平台
             </div>
+
             <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
                 <div class="logout-icon"></div>
                 <span>退出</span>
@@ -36,7 +37,7 @@
         </div>
     </div>
     <nav class="main-menu">
-        <div class="logo" style="display: block">
+        <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
             <img src="/public/images/logo.gif" />
         </div>
         <div class="settings" , style="text-align: center; font-size: 18px;">
@@ -44,7 +45,7 @@
         <ul class="parent-menu" , id="parent">
             <li>
 
-                <a href="/catalog">
+                <a id="catalog" href="/catalog">
                     <i class="fa fa-home fa-lg"></i>
                     <span class="nav-text">首页</span>
 
@@ -54,6 +55,13 @@
                 <a id='exam-to-class'>
                     <i class="fa fa-book fa-lg"></i>
                     <span class="nav-text">转到课程</span>
+
+                </a>
+            </li>
+            <li>
+                <a id='exam-to-feedback'>
+                    <i class="fa fa-folder-open fa-lg"></i>
+                    <span class="nav-text">上传报告</span>
 
                 </a>
             </li>

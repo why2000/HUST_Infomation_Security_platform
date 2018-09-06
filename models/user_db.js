@@ -27,9 +27,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
     }
 })
 
-
-
-exports.findUserByName = async function(username){
+const findUserByName = async function(username){
     var user = db.collection('user');
     var doc = user.find({type: 'user-info', username: username});
     if(!doc){
@@ -40,7 +38,7 @@ exports.findUserByName = async function(username){
     }
 }
 
-exports.findUserById = async function(userid){
+const findUserById = async function(userid){
     var user = db.collection('user');
     console.log(userid);
     try{
@@ -52,3 +50,7 @@ exports.findUserById = async function(userid){
     return result;
 }
 
+module.exports = {
+    findUserByName,
+    findUserById
+}

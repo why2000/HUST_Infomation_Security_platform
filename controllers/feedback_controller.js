@@ -1,9 +1,15 @@
-var feedback = require('../models/feedback');
-var file = require('../models/file');
+var feedback = require('../models/feedback_db');
+var file = require('../models/file_db');
 var response = require('../utils/response');
 var extname = require('path').extname;
 var cfg = require('../config/feedback.json');
 var fs = require('fs');
+
+
+const getIndexPage = (req, res) => {
+
+}
+
 
 /* 
     还有用户认证
@@ -136,6 +142,7 @@ const deleteTeacherJudgement = (req, res) => {
 }
 
 module.exports = {
+    getIndexPage,
     getStudentReport,
     saveStudentReport,
     deleteStudentReport,

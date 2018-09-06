@@ -1,10 +1,12 @@
 var express = require('express');
-var feedback = require('../controllers/feedback');
+var feedback = require('../controllers/feedback_controller');
 var multer = require('multer');
 
 var tmp_path = require('../config/file.json').MULTER_TMP_FILE_PATH; // 问题很大
 var upload = multer({dest: tmp_path});
 var router = express.Router();
+
+router.get('/', feedback.getIndexPage);
 
 // 报告文件
 router.get('/report/:student_id/:module_id', feedback.getStudentReport);

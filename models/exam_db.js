@@ -25,7 +25,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
             }
           });
     }
-})
+});
 
 function getTime(){
     var time = new Date();
@@ -40,7 +40,7 @@ function getTime(){
 
 
 // Favor
-exports.getFavor = async params => {
+const getFavor = async params => {
     var exam = db.collection('exam');
     var taskindex = params.taskindex;
     var userid = params.userid;
@@ -67,7 +67,7 @@ exports.getFavor = async params => {
     return favor;
 }
 
-exports.postFavor = async params => {
+const postFavor = async params => {
     var exam = db.collection('exam');
     var taskindex = params.taskindex;
     var userid = params.userid;
@@ -89,7 +89,7 @@ exports.postFavor = async params => {
     return data
 }
 
-exports.deleteFavor = async params => {
+const deleteFavor = async params => {
     var exam = db.collection('exam');
     var taskindex = params.taskindex;
     var userid = params.userid;
@@ -111,7 +111,7 @@ exports.deleteFavor = async params => {
 
 
 // TaskList
-exports.getTaskList = async params => {
+const getTaskList = async params => {
     var exam = db.collection('exam');
     async function foo(pass){
         var test = {
@@ -214,7 +214,7 @@ exports.getTaskList = async params => {
 
 
 //FavorList
-exports.getFavorList = async params => {
+const getFavorList = async params => {
     var exam = db.collection('exam');
     var userid = params.userid;
     var whyere = {
@@ -260,7 +260,7 @@ exports.getFavorList = async params => {
 }
 
 // IndexInfo
-exports.getInfo = async params => {
+const getInfo = async params => {
     var exam = db.collection('exam');
     if(params.taskindex == "index"){
         var whyere = {
@@ -282,6 +282,16 @@ exports.getInfo = async params => {
     return result;
 }
 
-exports.getTimeLimit = async params => {
+const getTimeLimit = async params => {
 
+}
+
+module.exports = {
+    getFavor,
+    postFavor,
+    deleteFavor,
+    getTaskList,
+    getFavorList,
+    getInfo,
+    getTimeLimit
 }

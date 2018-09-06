@@ -1,5 +1,5 @@
 var express = require('express');
-var file = require('../controllers/file');
+var file = require('../controllers/file_controller');
 
 var router = express.Router();
 

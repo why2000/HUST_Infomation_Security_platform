@@ -1,3 +1,6 @@
 {
-    "EXTENSIONS" : [".pdf", ".doc", ".docx", ".txt"]
+    "EXTENSIONS" : [".pdf", ".doc", ".docx", ".txt"],
+    "DATABASE_URL": "mongodb://127.0.0.1:27017",
+    "DATABASE_NAME": "HUST_IS",
+    "COLLECTION_NAME": "feedback"
 }

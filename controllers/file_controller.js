@@ -1,4 +1,4 @@
-var file = require('../models/file')
+var file = require('../models/file_db')
 var response = require('../utils/response')
 
 const getAllFiles = (req, res) => {

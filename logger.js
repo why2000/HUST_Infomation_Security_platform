@@ -1,6 +1,6 @@
 const winston = require('winston');
 
-exports.ContactLogger = winston.createLogger({
+const ContactLogger = winston.createLogger({
     level: "verbose",
     transports: [
         new (winston.transports.File)({
@@ -10,7 +10,7 @@ exports.ContactLogger = winston.createLogger({
     ]
 })
 
-exports.UserLogger = winston.createLogger({
+const UserLogger = winston.createLogger({
     level: "verbose",
     transports: [
         new (winston.transports.File)({
@@ -20,7 +20,7 @@ exports.UserLogger = winston.createLogger({
     ]
 })
 
-exports.ExamLogger = winston.createLogger({
+const ExamLogger = winston.createLogger({
     level: "verbose",
     transports: [
         new (winston.transports.File)({
@@ -29,3 +29,20 @@ exports.ExamLogger = winston.createLogger({
         new (winston.transports.Console)()
     ]
 })
+
+const FeedbackLogger = winston.createLogger({
+    level: "verbose",
+    transports: [
+        new (winston.transports.File)({
+            filename: 'logs/feedback.log'
+        }),
+        new (winston.transports.Console)()
+    ]
+})
+
+module.exports = {
+    ContactLogger,
+    UserLogger,
+    ExamLogger,
+    FeedbackLogger
+}

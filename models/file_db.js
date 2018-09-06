@@ -1,8 +1,35 @@
-var db = require('./db');
+'use strict'
+
+let ConfigSet = require('../config/feedback.json');
+let ErrorSet = require('../utils/error_util');
+let MongoDB = require('mongodb');
+let MongoClient = MongoDB.MongoClient;
+
 var fs = require('fs');
 var path = require('path')
 var crypto = require('crypto');
 var cfg = require('../config/file.json');
+
+let db;
+MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
+    if (err) {
+        ContactLogger.error(`database error => ${err.stack}`);
+        throw err;
+    } else {
+        db = client.db(ConfigSet.DATABASE_NAME);
+        db.createCollection(ConfigSet.COLLECTION_NAME, function(err, res) {
+            if (err) {
+                FeedbackLogger.error(`database error => ${err.stack}`);
+                throw err;
+            } else {
+                //console.log("Successfully creat col");
+                ;
+            }
+          });
+    }
+});
+
+
 
 
 // 判断文件保存目录是否存在，不存在则创建

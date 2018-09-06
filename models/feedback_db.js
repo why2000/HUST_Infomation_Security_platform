@@ -1,6 +1,30 @@
-var db = require('./db');
+'use strict'
 
-// 复用连接是不是有点问题啊
+let ConfigSet = require('../config/feedback.json');
+let ErrorSet = require('../utils/error_util');
+let FeedbackLogger = require('../logger').FeedbackLogger;
+let MongoDB = require('mongodb');
+let MongoClient = MongoDB.MongoClient;
+
+
+let db;
+MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
+    if (err) {
+        FeedbackLogger.error(`database error => ${err.stack}`);
+        throw err;
+    } else {
+        db = client.db(ConfigSet.DATABASE_NAME);
+        db.createCollection(ConfigSet.COLLECTION_NAME, function(err, res) {
+            if (err) {
+                FeedbackLogger.error(`database error => ${err.stack}`);
+                throw err;
+            } else {
+                //console.log("Successfully creat col");
+                ;
+            }
+          });
+    }
+});
 
 /**
  * 通过学生ID和模块ID获得报告

@@ -27,7 +27,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
     }
 })
 
-exports.sendInf = async function(params) {
+const sendInf = async function(params) {
     var contact = db.collection('contact');
     var data = params;
     //console.log(data);
@@ -44,8 +44,13 @@ exports.sendInf = async function(params) {
     return data;
 }
 
-exports.getAllInf = async function() {
+const getAllInf = async function() {
     var collection = db.collection('contact');
     var data = collection.find().toArray();
     return data;
+}
+
+module.exports = {
+    sendInf,
+    getAllInf
 }

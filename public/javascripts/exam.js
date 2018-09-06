@@ -76,7 +76,8 @@ function Logout(callback){
 
 $(function sideBarInit() {
     classindex = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')+1 ,window.location.pathname.length);
-    $('#exam-to-class').attr('href', `/class/${classindex}`)
+    $('#exam-to-class').attr('href', `/class/${classindex}`);
+    $('#exam-to-feedback').attr('href', `/feedback/${classindex}`);
     $(".has-submenu").hover(function () {
         var height;
         var current_list = $(this).find('.submenu').attr("id");
