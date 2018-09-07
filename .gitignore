@@ -1,6 +1,7 @@
 
 # Sessions
 sessions/
+sessions/*
 
 # Logs
 logs
