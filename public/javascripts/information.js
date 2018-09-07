@@ -40,7 +40,10 @@ function RESTful(xmlhttp, method, url, queryString, async, fnc) { //获取JSON�
     xmlhttp.onreadystatechange = fnc;
 }
 
-function logout() {
+
+
+
+function Logout() {
     var xmlhttp = setXmlHttp();
     RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'logout']), null, true, function () {
         if (xmlhttp.readyState == 4) {
@@ -51,7 +54,7 @@ function logout() {
                     callback();
                 }
             } else {
-                console.log("发生错误" + xmlhttp.status);
+                // console.log("发生错误" + xmlhttp.status);
             }
         }
     });

@@ -1,8 +1,8 @@
-let ExamDB = require('../models/exam_db');
+let TutorialDB = require('../models/tutorial_db');
 let Joi = require('joi');
 let IsEmpty = require('is-empty');
 let ErrorUtil = require('../utils/error_util');
-let ExamLogger = require('../logger').ExamLogger;
+let TutorialLogger = require('../logger').TutorialLogger;
 let Validator = require('./validator');
 
 
@@ -14,9 +14,9 @@ let Validator = require('./validator');
 exports.getFavor = async params => {
     if(!await Validator._validatetaskindex(params.taskindex)||!await Validator._validateuserid(params.userid)){
         var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ExamLogger.error(`controller error => ${err.stack}`);
+        TutorialLogger.error(`controller error => ${err.stack}`);
     }else{
-        return await ExamDB.getFavor(params);
+        return await TutorialDB.getFavor(params);
     }
     
 }
@@ -24,10 +24,10 @@ exports.getFavor = async params => {
 exports.postFavor = async params => {
     if(!await Validator._validatetaskindex(params.taskindex)||!await Validator._validateuserid(params.userid)||!await Validator._validatefavortype(params.favor)){
         var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ExamLogger.error(`controller error => ${err.stack}`);
+        TutorialLogger.error(`controller error => ${err.stack}`);
         return false
     }else{
-        return await ExamDB.postFavor(params);
+        return await TutorialDB.postFavor(params);
     }
     
 }
@@ -35,10 +35,10 @@ exports.postFavor = async params => {
 exports.deleteFavor = async params => {
     if(!await Validator._validatetaskindex(params.taskindex)||!await Validator._validateuserid(params.userid)||!await Validator._validatefavortype(params.favor)){
         var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ExamLogger.error(`controller error => ${err.stack}`);
+        TutorialLogger.error(`controller error => ${err.stack}`);
         return false
     }else {
-        return await ExamDB.deleteFavor(params);
+        return await TutorialDB.deleteFavor(params);
     }
 }
 
@@ -46,23 +46,22 @@ exports.deleteFavor = async params => {
 exports.getInfo = async params => {
     if(params.taskindex != 'index' && !await Validator._validatetaskindex(params.taskindex)){
         var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ExamLogger.error(`controller error => ${err.stack}`);
+        TutorialLogger.error(`controller error => ${err.stack}`);
         return false
     }else {
-        return await ExamDB.getInfo(params);
+        return await TutorialDB.getInfo(params);
     }
 }
 
 exports.getTimeLimit = async params => {
     if(params.taskindex != 'index' && !await Validator._validatetaskindex(params.taskindex)){
         var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ExamLogger.error(`controller error => ${err.stack}`);
+        TutorialLogger.error(`controller error => ${err.stack}`);
         return false
     }else {
-        return await ExamDB.getTimeLimit(params);
+        return await TutorialDB.getTimeLimit(params);
     }
 }
-
 
 
 
@@ -71,10 +70,10 @@ exports.getTimeLimit = async params => {
 exports.getTaskList = async params => {
     if(!await Validator._validateuserid(params.userid)){
         var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ExamLogger.error(`controller error => ${err.stack}`);
+        TutorialLogger.error(`controller error => ${err.stack}`);
         return false;
     }else{
-        return await ExamDB.getTaskList(params);
+        return await TutorialDB.getTaskList(params);
     }
 }
 
@@ -83,10 +82,10 @@ exports.getTaskList = async params => {
 exports.getFavorList = async params => {
     if(!await Validator._validateuserid(params.userid)){
         var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
-        ExamLogger.error(`controller error => ${err.stack}`);
+        TutorialLogger.error(`controller error => ${err.stack}`);
         return false;
     }else{
-        return await ExamDB.getFavorList(params);
+        return await TutorialDB.getFavorList(params);
     }
 }
 

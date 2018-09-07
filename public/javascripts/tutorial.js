@@ -76,8 +76,8 @@ function Logout(callback){
 
 $(function sideBarInit() {
     classindex = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')+1 ,window.location.pathname.length);
-    $('#exam-to-class').attr('href', `/tutorial/${classindex}`);
-    $('#exam-to-feedback').attr('href', `/feedback/${classindex}`);
+    $('#exam-to-class').attr('href', `/exam/${classindex}`);
+    $('#class-to-feedback').attr('href', `/feedback/${classindex}`);
     $(".has-submenu").hover(function () {
         var height;
         var current_list = $(this).find('.submenu').attr("id");
@@ -183,7 +183,7 @@ function setTaskList() {
     }
     for (var i = 0; i < length; i++) {
 
-        $('#task-list').append(`<li><a href="/exam/${i+1}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small"></span></a></li>`);
+        $('#task-list').append(`<li><a href="/tutorial/${i+1}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small"></span></a></li>`);
     };
     for (var i = 0; i < length; i++) {
         var single = tasklist[i];
@@ -227,7 +227,7 @@ function setFavorList() {
         var single = favorlist[i];
         var singleindex = single.index;
         var singlename = single.name;
-        $('#favor-list').append(`<li><a href="/exam/${singleindex}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${singlename}</span></a></li>`);
+        $('#favor-list').append(`<li><a href="/tutorial/${singleindex}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${singlename}</span></a></li>`);
     };
 }
 
@@ -267,7 +267,7 @@ function postFavor(callback) {
     RESTful(xmlhttp, "POST", creatURL([current_url_valid, 'favor']), JSON.stringify(data), true, function () {
         if (xmlhttp.readyState == 4) {
             if (xmlhttp.status == 200) {
-                console.log("post success" + xmlhttp.status);
+                // console.log("post success" + xmlhttp.status);
                 $("#favor-icon").css("color", "#3E9AF2");
                 $("#favor-icon").removeClass("fa-star-o");
                 $("#favor-icon").addClass("fa-star");
@@ -292,7 +292,7 @@ function deleteFavor(callback) {
     RESTful(xmlhttp, "DELETE", creatURL([current_url_valid, 'favor']), JSON.stringify(data), true, function () {
         if (xmlhttp.readyState == 4) {
             if (xmlhttp.status == 200) {
-                console.log("delete success" + xmlhttp.status);
+                // console.log("delete success" + xmlhttp.status);
                 $("#favor-icon").css("color", "");
                 $("#favor-icon").removeClass("fa-star");
                 $("#favor-icon").addClass("fa-star-o");
@@ -313,9 +313,6 @@ function deleteFavor(callback) {
 
 $(function mainPartInit() {
     getInfo();
-    $('#exam-form').attr('action', creatURL([current_url_valid, "submit"]));
-    $('.test').prepend(`<p id="start-helper" >点击右侧按钮开始答题</span>`);
-    setTimeLimit();
     // setAnswerSheet();
     // onAnswerClicked();
     
@@ -334,7 +331,7 @@ function getInfo(callback) {
     if (isIndex()) {
         $('.test-main').remove();
     }else {
-        $('.index-main').remove();
+        $('.notice_mess_bar').remove();
     }
     var xmlhttp = setXmlHttp();
     RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'info']), null, true, function () {
@@ -347,7 +344,11 @@ function getInfo(callback) {
                 if(!info || (info == null)){
                     window.location.href = './index' 
                 }
-                setInfo();
+                if (isIndex()) {
+                    setInfo();
+                }else {
+                    setVideo();
+                }
                 if (callback) {
                     callback();
                 }
@@ -358,7 +359,12 @@ function getInfo(callback) {
     });
 }
 
-
+function setVideo(){
+    var videofile = info.videofile
+    var title = info.title;
+    $('.main_content .notice_title_01').empty().text(title);
+    $('.main_content .notice_content_01').empty().append(`<video src='/public/videos/${videofile}' controls="controls"></video>`)
+}
 
 function setInfo() {
 
@@ -469,222 +475,6 @@ function setInfo() {
                 indents = indents + "&#12288;&#12288;";
             }
             $('.main_content .notice_content_01>form>p').append(`<span style="font-size: 18px !important;">${indents}${content[i].text}</span><br>`);
-        }else if(content[i].type == "img"){
-
-        }else{
-            quenumber += 1;
-            content[i].quenumber = quenumber;
-            if(content[i].type == "sc"){
-                $('.main_content .notice_content_01>form>p').append(`<li id="task-${quenumber}" class="${content[i].type}"></li>`);
-            }else if(content[i].type == "mc"){
-                $('.main_content .notice_content_01>form>p').append(`<li id="task-${quenumber}" class="${content[i].type}"></li>`);
-            }else if(content[i].type == "fb"){
-                $('.main_content .notice_content_01>form>p').append(`<li id="task-${quenumber}" class="${content[i].type}"></li>`);
-            }
-            setQuestion(content[i]);
         }
     }
-    setAnswerSheet();
-    onAnswerClicked();
-    // $('.main_content .notice_content_01 p').append(content);
 }
-
-function setQuestion(params){
-    
-    var text = params.text;
-    var quenumber = params.quenumber;
-    var type = params.type;
-    var options = params.options;
-    var current = $(`.main_content .notice_content_01>form>p li#task-${quenumber}`);
-    var needed = `<div class="test_content_nr_tt">
-    <a>${quenumber}. ${text}</a>
-    </div>
-    <div class="test_content_nr_main">
-    `
-    var length;
-    if(options.length){
-        length = options.length;
-    }else{
-        length = 0;
-    }
-    for(var i = 0; i < length; i++){
-        var option = options[i];
-        if(type == "sc"){
-            // alert(params.text);
-            needed = needed + `<li class="option"> 
-            <input type="radio" class="radioOrCheck" name="task-${quenumber}" id="task-${quenumber}-option-${option.choice}" value="${option.choice}" />
-            <label for="task-${quenumber}-option-${option.choice}">${option.choice}.
-            <p class="ue" style="display: inline;">${option.text}</p></label></li>`
-        }else if(type == "mc"){
-            needed = needed + `<li class="option"> 
-            <input type="checkbox" class="radioOrCheck" name="task-${quenumber}" id="task-${quenumber}-option-${option.choice}" value="${option.choice}" />
-            <label for="task-${quenumber}-option-${option.choice}">${option.choice}.
-            <p class="ue" style="display: inline;">${option.text}</p></label></li>`
-        }else if(type == "fb"){
-            needed = needed + `<li class="fb_text"> 
-            <label for="task-${quenumber}-option-${option.choice}">${option.choice}.
-            <p class="ue" style="display: inline;">${option.text}</p></label>
-            <input type="text" class="fb_text_input" name="task-${quenumber}" id="task-${quenumber}-option-${option.choice}" style="border: 0;border-bottom:1px solid #666666; outline: none;" />
-            </li>`
-        }
-    }
-    needed = needed + `</div>`
-    current.append(needed)
-}
-
-
-
-function findCheckedAnswer(examId) {
-    var result = new Array();
-    var answers = $(`#${examId}`).find('.radioOrCheck');
-    answers.each(function () {
-        if ($(this).is(':checked')) {
-            result.push($(this).attr('value'));
-        }
-    })
-    // alert(result);
-    return result;
-}
-
-function onAnswerClicked() {
-    $('li.option label,input').on('change', function () {
-        // alert("!")
-        // debugger;
-        var currentExam = $(this).closest('.test_content_nr_main').closest('li');
-        var examId = currentExam.attr('id'); // 得到题目ID
-        // alert(examId);
-        var cardLi = $(`a[href=#${examId}]`); // 根据题目ID找到对应答题卡
-        // 设置已答题
-        if (!cardLi.hasClass('hasBeenAnswer')) {
-            cardLi.addClass('hasBeenAnswer');
-        } else {
-            var answered = findCheckedAnswer(examId)
-            // alert("!")
-            // alert(answered);
-            // alert($.inArray($(this).prev('.radioOrCheck').attr('value'), answered));
-            // alert($(this).prev('.radioOrCheck').attr('class'));
-            // alert(answered.length)
-            // alert($.inArray($(this).prev('.radioOrCheck').attr('value'), answered))
-            // alert(currentExam.find('.radioOrCheck').attr('type') == 'checkbox')
-            if (answered.length == 0 && currentExam.find('.radioOrCheck').attr('type') == 'checkbox') {
-                cardLi.removeClass('hasBeenAnswer');
-            }else if($(this).attr('type') == 'text' && !$(this).val()){
-                cardLi.removeClass('hasBeenAnswer');
-            }
-        }
-    });
-}
-
-
-// May Be Deleted Soon
-function formatTime(timeArray) {
-    var result = "";
-    if (!timeArray.length) {
-        return "00:00:00";
-    }
-    if (timeArray[0] < 10) {
-        result = result + 0;
-    }
-    result = result + timeArray[0]
-    for (var i = 0; i < timeArray.length; i++) {
-        if (i != 0) {
-            var single = timeArray[i]
-            if (single < 10) {
-                result = result + ":0" + single;
-            } else {
-                result = result + ":" + single;
-            }
-
-        }
-    }
-    return result;
-}
-
-function getTimeLimit(){
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'timelimit']), null, true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                timelimit = JSON.parse(xmlhttp.responseText).result.timelimit;
-                setTimeLimit();
-                if (callback) {
-                    callback();
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-            }
-        }
-    });
-}
-
-function setTimeLimit(callback) {
-    if (!timelimit) {
-        $('#exam-start span').text('提交');
-        $('#exam-start').attr('type', 'submit').attr('form', 'exam-form');
-        $('.alt-1').closest('p').find('i').css('display', 'none');
-    }else{
-        $('#exam-start span').text('开始答题');
-        $('.alt-1').text(timelimit);
-        $('#exam-start').click(function () {
-            if ($(this).hasClass('waiting')) {
-                $(this).removeClass('waiting');
-                $('#start-helper').remove();
-                startTimeCountDown(callback);
-                $('.alt-1').on('time.elapsed', function () {
-                    $('#exam-submit').trigger('click')
-                });
-            }
-        });
-    }
-}
-
-function startTimeCountDown(callback) {
-    $('time').countDown({
-        with_separators: false
-    });
-    $('.alt-1').countDown({
-        css_class: 'countdown-alt-1'
-    });
-    $('.alt-2').countDown({
-        css_class: 'countdown-alt-2'
-    });
-    $('.test_content_nr ul').css("display", "block");
-    $('.test_content:first').css("margin-top", "75px");
-    if(callback){
-        callback();
-    }
-}
-
-function setAnswerSheet(callback) {
-    var sc = $('li[class="sc"]');
-    var mc = $('li[class="mc"]');
-    var fb = $('li[class="fb"]');
-    var answersheet = $('.rt_nr1');
-    var all = new Array('sc', 'mc', 'fb');
-    $.each(all, function (index, value) {
-        var length;
-        var obj = eval(value);
-        var objsheet = answersheet.find(`#rt_content_${value} .answerSheet ul`);
-        if (obj.length) {
-            length = obj.length;
-            answersheet.find(`#rt_content_${value} .content_lit`).text(length.toString());
-            obj.each(function (){
-                var reg = /[0-9]*$/;
-                var hrefindex = reg.exec($(this).attr('id'));
-                //这里的空格不能删
-                objsheet.append(` <li><a href="#task-${hrefindex}">${hrefindex}</a></li>`);
-            });
-        } else {
-            length = 0;
-            objsheet.closest('.rt_content').remove();
-            return true;
-        }
-        
-    });
-    if (callback) {
-        callback();
-    }
-}
-
-
-

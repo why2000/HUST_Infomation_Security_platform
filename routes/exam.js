@@ -16,7 +16,7 @@ router.get('/*logout', UserController.getLogout);
 /* GET exam page. */
 router.get('/index', ExamController.getIndexPage);
 
-router.get('/*username', ExamController.getUserNameById);
+router.get('/*username', UserController.getUserNameById);
 
 router.get('/:taskindex', ExamController.getTaskPage);
 
@@ -37,7 +37,6 @@ router.delete('/:taskindex/favor', ExamController.deleteFavor);
 
 router.get('/:taskindex/info', ExamController.getInfo);
 
-router.get('/:taskindex/taskinfo', ExamController.getTaskInfo);
 
 router.post('/:taskindex/submit', ExamController.submitTask);
 

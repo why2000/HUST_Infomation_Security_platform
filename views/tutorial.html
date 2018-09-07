@@ -9,14 +9,14 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="google" value="notranslate" />
-    <title>华中科技大学信息安全实验平台 - 在线练习</title>
+    <title>华中科技大学信息安全实验平台 - 在线答题</title>
     <link href="/public/stylesheets/examindex.css" rel="stylesheet" type="text/css" />
     <link href="/public/stylesheets/examiconfont.css" rel="stylesheet" type="text/css" />
     <link href="/public/stylesheets/examtest.css" rel="stylesheet" type="text/css" />
     <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
     <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <script src="/public/javascripts/jquery-1.11.3.min.js"></script>
-    <script src="/public/javascripts/exam.js"></script>
+    <script src="/public/javascripts/tutorial.js"></script>
     <script src="/public/javascripts/jquery.easy-pie-chart.js"></script>
     <script src="/public/javascripts/jquery.countdown.js"></script>
 
@@ -53,13 +53,13 @@
             </li>
             <li>
                 <a id='exam-to-class'>
-                    <i class="fa fa-book fa-lg"></i>
-                    <span class="nav-text">转到课程</span>
+                    <i class="fa fa-tasks fa-lg"></i>
+                    <span class="nav-text">转到练习</span>
 
                 </a>
             </li>
             <li>
-                <a id='exam-to-feedback'>
+                <a id='class-to-feedback'>
                     <i class="fa fa-folder-open fa-lg"></i>
                     <span class="nav-text">上传报告</span>
 
@@ -154,108 +154,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="test-main">
-            <div layoutid="onecolumn" class="main_content">
-                <div class="foo">
-                    <div id="pimShowWidget" widget_id="pimShowWidget" class="widget" style="visibility: visible;">
-                        <div id="pimShowWidget-content" class="widget-content">
-                            <div class="info" id="task-info">
-                                <div class="depart_content_02">
-                                    <div class="audit_notice_content">
-                                        <span class="notice_title_01 audit_notice_span" style="padding-bottom: 16px;"></span>
-                                        <div class="notice_mess_bar">
-                                            <span class="info-author"></span>
-                                            <span class="">&nbsp;|&nbsp;</span>
-                                            <span class="info-category"></span>
-                                            <span class="">&nbsp;|&nbsp;</span>
-                                            <span class="info-time"></span>
-                                            <span class="">&nbsp;|&nbsp;</span>
-                                            <span class="info-hot"></span>
-                                        </div>
-                                        <div class="notice_content_01" id="pim_content">
-                                            <form method="POST" id="exam-form">
-                                                <p style="text-indent: 2em;" dir="ltr">
-                                                </p>
-                                            </form>
-                                        </div>
-
-                                        <!-- <li id="task-3" class="sc">123</li>
-                                            <li id="task-3" class="sc">123</li> -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="test_footer">
-                    <p class="test_time">
-                        <i class="icon iconfont">&#xe6fb;</i>
-                        <b class="alt-1"></b>
-                    </p>
-                    <button type="submit" id="exam-submit" name="exam-submit" value="交卷" form="exam-form">提交</button>
-                </div>
-            </div>
-            <div class="nr_right">
-                <div class="nr_rt_main">
-                    <div class="rt_nr1">
-                        <div class="rt_nr1_title">
-                            <button type="button" id="exam-start" class="waiting">
-                                <i class="icon iconfont">&#xe692;</i>
-                                <span></span>
-                            </button>
-                            <p class="test_time">
-                                <i class="icon iconfont">&#xe6fb;</i>
-                                <b class="alt-1"></b>
-                            </p>
-                        </div>
-
-                        <div class="rt_content" id="rt_content_sc">
-                            <div class="rt_content_tt">
-                                <h2>单选题</h2>
-                                <p>
-                                    <span>共</span>
-                                    <i class="content_lit"></i>
-                                    <span>题</span>
-                                </p>
-                            </div>
-                            <div class="rt_content_nr answerSheet">
-                                <ul>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="rt_content" id="rt_content_mc">
-                            <div class="rt_content_tt">
-                                <h2>多选题</h2>
-                                <p>
-                                    <span>共</span>
-                                    <i class="content_lit"></i>
-                                    <span>题</span>
-                                </p>
-                            </div>
-                            <div class="rt_content_nr answerSheet">
-                                <ul>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="rt_content" id="rt_content_fb">
-                            <div class="rt_content_tt">
-                                <h2>填空题</h2>
-                                <p>
-                                    <span>共</span>
-                                    <i class="content_lit"></i>
-                                    <span>题</span>
-                                </p>
-                            </div>
-                            <div class="rt_content_nr answerSheet">
-                                <ul>
-                                </ul>
                             </div>
                         </div>
                     </div>

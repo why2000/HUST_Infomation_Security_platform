@@ -46,16 +46,17 @@ exports.getTimeLimit = async (req, res, next) => {
         taskindex: taskindex
     }
     try{
-        var info = await ExamValidator.getTimeLimit(params);
+        var timelimit = await ExamValidator.getTimeLimit(params);
+        res.json({
+            result: {
+                timelimit: timelimit
+            }
+        });
     }catch(err){
         ExamLogger.error(`get time limit error => ${err.stack}`);
         next(err);
     }
-    res.json({
-        result: {
-            timelimit: timelimit
-        }
-    });
+
 }
 
 exports.getInfo = async (req, res, next) => {
@@ -76,27 +77,6 @@ exports.getInfo = async (req, res, next) => {
     });
 }
 
-// UserName
-exports.getUserNameById = async (req, res, next) => {
-    var userid = "U201714635";
-    res.json({
-        result: {
-            username: test
-        }
-    });
-    try{
-        var username = await UserValidator.getUserNameById(userid);
-    }catch(err){
-        ExamLogger.error(`get username error => ${err.stack}`);
-        next(err);
-    }
-    // console.log(favorlist);
-    res.json({
-        result: {
-            username: username
-        }
-    });
-}
 
 exports.getTaskPage = async (req, res, next) => {
     var page = "exam";
@@ -130,15 +110,16 @@ exports.getTaskList = async (req, res, next) => {
     }
     try{
         var tasklist = await ExamValidator.getTaskList(params);
+        res.json({
+            result: {
+                tasklist: tasklist
+            }
+        });
     }catch(err){
         ExamLogger.error(`get task list error => ${err.stack}`);
         next(err);
     }
-    res.json({
-        result: {
-            tasklist: tasklist
-        }
-    });
+
 }
 
 
@@ -150,16 +131,17 @@ exports.getFavorList = async (req, res, next) => {
     }
     try{
         var favorlist = await ExamValidator.getFavorList(params);
+        res.json({
+            result: {
+                favorlist: favorlist
+            }
+        });
     }catch(err){
         ExamLogger.error(`get favor list error => ${err.stack}`);
         next(err);
     }
     // console.log(favorlist);
-    res.json({
-        result: {
-            favorlist: favorlist
-        }
-    });
+
 }
 
 
@@ -173,15 +155,16 @@ exports.getFavor = async (req, res, next) => {
     }
     try{
         var favor = await ExamValidator.getFavor(params);
+        res.json({
+            result: {
+                favor: favor
+            }
+        });
     }catch(err){
         ExamLogger.error(`get favor error => ${err.stack}`);
         next(err);
     }
-    res.json({
-        result: {
-            favor: favor
-        }
-    });
+
 }
 
 exports.postFavor = async (req, res, next) => {
@@ -197,7 +180,7 @@ exports.postFavor = async (req, res, next) => {
         let result = await ExamValidator.postFavor(params);
         ExamLogger.info(`add favor result => ${JSON.stringify(result, null, 2)}`);
         res.json({
-            "result": result
+            result: result
         });
     } catch (err) {
         ExamLogger.error(`add favor error => ${err.stack}`);
@@ -218,7 +201,7 @@ exports.deleteFavor = async (req, res, next) => {
         let result = await ExamValidator.deleteFavor(params);
         ExamLogger.info(`delete favor result => ${JSON.stringify(result, null, 2)}`);
         res.json({
-            "result": result
+            result: result
         });
     } catch (err) {
         ExamLogger.error(`delete favor error => ${err.stack}`);
@@ -226,25 +209,7 @@ exports.deleteFavor = async (req, res, next) => {
     }
 }
 
-exports.getTaskInfo = async (req, res, next) => {
-    var taskindex = req.params.taskindex;
-    var userid = "U201714635";
-    var params = {
-        "taskindex": taskindex,
-        "userid": userid
-    }
-    try{
-        var taskinfo = await ExamValidator.getTaskInfo(params);
-    }catch(err){
-        ExamLogger.error(`get taskinfo error => ${err.stack}`);
-        next(err);
-    }
-    res.json({
-        result: {
-            taskinfo: taskinfo
-        }
-    });
-}
+
 
 exports.submitTask = async (req, res, next) => {
     var taskindex = req.params.taskindex;
@@ -255,13 +220,16 @@ exports.submitTask = async (req, res, next) => {
     }
     try{
         var taskinfo = await ExamValidator.getTaskInfo(params);
+        res.json({
+            result: {
+                taskinfo: req.body
+            }
+        });
     }catch(err){
         ExamLogger.error(`submit task error => ${err.stack}`);
         next(err);
     }
-    res.json({
-        result: {
-            taskinfo: req.body
-        }
-    });
+
 }
+
+

@@ -43,3 +43,36 @@ exports.getLogout = async (req, res, next) => {
     req.session.loginUser = null;
     res.redirect('/');
 }
+
+// UserName
+exports.getUserNameById = async (req, res, next) => {
+    var userid = req.session.loginUser;
+    try{
+        var username = await UserValidator.getUserNameById(userid);
+    }catch(err){
+        TutorialLogger.error(`get username error => ${err.stack}`);
+        next(err);
+    }
+    // console.log(favorlist);
+    res.json({
+        result: {
+            username: username
+        }
+    });
+}
+
+exports.getUserTypeById = async (req, res, next) => {
+    var userid = req.session.loginUser;
+    try{
+        var username = await UserValidator.getUserTypeById(userid);
+    }catch(err){
+        TutorialLogger.error(`get usertype error => ${err.stack}`);
+        next(err);
+    }
+    // console.log(favorlist);
+    res.json({
+        result: {
+            usertype: usertype
+        }
+    });
+}

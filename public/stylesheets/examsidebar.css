@@ -2,7 +2,7 @@
 
 @import url(http://fonts.googleapis.com/css?family=Titillium+Web:300);
 
-.header{height: 60px;background: #1f69ac;width: 100%; position: fixed; }
+.header{height: 60px;background: #1f69ac;width: 100%; position: fixed; top: 0px;}
 .header .headerb{height: 60px;background: #1f69ac;width: 1200px;overflow: hidden;margin: auto;}
 .header .headerb .top-logo{width:69px;height: 60px;float: left;background: url(/public/images/logo.gif) no-repeat;}
 .header .headerb .top-logo img{width:69px;height: 60px;float: left;}

@@ -6,7 +6,7 @@ var tmp_path = require('../config/file.json').MULTER_TMP_FILE_PATH; // 问题很
 var upload = multer({dest: tmp_path});
 var router = express.Router();
 
-router.get('/', feedback.getIndexPage);
+router.get('/', feedback.getIndex);
 //router.get('/', feedback.getIndex);
 router.get('/:student_id/:module_id', feedback.getPageByUserType);
 
