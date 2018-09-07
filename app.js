@@ -58,11 +58,8 @@ app.use('/exam', examRouter);
 app.use('/simulator', simulatorRouter);
 app.use('/feedback', feedbackRouter);
 app.use('/file', fileRouter);
-<<<<<<< HEAD
-=======
 app.use('/tutorial', tutorialRouter);
 app.use('/information', informationRouter)
->>>>>>> 32f127c94d707d30e187d832226179bcd917643d
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
