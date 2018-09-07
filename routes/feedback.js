@@ -7,6 +7,8 @@ var upload = multer({dest: tmp_path});
 var router = express.Router();
 
 router.get('/', feedback.getIndexPage);
+//router.get('/', feedback.getIndex);
+router.get('/:student_id/:module_id', feedback.getPageByUserType);
 
 // 报告文件
 router.get('/report/:student_id/:module_id', feedback.getStudentReport);

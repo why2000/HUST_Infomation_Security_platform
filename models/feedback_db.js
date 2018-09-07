@@ -111,9 +111,11 @@ const getJudgementByStudentIDAndModuleID = async (student_id, module_id) => {
     var ret = undefined;
     let res = await colJudgement.findOne({student_id: student_id, module_id: module_id});
     if(res) {
+        let name_res = await user_db.findUserById(student_id);
         ret = {
             score: res.score,
-            text: res.text
+            text: res.text,
+            name: name_res
         };
     }
 

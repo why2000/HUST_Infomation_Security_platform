@@ -17,9 +17,11 @@ var catalogRouter = require('./routes/catalog');
 var contactRouter = require('./routes/contact');
 var examRouter = require('./routes/exam');
 var loginRouter = require('./routes/login');
-var simulatorRouter = require('./routes/simulator');
+var simulatorRouter = require('./routes/simulator')
 var feedbackRouter = require('./routes/feedback');
 var fileRouter = require('./routes/file');
+var tutorialRouter = require('./routes/tutorial')
+var informationRouter = require('./routes/information')
 
 var app = express();
 
@@ -56,6 +58,11 @@ app.use('/exam', examRouter);
 app.use('/simulator', simulatorRouter);
 app.use('/feedback', feedbackRouter);
 app.use('/file', fileRouter);
+<<<<<<< HEAD
+=======
+app.use('/tutorial', tutorialRouter);
+app.use('/information', informationRouter)
+>>>>>>> 32f127c94d707d30e187d832226179bcd917643d
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

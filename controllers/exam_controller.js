@@ -79,6 +79,11 @@ exports.getInfo = async (req, res, next) => {
 // UserName
 exports.getUserNameById = async (req, res, next) => {
     var userid = "U201714635";
+    res.json({
+        result: {
+            username: test
+        }
+    });
     try{
         var username = await UserValidator.getUserNameById(userid);
     }catch(err){

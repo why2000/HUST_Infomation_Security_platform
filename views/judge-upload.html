@@ -7,20 +7,20 @@
   <title>华中科技大学信息安全实验平台 - 教师评价</title>
   <!-- load JS-->
   <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-  <script type="text/javascript" src="./javascripts/popper.min.js"></script>
-  <script type="text/javascript" src="./javascripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="javascripts/judgeupload.js"></script>
+  <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/judgeupload.js"></script>
   <!-- load CSS -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300">
   <!-- Google web font "Open Sans" -->
-  <link rel="stylesheet" href="./stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
   <!-- https://getbootstrap.com/ -->
-  <link rel="stylesheet" href="./stylesheets/fontawesome/css/fontawesome-all.min.css">
+  <link rel="stylesheet" href="/public/stylesheets/fontawesome/css/fontawesome-all.min.css">
   <!-- https://fontawesome.com/ -->
-  <link rel="stylesheet" type="text/css" href="./stylesheets/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
   <!-- http://kenwheeler.github.io/slick/ -->
-  <link rel="stylesheet" type="text/css" href="./stylesheets/slick/slick-theme.css" />
-  <link rel="stylesheet" href="./stylesheets/tooplate-style.css">
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
+  <link rel="stylesheet" href="/public/stylesheets/tooplate-style.css">
 
   <script>
     document.documentElement.className = "js";
@@ -38,8 +38,8 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #133AAC; ">
     <div style="width: 1200px ;overflow: visible; margin: auto;">
-      <img src="./images/logo.gif">
-      <a class="navbar-brand" href="./catalog.html" style="padding-left: 10px; margin-left: 10px; color: white; border-left: 1px solid #7c8b99; font-size:24px;">华中科技大学信息安全实验平台</a>
+      <img src="/public/images/logo.gif">
+      <a class="navbar-brand" href="/public/catalog.html" style="padding-left: 10px; margin-left: 10px; color: white; border-left: 1px solid #7c8b99; font-size:24px;">华中科技大学信息安全实验平台</a>
       <div class="dropdown" style="float:right; margin-top:6px;">
         <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false">
@@ -66,16 +66,16 @@
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-            <small id="student" class="form-text text-muted" style="color: black!important;">当前评价学生: </small>
+            <small id="student" class="form-text text-muted" style="color: black!important;">当前评价学生: <%=studentName%></small>
             <br />
             <form>
               <div class="form-group">
                 <label style="color:black; font-size:14px;">分数</label>
-                <input class="form-control" type="number" style="background-color: white; border:#ced4da solid 1px; color:black" id="inputScore" placeholder="请输入0-100的数字">
+                <input class="form-control" type="number" style="background-color: white; border:#ced4da solid 1px; color:black" id="inputScore" placeholder="请输入0-100的数字" value=<%=inputScore%>>
               </div>
               <div class="form-group">
                 <label style="color:black; font-size:14px;">评价</label>
-                <textarea  class="form-control" rows="10" style="background-color: white; border:#ced4da solid 1px; color:black;" id="inputText"></textarea>
+                <textarea  class="form-control" rows="10" style="background-color: white; border:#ced4da solid 1px; color:black;" id="inputText"><%=inputText%></textarea>
               </div>
               <center><button type="button" class="btn btn-primary" id='submit'>提交</button></center>
               </form>

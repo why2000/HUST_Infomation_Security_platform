@@ -12,6 +12,9 @@ exports.loginCheck = async params => {
     console.log(params);
     var userid = params.userid;
     var password = params.password;
+    //if(userid == '123' && password == '123')
+    //return true;
+    
     if(!await Validator._validateuserid(userid)||!await Validator._validatepassword(password)){
         var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
         UserLogger.error(`controller error => ${err.stack}`);
@@ -29,7 +32,6 @@ exports.loginCheck = async params => {
     return false;
 }
 
-
 //UserType
 exports.getUserTypeById = async userid => {
     // console.log(typeof favor);
@@ -45,7 +47,6 @@ exports.getUserTypeById = async userid => {
     }
     return null
 }
-
 
 // UserName
 exports.getUserNameById = async userid => {

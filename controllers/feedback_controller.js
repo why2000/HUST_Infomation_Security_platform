@@ -1,9 +1,11 @@
+'use strict'
 var feedback = require('../models/feedback_db');
 var file = require('../models/file_db');
 var response = require('../utils/response');
 var extname = require('path').extname;
 var cfg = require('../config/feedback.json');
 var fs = require('fs');
+var UserValidator = require('../validators/user_validator');
 
 
 const getIndexPage = (req, res) => {
@@ -12,9 +14,43 @@ const getIndexPage = (req, res) => {
 
 
 /* 
-    还有用户认证
     考虑添加一个全局的ErrorHandler(如果有这种玩意儿)
 */
+
+// *用户验证已经加入
+// TODO:尚无入口URL，尤其是教师如何进入
+const getIndex = (req, res) => {
+    
+    if (!req.session.loginUser) {
+        res.redirect('/');
+    } else {
+        if (UserValidator.getUserTypeById(req.session.loginUser) == "student") {
+            res.render('report-index');
+        }
+        // TODO
+        /*
+        else if (UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+            res.redirect/render('judge-index');
+        }
+        */
+    }
+}
+
+const getPageByUserType = (req, res) => {
+    if (!req.session.loginUser) {
+        res.redirect('/');
+    } else {
+        res.render('report-upload');
+        if (UserValidator.getUserTypeById(req.session.loginUser) == "student") {
+            res.render('report-upload');
+        }
+        // !未经测试
+        else if (UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+            res.redirect('/feedback/judgement/:' + req.params.student_id + req.params.module_id);
+        }
+
+    }
+}
 
 const getStudentReport = (req, res) => {
     feedback.getReportByStudentIDAndModuleID(req.params.student_id, req.params.module_id)
@@ -23,10 +59,10 @@ const getStudentReport = (req, res) => {
             response(res, 500, "Server error.");
         })
         .then(result => {
-            if(result) {
+            if (result) {
                 response(res, result);
             } else {
-                response(res, 404, 'Not found.');
+                res.redirect('error');
             }
         });
 }
@@ -37,12 +73,12 @@ const saveStudentReport = (req, res) => {
     let sid = req.params.student_id;
     let mid = req.params.module_id;
 
-    if(!req.file) { // 没上传文件
+    if (!req.file) { // 没上传文件
         response(res, 400, "Argument error.");
         return;
     }
 
-    if(cfg.EXTENSIONS.indexOf(extname(req.file.originalname).toLowerCase()) == -1) { // 不在允许的扩展名内
+    if (cfg.EXTENSIONS.indexOf(extname(req.file.originalname).toLowerCase()) == -1) { // 不在允许的扩展名内
         response(res, 400, 'File is not allowed to upload.');
         fs.unlink(req.file.path);// 删掉文件，其实感觉不太对，不应该放在这儿
         return;
@@ -51,7 +87,7 @@ const saveStudentReport = (req, res) => {
 
     feedback.getReportByStudentIDAndModuleID(sid, mid)
         .then(result => {
-            if(result) {
+            if (result) {
                 // 注意，这里是异步
                 file.removeFile(result.file_id);
             }
@@ -72,10 +108,10 @@ const saveStudentReport = (req, res) => {
 const deleteStudentReport = (req, res) => {
     let sid = req.params.student_id;
     let mid = req.params.module_id;
-    
+
     feedback.getReportByStudentIDAndModuleID(sid, mid)
         .then(result => {
-            if(result) {
+            if (result) {
                 file.removeFile(result.file_id)
                     .then(() => {
                         return feedback.removeReport(sid, mid);
@@ -87,7 +123,7 @@ const deleteStudentReport = (req, res) => {
                         response(res, 500, 'Server error.');
                     });
             } else {
-                response(res, 404, 'Not found.');
+                res.redirect('error');
             }
         });
 }
@@ -95,10 +131,11 @@ const deleteStudentReport = (req, res) => {
 const getTeacherJudgement = (req, res) => {
     feedback.getJudgementByStudentIDAndModuleID(req.params.student_id, req.params.module_id)
         .then(result => {
-            if(result) {
-                response(res, result);
+
+            if (result) {
+                res.render('judge-upload', { inputScore: result.score, inputText: result.text, studentName: result.name })
             } else {
-                response(res, 404, 'Not found.');
+                res.redirect('/error');
             }
         })
         .catch(err => {
@@ -112,7 +149,7 @@ const saveTeacherJudgement = (req, res) => {
     let mid = req.params.module_id;
 
     // 参数类型检查和范围检查 其实很丑，看看有什么比较好看的解决方案
-    if(typeof(req.body.score) == 'number' && typeof(req.body.body == 'string') && (req.body.score >= 0 && req.body.score <= 100)) {
+    if (typeof (req.body.score) == 'number' && typeof (req.body.body == 'string') && (req.body.score >= 0 && req.body.score <= 100)) {
         req.body.score = Math.floor(req.body.score);//取整
         // 注意HTML转义的问题，先尝试在前端解决
         feedback.upsertJudgement(sid, mid, req.body.score, req.body.text)
@@ -122,7 +159,7 @@ const saveTeacherJudgement = (req, res) => {
             .catch(err => {
                 response(res, 500, 'Server error.');
             });
-        
+
     } else {
         response(res, 400, 'Data error.');
     }
@@ -142,7 +179,12 @@ const deleteTeacherJudgement = (req, res) => {
 }
 
 module.exports = {
+<<<<<<< HEAD:controllers/feedback_controller.js
     getIndexPage,
+=======
+    getIndex,
+    getPageByUserType,
+>>>>>>> 32f127c94d707d30e187d832226179bcd917643d:controllers/feedback_controller.js
     getStudentReport,
     saveStudentReport,
     deleteStudentReport,
