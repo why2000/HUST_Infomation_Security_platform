@@ -10,20 +10,19 @@ var router = express.Router();
 //Logout
 router.get('/*logout', UserController.getLogout);
 
-router.get('/', feedback.getIndex);
 //router.get('/', feedback.getIndex);
 
 router.get('/:class_id', feedback.getPageByUserType);
 
 // 报告文件
-router.get('/report/:student_id/:class_id', feedback.getStudentReport);
-router.post('/report/:class_id', upload.single('upload'), feedback.saveStudentReport);
-router.delete('/report/:class_id', feedback.deleteStudentReport);
+router.get('/:class_id/:student_id/report', feedback.getStudentReport);
+router.post('/:class_id/report', upload.single('upload'), feedback.saveStudentReport);
+router.delete('/:class_id/report', feedback.deleteStudentReport);
 
 // 教师反馈
-router.get('/judgement/:student_id/:class_id', feedback.getTeacherJudgement);
-router.post('/judgement/:student_id/:class_id', feedback.saveTeacherJudgement);
-router.delete('/judgement/:student_id/:class_id', feedback.deleteTeacherJudgement);
+router.get('/:class_id/:student_id/judgement', feedback.getTeacherJudgement);
+router.post('/:class_id/:student_id/judgement', feedback.saveTeacherJudgement);
+router.delete('/:class_id/:student_id/judgement', feedback.deleteTeacherJudgement);
 
 router.get('/*userid', UserController.getUserId);
 
