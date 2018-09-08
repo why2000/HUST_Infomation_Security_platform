@@ -10,7 +10,6 @@ var router = express.Router();
 //Logout
 router.get('/*logout', UserController.getLogout);
 
-router.get('/', feedback.getIndex);
 //router.get('/', feedback.getIndex);
 router.get('/:class_id', feedback.getPageByUserType);
 
