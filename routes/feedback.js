@@ -15,13 +15,17 @@ router.get('/', feedback.getIndex);
 router.get('/:class_id', feedback.getPageByUserType);
 
 // 报告文件
-router.get('/report/:class_id', feedback.getStudentReport);
+router.get('/report/:student_id/:class_id', feedback.getStudentReport);
 router.post('/report/:class_id', upload.single('upload'), feedback.saveStudentReport);
 router.delete('/report/:class_id', feedback.deleteStudentReport);
 
 // 教师反馈
-router.get('/judgement/:class_id', feedback.getTeacherJudgement);
-router.post('/judgement/:class_id', feedback.saveTeacherJudgement);
-router.delete('/judgement/:class_id', feedback.deleteTeacherJudgement);
+router.get('/judgement/:student_id/:class_id', feedback.getTeacherJudgement);
+router.post('/judgement/:student_id/:class_id', feedback.saveTeacherJudgement);
+router.delete('/judgement/:student_id/:class_id', feedback.deleteTeacherJudgement);
+
+router.get('/*userid', UserController.getUserId);
+
+router.get('/*username', UserController.getUserNameById);
 
 module.exports = router;
