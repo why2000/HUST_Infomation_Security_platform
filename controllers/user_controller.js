@@ -76,3 +76,12 @@ exports.getUserTypeById = async (req, res, next) => {
         }
     });
 }
+
+exports.getUserId = async (req, res, next) => {
+    var userid = req.session.loginUser;
+    res.json({
+        result: {
+            userid: userid
+        }
+    });
+}

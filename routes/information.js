@@ -12,4 +12,8 @@ router.post('/',InformationController.setData);
 
 router.get('/logout', UserController.getLogout);
 
+router.get('/*username', UserController.getUserNameById);
+
+router.get('/*userid', UserController.getUserId);
+
 module.exports = router;

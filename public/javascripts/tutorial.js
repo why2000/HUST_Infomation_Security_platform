@@ -343,7 +343,7 @@ function getInfo(callback) {
                 // setTaskList(tasklist);
                 if(!info || (info == null)){
                     alert('课程信息不存在');
-                    window.location.href = './index';
+                    window.location.href = '../catalog';
                 }
                 if (isIndex()) {
                     setInfo();

@@ -8,10 +8,6 @@ var fs = require('fs');
 var UserValidator = require('../validators/user_validator');
 
 
-const getIndexPage = (req, res) => {
-
-}
-
 
 /* 
     考虑添加一个全局的ErrorHandler(如果有这种玩意儿)
@@ -25,6 +21,7 @@ const getIndex = async (req, res) => {
         res.redirect('/');
     } else {
         if (await UserValidator.getUserTypeById(req.session.loginUser) == "student") {
+            console.log()
             res.render('report-index');
         }
         // TODO
