@@ -3,6 +3,11 @@
 sessions/
 sessions/*
 
+files/
+files/*
+
+logs/*
+
 # Logs
 logs
 *.log
@@ -39,6 +44,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+node_modules/*
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -77,8 +83,6 @@ typings/
 # Serverless directories
 .serverless
 
-/node_modules/*
 .eslintrc.json
 tmp/
-files/
 

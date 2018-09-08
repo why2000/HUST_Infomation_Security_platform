@@ -19,12 +19,12 @@ const getIndexPage = (req, res) => {
 
 // *用户验证已经加入
 // TODO:尚无入口URL，尤其是教师如何进入
-const getIndex = (req, res) => {
-    
+const getIndex = async (req, res) => {
+
     if (!req.session.loginUser) {
         res.redirect('/');
     } else {
-        if (UserValidator.getUserTypeById(req.session.loginUser) == "student") {
+        if (await UserValidator.getUserTypeById(req.session.loginUser) == "student") {
             res.render('report-index');
         }
         // TODO
@@ -37,23 +37,29 @@ const getIndex = (req, res) => {
 }
 
 const getPageByUserType = (req, res) => {
+
     if (!req.session.loginUser) {
         res.redirect('/');
     } else {
-        res.render('report-upload');
-        if (UserValidator.getUserTypeById(req.session.loginUser) == "student") {
-            res.render('report-upload');
-        }
-        // !未经测试
-        else if (UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
-            res.redirect('/feedback/judgement/:' + req.params.student_id + req.params.module_id);
-        }
-
+        UserValidator.getUserTypeById(req.session.loginUser).then(user_type => {
+            if (user_type == "student") {
+                if (req.params.class_id != 'index') {
+                    res.render('report-upload');
+                }
+                else {
+                    res.render('report-index');
+                }
+            }
+            // !未经测试
+            else if (UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+                res.redirect('/feedback/judgement/:' + req.params.class_id);
+            }
+        });
     }
 }
 
 const getStudentReport = (req, res) => {
-    feedback.getReportByStudentIDAndModuleID(req.params.student_id, req.params.module_id)
+    feedback.getReportByStudentIDAndModuleID(req.session.loginUser, req.params.class_id)
         .catch(err => {
             //need a logger
             response(res, 500, "Server error.");
@@ -62,16 +68,16 @@ const getStudentReport = (req, res) => {
             if (result) {
                 response(res, result);
             } else {
-                res.redirect('error');
+                res.status(400);
             }
         });
 }
 
 const saveStudentReport = (req, res) => {
-    // 注意student_id和module_id是否存在
+    // 注意student_id和class_id是否存在
     // form内input file的id为upload
-    let sid = req.params.student_id;
-    let mid = req.params.module_id;
+    let sid = req.session.loginUser;
+    let mid = req.params.class_id;
 
     if (!req.file) { // 没上传文件
         response(res, 400, "Argument error.");
@@ -106,8 +112,8 @@ const saveStudentReport = (req, res) => {
 }
 
 const deleteStudentReport = (req, res) => {
-    let sid = req.params.student_id;
-    let mid = req.params.module_id;
+    let sid = req.session.loginUser;
+    let mid = req.params.class_id;
 
     feedback.getReportByStudentIDAndModuleID(sid, mid)
         .then(result => {
@@ -123,19 +129,19 @@ const deleteStudentReport = (req, res) => {
                         response(res, 500, 'Server error.');
                     });
             } else {
-                res.redirect('error');
+                res.status(400);
             }
         });
 }
 
 const getTeacherJudgement = (req, res) => {
-    feedback.getJudgementByStudentIDAndModuleID(req.params.student_id, req.params.module_id)
+    feedback.getJudgementByStudentIDAndModuleID(req.session.loginUser, req.params.class_id)
         .then(result => {
 
             if (result) {
                 res.render('judge-upload', { inputScore: result.score, inputText: result.text, studentName: result.name })
             } else {
-                res.redirect('/error');
+                res.status(400);
             }
         })
         .catch(err => {
@@ -144,9 +150,9 @@ const getTeacherJudgement = (req, res) => {
 }
 
 const saveTeacherJudgement = (req, res) => {
-    // 注意student_id和module_id是否存在
-    let sid = req.params.student_id;
-    let mid = req.params.module_id;
+    // 注意student_id和class_id是否存在
+    let sid = req.session.loginUser;
+    let mid = req.params.class_id;
 
     // 参数类型检查和范围检查 其实很丑，看看有什么比较好看的解决方案
     if (typeof (req.body.score) == 'number' && typeof (req.body.body == 'string') && (req.body.score >= 0 && req.body.score <= 100)) {
@@ -166,8 +172,8 @@ const saveTeacherJudgement = (req, res) => {
 }
 
 const deleteTeacherJudgement = (req, res) => {
-    let sid = req.params.student_id;
-    let mid = req.params.module_id;
+    let sid = req.session.loginUser;
+    let mid = req.params.class_id;
 
     feedback.removeJudgement(sid, mid)
         .then(() => {

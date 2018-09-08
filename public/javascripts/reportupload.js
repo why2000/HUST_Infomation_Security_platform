@@ -1,10 +1,10 @@
 $(document).ready(function () {
 
-  let localURLArgs = location.href.split('/')
-  var mid = localURLArgs.pop(), sid = localURLArgs.pop();
+  let localURLArgs = location.href.split('/');
+  var mid = localURLArgs.pop();
 
   $.getJSON({
-    url: `/feedback/report/${sid}/${mid}`,
+    url: `/feedback/report/${mid}`,
     success: (data) => {
       $('#reportaddr').attr('href', `/file/${data.data.file_id}`);
       $('#fileUploaded').show();
@@ -24,7 +24,7 @@ $(document).ready(function () {
       var form = new FormData();
       form.append('upload', file);
       $.post({
-        url: `/feedback/report/${sid}/${mid}`,
+        url: `/feedback/report/${mid}`,
         data: form,
         contentType: false,
         processData: false,
