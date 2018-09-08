@@ -19,15 +19,13 @@ exports.getIndexPage = async (req, res, next) => {
         username: "",
         usertype: usertype
     };
-    
-    if(!req.session.loginUser){
+
+    if (!req.session.loginUser) {
         res.redirect('/');
-    }else{
-        if(await UserValidator.getUserTypeById(req.session.loginUser) == "teacher"){
+    } else {
+        if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
             page += "_teacher"
-        }
-        else if(await UserValidator.getUserTypeById(req.session.loginUser) == "student"){
-            ;
+        } else if (await UserValidator.getUserTypeById(req.session.loginUser) == "student") {;
         }
         res.render(page);
     }
@@ -35,9 +33,9 @@ exports.getIndexPage = async (req, res, next) => {
 
 exports.getTimeLimit = async (req, res, next) => {
     var taskindex = req.params.taskindex;
-    if(taskindex == "index"){
+    if (taskindex == "index") {
         res.json({
-            result:{
+            result: {
                 timelimit: null
             }
         });
@@ -45,14 +43,14 @@ exports.getTimeLimit = async (req, res, next) => {
     var params = {
         taskindex: taskindex
     }
-    try{
+    try {
         var timelimit = await ExamValidator.getTimeLimit(params);
         res.json({
             result: {
                 timelimit: timelimit
             }
         });
-    }catch(err){
+    } catch (err) {
         ExamLogger.error(`get time limit error => ${err.stack}`);
         next(err);
     }
@@ -64,9 +62,9 @@ exports.getInfo = async (req, res, next) => {
     var params = {
         taskindex: taskindex
     }
-    try{
+    try {
         var info = await ExamValidator.getInfo(params);
-    }catch(err){
+    } catch (err) {
         ExamLogger.error(`get info error => ${err.stack}`);
         next(err);
     }
@@ -108,14 +106,14 @@ exports.getTaskList = async (req, res, next) => {
     var params = {
         "userid": userid
     }
-    try{
+    try {
         var tasklist = await ExamValidator.getTaskList(params);
         res.json({
             result: {
                 tasklist: tasklist
             }
         });
-    }catch(err){
+    } catch (err) {
         ExamLogger.error(`get task list error => ${err.stack}`);
         next(err);
     }
@@ -129,14 +127,14 @@ exports.getFavorList = async (req, res, next) => {
     var params = {
         "userid": userid
     }
-    try{
+    try {
         var favorlist = await ExamValidator.getFavorList(params);
         res.json({
             result: {
                 favorlist: favorlist
             }
         });
-    }catch(err){
+    } catch (err) {
         ExamLogger.error(`get favor list error => ${err.stack}`);
         next(err);
     }
@@ -153,14 +151,14 @@ exports.getFavor = async (req, res, next) => {
         "taskindex": taskindex,
         "userid": userid
     }
-    try{
+    try {
         var favor = await ExamValidator.getFavor(params);
         res.json({
             result: {
                 favor: favor
             }
         });
-    }catch(err){
+    } catch (err) {
         ExamLogger.error(`get favor error => ${err.stack}`);
         next(err);
     }
@@ -218,18 +216,16 @@ exports.submitTask = async (req, res, next) => {
         "taskindex": taskindex,
         "userid": userid
     }
-    try{
+    try {
         var taskinfo = await ExamValidator.getTaskInfo(params);
         res.json({
             result: {
                 taskinfo: req.body
             }
         });
-    }catch(err){
+    } catch (err) {
         ExamLogger.error(`submit task error => ${err.stack}`);
         next(err);
     }
 
 }
-
-

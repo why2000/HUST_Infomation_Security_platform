@@ -6,6 +6,8 @@ var extname = require('path').extname;
 var cfg = require('../config/feedback.json');
 var fs = require('fs');
 var UserValidator = require('../validators/user_validator');
+let FeedbackLogger = require('../logger').FeedbackLogger;
+let FeedbackValidator = require('../validators/feedback_validator');
 
 
 
@@ -22,8 +24,7 @@ const getPageByUserType = (req, res) => {
             if (user_type == "student") {
                 if (req.params.class_id != 'index') {
                     res.render('report-upload');
-                }
-                else {
+                } else {
                     res.render('report-index');
                 }
             } else if (user_type == "teacher") {
@@ -35,8 +36,8 @@ const getPageByUserType = (req, res) => {
 
 const getStudentReport = async (req, res) => {
     if (!req.session.loginUser &&
-        ((await UserValidator.getUserTypeById(req.session.loginUser) == "teacher"))
-        || (req.session.loginUser == req.params.student_id)) {
+        ((await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) ||
+        (req.session.loginUser == req.params.student_id)) {
         feedback.getReportByStudentIDAndModuleID(req.params.student_id, req.params.class_id)
             .catch(err => {
                 //need a logger
@@ -65,7 +66,7 @@ const saveStudentReport = async (req, res) => {
 
     if (cfg.EXTENSIONS.indexOf(extname(req.file.originalname).toLowerCase()) == -1) { // 不在允许的扩展名内
         response(res, 400, 'File is not allowed to upload.');
-        fs.unlink(req.file.path);// 删掉文件，其实感觉不太对，不应该放在这儿
+        fs.unlink(req.file.path); // 删掉文件，其实感觉不太对，不应该放在这儿
         return;
     }
 
@@ -112,72 +113,85 @@ const deleteStudentReport = async (req, res) => {
         });
 }
 
-const getTeacherJudgement = async (req, res) => {
+const getTeacherJudgement = async (req, res, next) => {
+    var student_id;
+    if (await UserValidator.getUserTypeById(req.session.loginUser) == 'student') {
+        student_id = req.session.loginUser.toString();
+    }
     if (!req.session.loginUser &&
-        ((await UserValidator.getUserTypeById(req.session.loginUser) == "teacher"))
-        || (req.session.loginUser == req.params.student_id)) {
-
-        feedback.getJudgementByStudentIDAndModuleID(req.params.student_id, req.params.class_id)
-            .then(result => {
-                if (result) {
-                    res.json({ score: result.score, text: result.text, studentName: result.name });
-                } else {
-                    res.status(400);
+        ((await UserValidator.getUserTypeById(req.session.loginUser) == "teacher"))) {
+        student_id = req.params.student_id.toString();
+    }
+    try {
+        var class_id = req.params.class_id;
+        feedback.getJudgementByStudentIDAndModuleID(student_id, class_id).then(result => {
+            console.log(result);
+            res.json({
+                result: {
+                    info: {
+                        score: result.score,
+                        text: result.text
+                    }
                 }
-            })
-            .catch(err => {
-                response(res, 500, "Server error.");
             });
+        });
+        // console.log(judgeinfo);
+    } catch (err) {
+        FeedbackLogger.error(`controller error => ${err.stack}`)
+        next(err);
     }
 
-    const saveTeacherJudgement = async (req, res) => {
-        // 注意student_id和class_id是否存在
-        let sid = req.params.student_id;
-        let mid = req.params.class_id;
-        if (!req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
 
-            // 参数类型检查和范围检查 其实很丑，看看有什么比较好看的解决方案
-            if (typeof (req.body.score) == 'number' && typeof (req.body.body == 'string') && (req.body.score >= 0 && req.body.score <= 100)) {
-                req.body.score = Math.floor(req.body.score);//取整
-                // 注意HTML转义的问题，先尝试在前端解决
-                feedback.upsertJudgement(sid, mid, req.body.score, req.body.text)
-                    .then(() => {
-                        response(res, {});
-                    })
-                    .catch(err => {
-                        response(res, 500, 'Server error.');
-                    });
+}
 
-            } else {
-                response(res, 400, 'Data error.');
-            }
-        } else {
-            response(res, 400, "premission denied");
-        }
-    }
+const saveTeacherJudgement = async (req, res) => {
+    // 注意student_id和class_id是否存在
+    let sid = req.params.student_id;
+    let mid = req.params.class_id;
+    if (!req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
 
-    const deleteTeacherJudgement = async (req, res) => {
-        let sid = req.params.student_id;
-        let mid = req.params.class_id;
-        if (!req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
-            feedback.removeJudgement(sid, mid)
+        // 参数类型检查和范围检查 其实很丑，看看有什么比较好看的解决方案
+        if (typeof (req.body.score) == 'number' && typeof (req.body.body == 'string') && (req.body.score >= 0 && req.body.score <= 100)) {
+            req.body.score = Math.floor(req.body.score); //取整
+            // 注意HTML转义的问题，先尝试在前端解决
+            feedback.upsertJudgement(sid, mid, req.body.score, req.body.text)
                 .then(() => {
                     response(res, {});
                 })
                 .catch(err => {
                     response(res, 500, 'Server error.');
                 });
-        } else {
-            response(res, 400, "premission denied");
-        }
-    }
 
-    module.exports = {
-        getPageByUserType,
-        getStudentReport,
-        saveStudentReport,
-        deleteStudentReport,
-        getTeacherJudgement,
-        saveTeacherJudgement,
-        deleteTeacherJudgement
+        } else {
+            response(res, 400, 'Data error.');
+        }
+    } else {
+        response(res, 400, "premission denied");
     }
+}
+
+const deleteTeacherJudgement = async (req, res) => {
+    let sid = req.params.student_id;
+    let mid = req.params.class_id;
+    if (!req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
+        feedback.removeJudgement(sid, mid)
+            .then(() => {
+                response(res, {});
+            })
+            .catch(err => {
+                response(res, 500, 'Server error.');
+            });
+    } else {
+        response(res, 400, "premission denied");
+    }
+}
+
+module.exports = {
+    getPageByUserType,
+    getStudentReport,
+    saveStudentReport,
+    deleteStudentReport,
+    getTeacherJudgement,
+    saveTeacherJudgement,
+    deleteTeacherJudgement
+}

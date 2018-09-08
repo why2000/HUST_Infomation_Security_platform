@@ -36,19 +36,19 @@
 </head>
 
 <body>
-    <div class="header">
-        <div class="headerb">
-            <div class="top-logo" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
-            <div class="headern">
-                华中科技大学信息安全实验平台
-            </div>
+  <div class="header">
+    <div class="headerb">
+      <div class="top-logo" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
+      <div class="headern">
+        华中科技大学信息安全实验平台
+      </div>
 
-            <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
-                <div class="logout-icon"></div>
-                <span>退出</span>
-            </div>
-        </div>
+      <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
+        <div class="logout-icon"></div>
+        <span>退出</span>
+      </div>
     </div>
+  </div>
 
   <div style="width: 1200px ; margin: auto; margin-top: 80px;">
     <div class="row">
@@ -65,12 +65,14 @@
               <br />
               <center>
                 <div class="form-group" style="width: 30%; text-align: center;">
-                  <input type="file" class="form-control-file" id="upload" placeholder="" aria-describedby="fileHelpId" style="font-size: 14px">
+                  <input type="file" class="form-control-file" id="upload" placeholder="" aria-describedby="fileHelpId"
+                    style="font-size: 14px">
                   <small id="fileHelpId" class="form-text text-muted" style="text-align: left;" hidden>当前未选择文件</small>
                 </div>
-                <small id="fileUploaded" class="form-text text-muted" style="display: none">已上传报告，<a id='reportaddr' href="/">点击下载</a></small>
-                <button id="text" type="button" class="btn btn-primary" style="cursor: pointer; float:left;" onclick="javascript:history.back();" >返回</button>
-                <button id="submit" type="button" class="btn btn-primary" >上传</button>
+                <small id="fileUploaded" class="form-text text-muted" style="display: none">已上传报告，<a id='reportaddr'
+                    href="/">点击下载</a></small>
+                <button id="text" type="button" class="btn btn-primary" style="cursor: pointer; float:left;" onclick="javascript:history.back();">返回</button>
+                <button id="submit" type="button" class="btn btn-primary">上传</button>
               </center>
             </form>
             <table class="table" style="margin-top: 10px;" id="result-table">
@@ -79,7 +81,7 @@
                   <th>姓名</th>
                   <th>课程名</th>
                   <th>得分</th>
-                  <th>教师评价</th>
+                  <th style="text-align: right">教师评价</th>
                 </tr>
               </thead>
               <tbody>
@@ -88,11 +90,22 @@
                   <td class="classname">未找到课程</td>
                   <td class="score">未评分</td>
                   <td class="judge">
-                    <button id="download" type="button" class="btn btn-primary" style="cursor: pointer; float:left;" onclick="openJudge(classindex);">查看评价</button>
+                    <button id="show-judgement" type="button" class="btn btn-primary" style="cursor: pointer; float:right;"
+                      onclick="openJudge(classindex);">查看评价</button>
+                      <br>
+                    <form role="form" id='judgement-text-form' class='hidden' style="display: none; ">
+                      <div class="form-group">
+                        <label for="name"></label>
+                        <textarea class="form-control" id="judgement-text" rows="3" readonly="readonly"></textarea>
+                      </div>
+                    </form>
+
                   </td>
                 </tr>
               </tbody>
+
             </table>
+
           </div>
         </div>
 </body>

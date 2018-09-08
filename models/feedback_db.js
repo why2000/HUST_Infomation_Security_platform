@@ -14,7 +14,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
         throw err;
     } else {
         db = client.db(ConfigSet.DATABASE_NAME);
-        db.createCollection(ConfigSet.COLLECTION_NAME, function(err, res) {
+        db.createCollection(ConfigSet.COLLECTION_NAME, function (err, res) {
             if (err) {
                 FeedbackLogger.error(`database error => ${err.stack}`);
                 throw err;
@@ -22,7 +22,25 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
                 //console.log("Successfully creat col");
                 ;
             }
-          });
+        });
+        db.createCollection('IS_Reports', function (err, res) {
+            if (err) {
+                FeedbackLogger.error(`database error => ${err.stack}`);
+                throw err;
+            } else {
+                //console.log("Successfully creat col");
+                ;
+            }
+        });
+        db.createCollection('IS_Judgements', function (err, res) {
+            if (err) {
+                FeedbackLogger.error(`database error => ${err.stack}`);
+                throw err;
+            } else {
+                //console.log("Successfully creat col");
+                ;
+            }
+        });
     }
 });
 
@@ -34,8 +52,11 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
 const getReportByStudentIDAndModuleID = async (student_id, module_id) => {
     let colReport = db.collection('IS_Reports');
     let ret = undefined;
-    let res = await colReport.findOne({student_id: student_id, module_id: module_id})
-    if(res) {
+    let res = await colReport.findOne({
+        student_id: student_id,
+        module_id: module_id
+    })
+    if (res) {
         ret = {
             file_id: res.file_id
         }
@@ -50,7 +71,11 @@ const getReportByStudentIDAndModuleID = async (student_id, module_id) => {
  */
 const getReportsByStudentID = async (student_id) => {
     let colReport = db.collection('IS_Reports');
-    return colReport.find({student_id: student_id}).project({_id: 0}).toArray();
+    return colReport.find({
+        student_id: student_id
+    }).project({
+        _id: 0
+    }).toArray();
 }
 
 /** 
@@ -59,7 +84,11 @@ const getReportsByStudentID = async (student_id) => {
  */
 const getReportsByModuleID = async (module_id) => {
     let colReport = db.collection('IS_Reports');
-    return colReport.find({module_id: module_id}).project({_id: 0}).toArray();
+    return colReport.find({
+        module_id: module_id
+    }).project({
+        _id: 0
+    }).toArray();
 }
 
 /**
@@ -88,7 +117,17 @@ const insertReport = async (student_id, module_id, file_id) => {
  */
 const upsertReport = async (student_id, module_id, file_id) => {
     let colReport = db.collection('IS_Reports');
-    return colReport.updateOne({student_id: student_id, module_id, module_id}, {$set : {file_id: file_id}}, {upsert: true}).then(res => res.result.ok == 1)
+    return colReport.updateOne({
+        student_id: student_id,
+        module_id,
+        module_id
+    }, {
+        $set: {
+            file_id: file_id
+        }
+    }, {
+        upsert: true
+    }).then(res => res.result.ok == 1)
 }
 
 /**
@@ -98,7 +137,10 @@ const upsertReport = async (student_id, module_id, file_id) => {
  */
 const removeReport = async (student_id, module_id) => {
     let colReport = db.collection('IS_Reports');
-    return colReport.deleteOne({student_id: student_id, module_id: module_id}).then(res => res.result.ok == 1);
+    return colReport.deleteOne({
+        student_id: student_id,
+        module_id: module_id
+    }).then(res => res.result.ok == 1);
 }
 
 /**
@@ -107,19 +149,23 @@ const removeReport = async (student_id, module_id) => {
  * @param {string} module_id 模块ID
  */
 const getJudgementByStudentIDAndModuleID = async (student_id, module_id) => {
-    let colJudgement = db.collection('IS_Judgements');
-    var ret = undefined;
-    let res = await colJudgement.findOne({student_id: student_id, module_id: module_id});
-    if(res) {
-        let name_res = await user_db.findUserById(student_id);
-        ret = {
-            score: res.score,
-            text: res.text,
-            name: name_res
-        };
+    var colJudgement = db.collection('IS_Judgements');
+    // console.log(`student_id => ${student_id}`);
+    // console.log(`module_id => ${module_id}`);
+    try {
+        var result = await colJudgement.findOne({
+            student_id: student_id,
+            module_id: module_id
+        }, {
+            "score": 1,
+            "text": 1,
+            "_id": 0
+        });
+    } catch (err) {
+        FeedbackLogger.error(`database error => ${err.stack}`);
+        throw err;
     }
-
-    return ret;
+    return result;
 }
 
 /**
@@ -128,7 +174,11 @@ const getJudgementByStudentIDAndModuleID = async (student_id, module_id) => {
  */
 const getJudgementsByStudentID = async (student_id) => {
     let colJudgement = db.collection('IS_Judgements');
-    return colJudgement.find({student_id: student_id}).project({_id: 0}).toArray();
+    return colJudgement.find({
+        student_id: student_id
+    }).project({
+        _id: 0
+    }).toArray();
 }
 
 /**
@@ -137,7 +187,11 @@ const getJudgementsByStudentID = async (student_id) => {
  */
 const getJudgementsByModuleID = async (module_id) => {
     let colJudgement = db.collection('IS_Judgements');
-    return colJudgement.find({module_id: module_id}).project({_id: 0}).toArray();
+    return colJudgement.find({
+        module_id: module_id
+    }).project({
+        _id: 0
+    }).toArray();
 }
 
 /**
@@ -169,7 +223,18 @@ const insertJudgement = async (student_id, module_id, score, text) => {
  */
 const upsertJudgement = async (student_id, module_id, score, text) => {
     let colReport = db.collection('IS_Judgements');
-    return colReport.updateOne({student_id: student_id, module_id, module_id}, {$set: {score: score, text: text}}, {upsert: true}).then(res => res.result.ok == 1);
+    return colReport.updateOne({
+        student_id: student_id,
+        module_id,
+        module_id
+    }, {
+        $set: {
+            score: score,
+            text: text
+        }
+    }, {
+        upsert: true
+    }).then(res => res.result.ok == 1);
 }
 
 /**
@@ -179,7 +244,10 @@ const upsertJudgement = async (student_id, module_id, score, text) => {
  */
 const removeJudgement = async (student_id, module_id) => {
     let colJudgement = db.collection('IS_Judgements');
-    return colJudgement.deleteOne({student_id: student_id, module_id: module_id}).then(res => res.result.ok == 1);
+    return colJudgement.deleteOne({
+        student_id: student_id,
+        module_id: module_id
+    }).then(res => res.result.ok == 1);
 }
 
 

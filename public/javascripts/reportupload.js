@@ -45,47 +45,6 @@ function RESTful(xmlhttp, method, url, queryString, async, fnc) { //获取JSON�
   xmlhttp.onreadystatechange = fnc;
 }
 
-function getUserId(callback) {
-  var xmlhttp = setXmlHttp();
-  RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'userid']), null, true, function () {
-    if (xmlhttp.readyState == 4) {
-      if (xmlhttp.status == 200) {
-        // alert(xmlhttp.responseText);
-        userid = JSON.parse(xmlhttp.responseText).result.userid;
-        openJudge();
-        // alert(tasklist);
-        // setTaskList(tasklist);
-        if (callback) {
-          callback();
-
-        }
-      } else {
-        console.log("发生错误" + xmlhttp.status);
-      }
-    }
-  });
-}
-
-function getUserName(callback) {
-  var xmlhttp = setXmlHttp();
-  RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'username']), null, true, function () {
-      if (xmlhttp.readyState == 4) {
-          if (xmlhttp.status == 200) {
-              // alert(xmlhttp.responseText);
-              username = JSON.parse(xmlhttp.responseText).result.username;
-              // alert(tasklist);
-              // setTaskList(tasklist);
-              setUserName();
-              if (callback) {
-                  callback();
-
-              }
-          } else {
-              console.log("发生错误" + xmlhttp.status);
-          }
-      }
-  });
-}
 
 $(document).ready(function () {
 
@@ -132,6 +91,9 @@ $(document).ready(function () {
   });
 });
 
+
+
+
 function Logout(callback) {
   var xmlhttp = setXmlHttp();
   RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'logout']), null, true, function () {
@@ -150,35 +112,87 @@ function Logout(callback) {
 }
 
 
-function openJudge() {
-  //打开评价窗口
-}
-
-function getClassname(){
-  classname = '没写好'
-}
-
-$(function parpare(){
-  getUserId();
-  getClassname();
-  getUserName();
-})
-
-$(function mainpart(){
-  classindex = window.location.pathname.substring;
-  getJudge();
-});
-
-function getJudge(){
+function getUserId(callback) {
   var xmlhttp = setXmlHttp();
-  RESTful(xmlhttp, "GET", creatURL([current_url_valid, userid, 'judgement']), null, true, function () {
-    alert(userid);
+  RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'userid']), null, true, function () {
     if (xmlhttp.readyState == 4) {
       if (xmlhttp.status == 200) {
-        var info = JSON.parse(xmlhttp.responseText);
+        // alert(xmlhttp.responseText);
+        userid = JSON.parse(xmlhttp.responseText).result.userid;
+        // alert(tasklist);
+        // setTaskList(tasklist);
+        if (callback) {
+          callback();
+        }
+      } else {
+        console.log("发生错误" + xmlhttp.status);
+      }
+    }
+  });
+}
+
+function getUserName(callback) {
+  var xmlhttp = setXmlHttp();
+  RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'username']), null, true, function () {
+    if (xmlhttp.readyState == 4) {
+      if (xmlhttp.status == 200) {
+        // alert(xmlhttp.responseText);
+        username = JSON.parse(xmlhttp.responseText).result.username;
+        // alert(tasklist);
+        // setTaskList(tasklist);
+        setUserName();
+        if (callback) {
+          callback();
+
+        }
+      } else {
+        console.log("发生错误" + xmlhttp.status);
+      }
+    }
+  });
+}
+
+
+function openJudge() {
+  if ($('#judgement-text-form').hasClass('hidden')) {
+    //打开评价窗口
+    $('#judgement-text-form').removeClass('hidden');
+    $('#judgement-text-form').addClass('shown');
+    $('#judgement-text-form').css('display', 'block');
+    $('#show-judgement').text('收起评价');
+  } else if ($('#judgement-text-form').hasClass('shown')) {
+    //关闭评价窗口
+    $('#judgement-text-form').removeClass('shown');
+    $('#judgement-text-form').addClass('hidden');
+    $('#judgement-text-form').css('display', 'none');
+    $('#show-judgement').text('显示评价');
+  }
+}
+
+function getClassname() {
+  classname = '没写好'
+  setClassName();
+}
+
+$(function parpare() {
+  classindex = window.location.pathname.substring;
+  getUserName();
+  getClassname();
+  getJudge();
+})
+
+
+
+function getJudge(callback) {
+  var xmlhttp = setXmlHttp();
+  //此处学号随意输入，后台处理
+  RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'U201700000', 'judgement']), null, true, function () {
+    // alert(userid);
+    if (xmlhttp.readyState == 4) {
+      if (xmlhttp.status == 200) {
+        var info = JSON.parse(xmlhttp.responseText).result.info;
         score = info.score;
         judgetext = info.text;
-        username = info.studentName;
         setResult();
         if (callback) {
           callback();
@@ -190,23 +204,23 @@ function getJudge(){
   });
 }
 
-function setClassName(){
-  if(classname){
+function setClassName() {
+  if (classname) {
     $('#result-table tbody .classname').text(classname);
   }
 }
 
-function setUserName(){
-  if(username){
+function setUserName() {
+  if (username) {
     $('#result-table tbody .username').text(username);
   }
 }
 
-function setResult(){
-  if(score){
+function setResult() {
+  if (score) {
     $('#result-table tbody .score').text(score);
   }
-  if(judgetext){
-    $('#result-table.judgetext').text(judgetext);
+  if (judgetext) {
+    $('textarea#judgement-text').text(judgetext);
   }
 }
