@@ -1,4 +1,6 @@
 let current_url_valid = window.location.protocol + window.location.pathname;
+let userid;
+let username;
 
 function creatURL(URLarray) {
   var length;
@@ -39,7 +41,26 @@ function RESTful(xmlhttp, method, url, queryString, async, fnc) { //获取JSON�
   xmlhttp.onreadystatechange = fnc;
 }
 
+function getUserId(callback) {
+  var xmlhttp = setXmlHttp();
+  RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'userid']), null, true, function () {
+      if (xmlhttp.readyState == 4) {
+          if (xmlhttp.status == 200) {
+              // alert(xmlhttp.responseText);
+              userid = JSON.parse(xmlhttp.responseText).result.userid;
+              // alert(tasklist);
+              // setTaskList(tasklist);
+              setUserId();
+              if (callback) {
+                  callback();
 
+              }
+          } else {
+              console.log("发生错误" + xmlhttp.status);
+          }
+      }
+  });
+}
 
 $(document).ready(function () {
 
@@ -47,7 +68,7 @@ $(document).ready(function () {
   var mid = localURLArgs.pop();
 
   $.getJSON({
-    url: `/feedback/report/${mid}`,
+    url: `/feedback/report/${userid}/${mid}`,
     success: (data) => {
       $('#reportaddr').attr('href', `/file/${data.data.file_id}`);
       $('#fileUploaded').show();

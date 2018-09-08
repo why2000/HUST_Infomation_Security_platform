@@ -25,11 +25,10 @@ const getIndex = async (req, res) => {
             res.render('report-index');
         }
         // TODO
-        /*
+
         else if (UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
-            res.redirect/render('judge-index');
+            res.redirect('judge-upload');
         }
-        */
     }
 }
 
@@ -47,16 +46,12 @@ const getPageByUserType = (req, res) => {
                     res.render('report-index');
                 }
             }
-            // !未经测试
-            else if (UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
-                res.redirect('/feedback/judgement/:' + req.params.class_id);
-            }
         });
     }
 }
 
 const getStudentReport = (req, res) => {
-    feedback.getReportByStudentIDAndModuleID(req.session.loginUser, req.params.class_id)
+    feedback.getReportByStudentIDAndModuleID(req.params.student_id, req.params.class_id)
         .catch(err => {
             //need a logger
             response(res, 500, "Server error.");
@@ -132,11 +127,10 @@ const deleteStudentReport = (req, res) => {
 }
 
 const getTeacherJudgement = (req, res) => {
-    feedback.getJudgementByStudentIDAndModuleID(req.session.loginUser, req.params.class_id)
+    feedback.getJudgementByStudentIDAndModuleID(req.params.student_id, req.params.class_id)
         .then(result => {
-
             if (result) {
-                res.render('judge-upload', { inputScore: result.score, inputText: result.text, studentName: result.name })
+                res.json({ inputScore: result.score, inputText: result.text, studentName: result.name });
             } else {
                 res.status(400);
             }
@@ -148,7 +142,7 @@ const getTeacherJudgement = (req, res) => {
 
 const saveTeacherJudgement = (req, res) => {
     // 注意student_id和class_id是否存在
-    let sid = req.session.loginUser;
+    let sid = req.params.student_id;
     let mid = req.params.class_id;
 
     // 参数类型检查和范围检查 其实很丑，看看有什么比较好看的解决方案
@@ -169,7 +163,7 @@ const saveTeacherJudgement = (req, res) => {
 }
 
 const deleteTeacherJudgement = (req, res) => {
-    let sid = req.session.loginUser;
+    let sid = req.params.student_id;
     let mid = req.params.class_id;
 
     feedback.removeJudgement(sid, mid)
