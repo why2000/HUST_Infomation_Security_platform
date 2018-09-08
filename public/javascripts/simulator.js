@@ -98,7 +98,7 @@ function keepAlive() {
     }
 }
 
-function logout(){
+function Logout(){
     var xmlhttp = setXmlHttp();
     RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'logout']), null, true, function () {
         if (xmlhttp.readyState == 4) {
@@ -160,4 +160,6 @@ function connectToCon() {
 }
 
 /* tasks init */
-getTasks();
+$(function mainpart(){
+    getTasks();
+});

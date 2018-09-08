@@ -134,7 +134,7 @@ function getUserName(callback) {
 
 function setUserName() {
     if (!username) {
-        username = "伍瀚缘testingtestingtesting";
+        username = "未设置用户名";
     }
     var hello = "欢迎！" + username;
     $(".settings").text(hello);
@@ -346,7 +346,7 @@ function getInfo(callback) {
                 // setTaskList(tasklist);
                 if(!info || (info == null)){
                     alert('课程信息不存在');
-                    window.location.href = './index' 
+                    window.location.href = '../catalog';
                 }
                 setInfo();
                 if (callback) {

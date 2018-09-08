@@ -1,3 +1,5 @@
+let username;
+let userid;
 var current_url_valid = window.location.protocol + window.location.pathname;
 
 /* communication */
@@ -71,9 +73,8 @@ function setData() {
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
-                name: $('#name').val(),
-                col: $('#col').val(),
-                uid: $('#uid').val(),
+                name: $('#username').val(),
+                uid: $('#userid').val(),
                 pw: $('#pw').val(),
             }),
             success: () => {
@@ -83,3 +84,60 @@ function setData() {
         });
     }
 }
+
+$(function mainpart(){
+    getUserId();
+    getUserName();
+});
+
+function getUserName(callback) {
+    var xmlhttp = setXmlHttp();
+    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'username']), null, true, function () {
+        if (xmlhttp.readyState == 4) {
+            if (xmlhttp.status == 200) {
+                // alert(xmlhttp.responseText);
+                username = JSON.parse(xmlhttp.responseText).result.username;
+                // alert(tasklist);
+                // setTaskList(tasklist);
+                setUserName();
+                if (callback) {
+                    callback();
+
+                }
+            } else {
+                console.log("发生错误" + xmlhttp.status);
+            }
+        }
+    });
+}
+
+function setUserName(callback){
+    $('.form-control#username').attr('placeholder', username);
+}
+
+function getUserId(callback) {
+    var xmlhttp = setXmlHttp();
+    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'userid']), null, true, function () {
+        if (xmlhttp.readyState == 4) {
+            if (xmlhttp.status == 200) {
+                // alert(xmlhttp.responseText);
+                userid = JSON.parse(xmlhttp.responseText).result.userid;
+                // alert(tasklist);
+                // setTaskList(tasklist);
+                setUserId();
+                if (callback) {
+                    callback();
+
+                }
+            } else {
+                console.log("发生错误" + xmlhttp.status);
+            }
+        }
+    });
+}
+
+function setUserId(){
+    $('.form-control#userid').attr('placeholder', userid);
+}
+
+

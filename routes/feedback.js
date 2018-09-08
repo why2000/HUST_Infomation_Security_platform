@@ -1,10 +1,14 @@
 var express = require('express');
 var feedback = require('../controllers/feedback_controller');
+var UserController = require('../controllers/user_controller')
 var multer = require('multer');
 
 var tmp_path = require('../config/file.json').MULTER_TMP_FILE_PATH; // 问题很大
 var upload = multer({dest: tmp_path});
 var router = express.Router();
+
+//Logout
+router.get('/*logout', UserController.getLogout);
 
 router.get('/', feedback.getIndex);
 //router.get('/', feedback.getIndex);

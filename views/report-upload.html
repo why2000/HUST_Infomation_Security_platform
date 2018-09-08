@@ -6,22 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>华中科技大学信息安全实验平台 - 上传报告</title>
   <!-- load JS-->
-  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/jquery-1.11.3.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/reportupload.js"></script>
   <!-- load CSS -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300" />
   <!-- Google web font "Open Sans" -->
-  <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css" />
   <!-- https://getbootstrap.com/ -->
-  <link rel="stylesheet" href="/public/stylesheets/fontawesome/css/fontawesome-all.min.css">
+  <link rel="stylesheet" href="/public/stylesheets/fontawesome/css/fontawesome-all.min.css" />
   <!-- https://fontawesome.com/ -->
-  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
-  <!-- http://kenwheeler.github.io/slick/ -->
-  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
-  <link rel="stylesheet" href="/public/stylesheets/tooplate-style.css">
 
+  <!-- http://kenwheeler.github.io/slick/ -->
+
+
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/examsidebar.css" />
   <script>
     document.documentElement.className = "js";
     var supportsCssVars = function () {
@@ -36,27 +36,21 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #133AAC; ">
-    <div style="width: 1200px ;overflow: visible; margin: auto;">
-      <img src="/public/images/logo.gif">
-      <a class="navbar-brand" href="/catalog" style="padding-left: 10px; margin-left: 10px; color: white; border-left: 1px solid #7c8b99; font-size:24px;">华中科技大学信息安全实验平台</a>
-      <div class="dropdown" style="float:right; margin-top:6px;">
-        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">
-          您目前作为 伍瀚缘 登入。
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#" style="font-size:20px;">查看/修改个人信息</a>
-          <a class="dropdown-item" href="#" style="font-size:20px;">登出</a>
+    <div class="header">
+        <div class="headerb">
+            <div class="top-logo" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
+            <div class="headern">
+                华中科技大学信息安全实验平台
+            </div>
+
+            <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
+                <div class="logout-icon"></div>
+                <span>退出</span>
+            </div>
         </div>
-      </div>
-    </div>
     </div>
 
-  </nav>
-  <br>
-
-  <div style="width: 1200px ; margin: auto;">
+  <div style="width: 1200px ; margin: auto; margin-top: 80px;">
     <div class="row">
       <div class="col-12">
         <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">上传报告</h5>
