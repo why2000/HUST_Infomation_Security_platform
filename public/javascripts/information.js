@@ -68,13 +68,15 @@ function setData() {
     } else if ($('#pw').val() == '') {
         alert('密码不能为空');
     } else {
+        let uname = ($('#username').val()!='') ? $('#username').val() : username;
+        let usid =($('#userid').val()!='') ? $('#userid').val() : userid
         $.ajax({
             url: '/information',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
-                name: $('#username').val(),
-                uid: $('#userid').val(),
+                name: uname,
+                uid: usid,
                 pw: $('#pw').val(),
             }),
             success: () => {
