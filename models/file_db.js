@@ -68,7 +68,7 @@ const getFile = async (file_id) => {
     return colFiles.findOne({file_id: file_id})
            .then(res => {
                if(res) {
-                    stream = fs.createReadStream(path.join(cfg.PATH, file_id))
+                    let stream = fs.createReadStream(path.join(cfg.PATH, file_id))
                     return {
                         name: res.name,
                         stream: stream
