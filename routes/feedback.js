@@ -12,6 +12,7 @@ router.get('/*logout', UserController.getLogout);
 
 router.get('/', feedback.getIndex);
 //router.get('/', feedback.getIndex);
+
 router.get('/:class_id', feedback.getPageByUserType);
 
 // 报告文件

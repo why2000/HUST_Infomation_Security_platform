@@ -73,9 +73,10 @@
                 <button id="submit" type="button" class="btn btn-primary" >上传</button>
               </center>
             </form>
-            <table class="table" style="margin-top: 10px;">
+            <table class="table" style="margin-top: 10px;" id="result-table">
               <thead>
                 <tr>
+                  <th>姓名</th>
                   <th>课程名</th>
                   <th>得分</th>
                   <th>教师评价</th>
@@ -83,17 +84,11 @@
               </thead>
               <tbody>
                 <tr class="classindex" id="1">
-                  <td scope="row" class="classname">123</td>
-                  <td class="score">123</td>
-                  <td class="Judge">
+                  <td scope="row" class="username">伍瀚缘</td>
+                  <td class="classname">未找到课程</td>
+                  <td class="score">未评分</td>
+                  <td class="judge">
                     <button id="download" type="button" class="btn btn-primary" style="cursor: pointer; float:left;" onclick="openJudge(classindex);">查看评价</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td scope="row">123</td>
-                  <td>123</td>
-                  <td>
-                    <button id="download" type="button" class="btn btn-primary" style="cursor: pointer; float:left;" onclick="">下载评价</button>
                   </td>
                 </tr>
               </tbody>

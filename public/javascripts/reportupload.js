@@ -1,25 +1,29 @@
 let current_url_valid = window.location.protocol + window.location.pathname;
 let userid;
 let username;
+let score;
+let judgetext;
+let classindex;
+let classname;
 
 function creatURL(URLarray) {
   var length;
   if (URLarray) {
-      length = URLarray.length
+    length = URLarray.length
   } else {
-      return URLarray;
+    return URLarray;
   }
   var newURLarray = URLarray.filter(function (currentValue) {
-      return currentValue && currentValue != null && currentValue != undefined;
+    return currentValue && currentValue != null && currentValue != undefined;
   });
   var result = "";
   result = result + newURLarray[0];
   for (var i = 1; i < length; i++) {
-      if (result.endsWith('/')) {
-          result = result + newURLarray[i];
-      } else {
-          result = result + '/' + newURLarray[i];
-      }
+    if (result.endsWith('/')) {
+      result = result + newURLarray[i];
+    } else {
+      result = result + '/' + newURLarray[i];
+    }
   }
   return result;
 }
@@ -27,9 +31,9 @@ function creatURL(URLarray) {
 function setXmlHttp() {
   var xmlhttp;
   if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
-      xmlhttp = new XMLHttpRequest();
+    xmlhttp = new XMLHttpRequest();
   } else { // code for IE6, IE5
-      xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
   }
   return xmlhttp;
 }
@@ -44,13 +48,34 @@ function RESTful(xmlhttp, method, url, queryString, async, fnc) { //获取JSON�
 function getUserId(callback) {
   var xmlhttp = setXmlHttp();
   RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'userid']), null, true, function () {
+    if (xmlhttp.readyState == 4) {
+      if (xmlhttp.status == 200) {
+        // alert(xmlhttp.responseText);
+        userid = JSON.parse(xmlhttp.responseText).result.userid;
+        openJudge();
+        // alert(tasklist);
+        // setTaskList(tasklist);
+        if (callback) {
+          callback();
+
+        }
+      } else {
+        console.log("发生错误" + xmlhttp.status);
+      }
+    }
+  });
+}
+
+function getUserName(callback) {
+  var xmlhttp = setXmlHttp();
+  RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'username']), null, true, function () {
       if (xmlhttp.readyState == 4) {
           if (xmlhttp.status == 200) {
               // alert(xmlhttp.responseText);
-              userid = JSON.parse(xmlhttp.responseText).result.userid;
+              username = JSON.parse(xmlhttp.responseText).result.username;
               // alert(tasklist);
               // setTaskList(tasklist);
-              setUserId();
+              setUserName();
               if (callback) {
                   callback();
 
@@ -74,7 +99,7 @@ $(document).ready(function () {
       $('#fileUploaded').show();
     }
   })
-  
+
   $('#upload').on('change', function () {
     var fileName = $(this)[0].files[0]['name'];
     $('#fileHelpId').html(fileName);
@@ -107,36 +132,81 @@ $(document).ready(function () {
   });
 });
 
-function Logout(callback){
+function Logout(callback) {
   var xmlhttp = setXmlHttp();
   RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'logout']), null, true, function () {
-      if (xmlhttp.readyState == 4) {
-          if (xmlhttp.status == 200) {
-              alert("退出成功！");
-              window.location.href='/';
-              if (callback) {
-                  callback();
-              }
-          } else {
-              console.log("发生错误" + xmlhttp.status);
-          }
+    if (xmlhttp.readyState == 4) {
+      if (xmlhttp.status == 200) {
+        alert("退出成功！");
+        window.location.href = '/';
+        if (callback) {
+          callback();
+        }
+      } else {
+        console.log("发生错误" + xmlhttp.status);
       }
+    }
   });
 }
 
-function openJudge(classindex){
-  var xmlhttp = setXmlHttp();
-  RESTful(xmlhttp, "GET", creatURL([current_url_valid, '']), null, true, function () {
-    if (xmlhttp.readyState == 4) {
-        if (xmlhttp.status == 200) {
-            alert("退出成功！");
-            window.location.href='/';
-            if (callback) {
-                callback();
-            }
-        } else {
-            console.log("发生错误" + xmlhttp.status);
-        }
-    }
+
+function openJudge() {
+  //打开评价窗口
+}
+
+function getClassname(){
+  classname = '没写好'
+}
+
+$(function parpare(){
+  getUserId();
+  getClassname();
+  getUserName();
+})
+
+$(function mainpart(){
+  classindex = window.location.pathname.substring;
+  getJudge();
 });
+
+function getJudge(){
+  var xmlhttp = setXmlHttp();
+  RESTful(xmlhttp, "GET", creatURL([current_url_valid, userid, 'judgement']), null, true, function () {
+    alert(userid);
+    if (xmlhttp.readyState == 4) {
+      if (xmlhttp.status == 200) {
+        var info = JSON.parse(xmlhttp.responseText);
+        score = info.score;
+        judgetext = info.text;
+        username = info.studentName;
+        setResult();
+        if (callback) {
+          callback();
+        }
+      } else {
+        console.log("发生错误" + xmlhttp.status);
+      }
+    }
+  });
+}
+
+function setClassName(){
+  if(classname){
+    $('#result-table tbody .classname').text(classname);
+  }
+}
+
+function setUserName(){
+  if(username){
+    $('#result-table tbody .username').text(username);
+  }
+}
+
+function setResult(){
+  if(score){
+    $('#result-table tbody .score').text(score);
+  }
+  if(judgetext){
+    $('#result-table.judgetext').text(judgetext);
+  }
 }
