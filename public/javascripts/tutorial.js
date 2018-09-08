@@ -365,7 +365,7 @@ function setVideo(){
     var videofile = info.videofile
     var title = info.title;
     $('.main_content .notice_title_01').empty().text(title);
-    $('.main_content .notice_content_01').empty().append(`<video src='/public/videos/${videofile}' controls="controls" width="100%"></video>`)
+    $('.main_content .notice_content_01').empty().append(`<div class="flowplayer"><video controls="controls" width="100%"> <source type="video/mp4" src='/public/videos/${videofile}'></video></div>`)
 }
 
 function setInfo() {

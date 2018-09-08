@@ -64,14 +64,40 @@
               <small class="form-text text-muted">选择要上传的文件，并点击“上传”按钮。支持上传的文件格式： doc、docx、pdf、txt</small>
               <br />
               <center>
-                <div class="form-group" style="width: 30%">
+                <div class="form-group" style="width: 30%; text-align: center;">
                   <input type="file" class="form-control-file" id="upload" placeholder="" aria-describedby="fileHelpId" style="font-size: 14px">
-                  <small id="fileHelpId" class="form-text text-muted" style="text-align: left">当前未选择文件</small>
+                  <small id="fileHelpId" class="form-text text-muted" style="text-align: left;" hidden>当前未选择文件</small>
                 </div>
                 <small id="fileUploaded" class="form-text text-muted" style="display: none">已上传报告，<a id='reportaddr' href="/">点击下载</a></small>
-                <button id="submit" type="button" class="btn btn-primary">上传</button>
+                <button id="text" type="button" class="btn btn-primary" style="cursor: pointer; float:left;" onclick="javascript:history.back();" >返回</button>
+                <button id="submit" type="button" class="btn btn-primary" >上传</button>
               </center>
             </form>
+            <table class="table" style="margin-top: 10px;">
+              <thead>
+                <tr>
+                  <th>课程名</th>
+                  <th>得分</th>
+                  <th>教师评价</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="classindex" id="1">
+                  <td scope="row" class="classname">123</td>
+                  <td class="score">123</td>
+                  <td class="Judge">
+                    <button id="download" type="button" class="btn btn-primary" style="cursor: pointer; float:left;" onclick="openJudge(classindex);">查看评价</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td scope="row">123</td>
+                  <td>123</td>
+                  <td>
+                    <button id="download" type="button" class="btn btn-primary" style="cursor: pointer; float:left;" onclick="">下载评价</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 </body>

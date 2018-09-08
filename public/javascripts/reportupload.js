@@ -102,3 +102,20 @@ function Logout(callback){
       }
   });
 }
+
+function openJudge(classindex){
+  var xmlhttp = setXmlHttp();
+  RESTful(xmlhttp, "GET", creatURL([current_url_valid, '']), null, true, function () {
+    if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+            alert("退出成功！");
+            window.location.href='/';
+            if (callback) {
+                callback();
+            }
+        } else {
+            console.log("发生错误" + xmlhttp.status);
+        }
+    }
+});
+}
