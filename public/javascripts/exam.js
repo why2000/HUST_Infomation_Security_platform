@@ -345,6 +345,7 @@ function getInfo(callback) {
                 // alert(tasklist);
                 // setTaskList(tasklist);
                 if(!info || (info == null)){
+                    alert('课程信息不存在');
                     window.location.href = './index' 
                 }
                 setInfo();

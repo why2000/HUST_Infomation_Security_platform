@@ -342,7 +342,8 @@ function getInfo(callback) {
                 // alert(tasklist);
                 // setTaskList(tasklist);
                 if(!info || (info == null)){
-                    window.location.href = './index' 
+                    alert('课程信息不存在');
+                    window.location.href = './index';
                 }
                 if (isIndex()) {
                     setInfo();

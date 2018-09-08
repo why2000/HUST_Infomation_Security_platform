@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4" style="margin-top:20px;">
-                    <div class="control_panel" style="height: 90%; margin-left:50px; margin-top: 20px; border: 2px solid #838383">
+                    <div class="control_panel" style="height: 90%; margin-left:50px; margin-top: 20px; border: 2px solid #838383; position: relative;">
                         <div class="connect_panel" style="height:45px">
                             <a id="start_stop_sim_a" href="javascript:void(0);" onclick="connectToCon()">
                                 <div id="start_stop_sim_button" class="control_panel_start" style="line-height: 45px;width: 50%; background: #206db0; color:#fff; font-size:16px; display:block; font-weight:bold; text-align:center; float:left">
@@ -54,7 +54,10 @@
                             <h5 style="font-weight:bold;">任务描述</h5>
                             <p id="sim_tasks_text">正在加载中...</p>
                         </div>
-                        <div class="button" style="position: absolute;bottom: 0px"><button id="back_button" type="button" class="btn btn-primary" onclick="window.location.href = '/'" style="float:left">返回</button></div>
+                        <div class="back_button" style="position:absolute; bottom: 0px; width: 100%;">
+                            <button id="back_button" type="button"  style="line-height: 45px;width: 100%; background: #206db0; color:#fff; font-size:16px; display:block; font-weight:bold; text-align:center; float:left; cursor: pointer; border: 0px; " onclick="window.location.href = '/'" >返回目录</button>
+                        </div>
+
                     </div>
                 </div>
             </div>
