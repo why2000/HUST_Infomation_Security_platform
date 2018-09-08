@@ -69,21 +69,21 @@ function getUserId(callback) {
 function getUserName(callback) {
   var xmlhttp = setXmlHttp();
   RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'username']), null, true, function () {
-      if (xmlhttp.readyState == 4) {
-          if (xmlhttp.status == 200) {
-              // alert(xmlhttp.responseText);
-              username = JSON.parse(xmlhttp.responseText).result.username;
-              // alert(tasklist);
-              // setTaskList(tasklist);
-              setUserName();
-              if (callback) {
-                  callback();
+    if (xmlhttp.readyState == 4) {
+      if (xmlhttp.status == 200) {
+        // alert(xmlhttp.responseText);
+        username = JSON.parse(xmlhttp.responseText).result.username;
+        // alert(tasklist);
+        // setTaskList(tasklist);
+        setUserName();
+        if (callback) {
+          callback();
 
-              }
-          } else {
-              console.log("发生错误" + xmlhttp.status);
-          }
+        }
+      } else {
+        console.log("发生错误" + xmlhttp.status);
       }
+    }
   });
 }
 
@@ -93,7 +93,7 @@ $(document).ready(function () {
   var mid = localURLArgs.pop();
 
   $.getJSON({
-    url: `/feedback/report/${userid}/${mid}`,
+    url: `/feedback/${userid}/${mid}/report`,
     success: (data) => {
       $('#reportaddr').attr('href', `/file/${data.data.file_id}`);
       $('#fileUploaded').show();
@@ -110,25 +110,28 @@ $(document).ready(function () {
     if (!file) {
       alert('您还未选择文件！');
     } else {
-      var form = new FormData();
-      form.append('upload', file);
-      $.post({
-        url: `/feedback/report/${mid}`,
-        data: form,
-        contentType: false,
-        processData: false,
-        mimeType: 'multipart/form-data',
-        success: () => {
-          alert('上传成功！');
-          location.reload();
-        },
-        error: xhr => {
-          alert(JSON.parse(xhr.responseText).msg);
-          location.reload();
-        }
-      });
+      const acceptFile = /^.*(\.doc|\.docx|\.txt|\.pdf)$/;
+      if (acceptFile.test(file.name)) {
+        var form = new FormData();
+        form.append('upload', file);
+        $.ajax({
+          type: 'post',
+          url: `/feedback/${mid}/report/`,
+          data: form,
+          contentType: false,
+          processData: false,
+          mimeType: 'multipart/form-data',
+          success: () => {
+            alert('上传成功！');
+            location.reload();
+          },
+          error: xhr => {
+            alert(JSON.parse(xhr.responseText).msg);
+            location.reload();
+          }
+        });
+      }
     }
-
   });
 });
 
@@ -154,22 +157,22 @@ function openJudge() {
   //打开评价窗口
 }
 
-function getClassname(){
+function getClassname() {
   classname = '没写好'
 }
 
-$(function parpare(){
+$(function parpare() {
   getUserId();
   getClassname();
   getUserName();
 })
 
-$(function mainpart(){
+$(function mainpart() {
   classindex = window.location.pathname.substring;
   getJudge();
 });
 
-function getJudge(){
+function getJudge() {
   var xmlhttp = setXmlHttp();
   RESTful(xmlhttp, "GET", creatURL([current_url_valid, userid, 'judgement']), null, true, function () {
     alert(userid);
@@ -190,23 +193,23 @@ function getJudge(){
   });
 }
 
-function setClassName(){
-  if(classname){
+function setClassName() {
+  if (classname) {
     $('#result-table tbody .classname').text(classname);
   }
 }
 
-function setUserName(){
-  if(username){
+function setUserName() {
+  if (username) {
     $('#result-table tbody .username').text(username);
   }
 }
 
-function setResult(){
-  if(score){
+function setResult() {
+  if (score) {
     $('#result-table tbody .score').text(score);
   }
-  if(judgetext){
+  if (judgetext) {
     $('#result-table.judgetext').text(judgetext);
   }
 }

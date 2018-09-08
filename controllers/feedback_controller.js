@@ -129,55 +129,56 @@ const getTeacherJudgement = async (req, res) => {
                 response(res, 500, "Server error.");
             });
     }
+}
 
-    const saveTeacherJudgement = async (req, res) => {
-        // 注意student_id和class_id是否存在
-        let sid = req.params.student_id;
-        let mid = req.params.class_id;
-        if (!req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
+const saveTeacherJudgement = async (req, res) => {
+    // 注意student_id和class_id是否存在
+    let sid = req.params.student_id;
+    let mid = req.params.class_id;
+    if (!req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
 
-            // 参数类型检查和范围检查 其实很丑，看看有什么比较好看的解决方案
-            if (typeof (req.body.score) == 'number' && typeof (req.body.body == 'string') && (req.body.score >= 0 && req.body.score <= 100)) {
-                req.body.score = Math.floor(req.body.score);//取整
-                // 注意HTML转义的问题，先尝试在前端解决
-                feedback.upsertJudgement(sid, mid, req.body.score, req.body.text)
-                    .then(() => {
-                        response(res, {});
-                    })
-                    .catch(err => {
-                        response(res, 500, 'Server error.');
-                    });
-
-            } else {
-                response(res, 400, 'Data error.');
-            }
-        } else {
-            response(res, 400, "premission denied");
-        }
-    }
-
-    const deleteTeacherJudgement = async (req, res) => {
-        let sid = req.params.student_id;
-        let mid = req.params.class_id;
-        if (!req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
-            feedback.removeJudgement(sid, mid)
+        // 参数类型检查和范围检查 其实很丑，看看有什么比较好看的解决方案
+        if (typeof (req.body.score) == 'number' && typeof (req.body.body == 'string') && (req.body.score >= 0 && req.body.score <= 100)) {
+            req.body.score = Math.floor(req.body.score);//取整
+            // 注意HTML转义的问题，先尝试在前端解决
+            feedback.upsertJudgement(sid, mid, req.body.score, req.body.text)
                 .then(() => {
                     response(res, {});
                 })
                 .catch(err => {
                     response(res, 500, 'Server error.');
                 });
-        } else {
-            response(res, 400, "premission denied");
-        }
-    }
 
-    module.exports = {
-        getPageByUserType,
-        getStudentReport,
-        saveStudentReport,
-        deleteStudentReport,
-        getTeacherJudgement,
-        saveTeacherJudgement,
-        deleteTeacherJudgement
+        } else {
+            response(res, 400, 'Data error.');
+        }
+    } else {
+        response(res, 400, "premission denied");
     }
+}
+
+const deleteTeacherJudgement = async (req, res) => {
+    let sid = req.params.student_id;
+    let mid = req.params.class_id;
+    if (!req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
+        feedback.removeJudgement(sid, mid)
+            .then(() => {
+                response(res, {});
+            })
+            .catch(err => {
+                response(res, 500, 'Server error.');
+            });
+    } else {
+        response(res, 400, "premission denied");
+    }
+}
+
+module.exports = {
+    getPageByUserType,
+    getStudentReport,
+    saveStudentReport,
+    deleteStudentReport,
+    getTeacherJudgement,
+    saveTeacherJudgement,
+    deleteTeacherJudgement
+}
