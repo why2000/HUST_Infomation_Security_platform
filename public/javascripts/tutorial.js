@@ -332,6 +332,7 @@ function getInfo(callback) {
         $('.test-main').remove();
     }else {
         $('.notice_mess_bar').remove();
+        $('#pim_content').css('width', '100%').css('margin', '0px');
     }
     var xmlhttp = setXmlHttp();
     RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'info']), null, true, function () {
@@ -364,7 +365,7 @@ function setVideo(){
     var videofile = info.videofile
     var title = info.title;
     $('.main_content .notice_title_01').empty().text(title);
-    $('.main_content .notice_content_01').empty().append(`<video src='/public/videos/${videofile}' controls="controls"></video>`)
+    $('.main_content .notice_content_01').empty().append(`<video src='/public/videos/${videofile}' controls="controls" width="100%"></video>`)
 }
 
 function setInfo() {
