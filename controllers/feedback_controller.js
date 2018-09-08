@@ -19,12 +19,12 @@ const getIndexPage = (req, res) => {
 
 // *用户验证已经加入
 // TODO:尚无入口URL，尤其是教师如何进入
-const getIndex = (req, res) => {
+const getIndex = async (req, res) => {
 
     if (!req.session.loginUser) {
         res.redirect('/');
     } else {
-        if (UserValidator.getUserTypeById(req.session.loginUser) == "student") {
+        if (await UserValidator.getUserTypeById(req.session.loginUser) == "student") {
             res.render('report-index');
         }
         // TODO
