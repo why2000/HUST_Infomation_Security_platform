@@ -12,22 +12,23 @@ router.get('/*logout', UserController.getLogout);
 
 //router.get('/', feedback.getIndex);
 
-router.get('/:class_id', feedback.getPageByUserType);
+router.get('/studentlist', feedback.getStudentList);
+
+router.get('/*userid', UserController.getUserId);
+
+router.get('/*username', UserController.getUserNameById);
+
+router.get('/:class_id/class', feedback.getPageByUserType);
 
 // 报告文件
-router.get('/:class_id/:student_id/report', feedback.getStudentReport);
 router.post('/:class_id/report', upload.single('upload'), feedback.saveStudentReport);
 router.delete('/:class_id/report', feedback.deleteStudentReport);
+router.get('/:class_id/:student_id/report', feedback.getStudentReport);
 
 // 教师反馈
 router.get('/:class_id/:student_id/judgement', feedback.getTeacherJudgement);
 router.post('/:class_id/:student_id/judgement', feedback.saveTeacherJudgement);
 router.delete('/:class_id/:student_id/judgement', feedback.deleteTeacherJudgement);
 
-router.get('/:student_id/studentlist', )
-
-router.get('/*userid', UserController.getUserId);
-
-router.get('/*username', UserController.getUserNameById);
 
 module.exports = router;

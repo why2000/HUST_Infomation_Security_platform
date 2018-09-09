@@ -1,13 +1,13 @@
 'use strict'
 var feedback = require('../models/feedback_db');
 var file = require('../models/file_db');
+var user = require('../models/user_db');
 var response = require('../utils/response');
 var extname = require('path').extname;
 var cfg = require('../config/feedback.json');
 var fs = require('fs');
 var UserValidator = require('../validators/user_validator');
 let FeedbackLogger = require('../logger').FeedbackLogger;
-let FeedbackValidator = require('../validators/feedback_validator');
 
 
 
@@ -15,9 +15,27 @@ let FeedbackValidator = require('../validators/feedback_validator');
     考虑添加一个全局的ErrorHandler(如果有这种玩意儿)
 */
 
+const getStudentList = async (req, res) => {
+    if (req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
+        var teacherID = req.session.loginUser;
+        user.getStudentListByTeaID(teacherID)
+            .catch(err => {
+                res.status(500).send("Server error");
+                throw (err);
+            })
+            .then(result => {
+                if (result) {
+                    res.status(200).json(result);
+                } else {
+                    res.status(500).send("No data");
+                }
+            })
+    } else {
+        response(res, 400, "premission denied");
+    }
+}
 
-
-const getPageByUserType = (req, res) => {
+const getPageByUserType = async (req, res) => {
 
     if (!req.session.loginUser) {
         res.redirect('/');
@@ -37,7 +55,7 @@ const getPageByUserType = (req, res) => {
 }
 
 const getStudentReport = async (req, res) => {
-    if (!req.session.loginUser &&
+    if (req.session.loginUser &&
         ((await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) ||
         (req.session.loginUser == req.params.student_id)) {
         feedback.getReportByStudentIDAndModuleID(req.params.student_id, req.params.class_id)
@@ -49,9 +67,12 @@ const getStudentReport = async (req, res) => {
                 if (result) {
                     response(res, result);
                 } else {
-                    res.status(400);
+                    res.status(400).send("No data");
                 }
             });
+    }
+    else {
+        response(res, 400, "premission denied");
     }
 }
 
@@ -110,7 +131,7 @@ const deleteStudentReport = async (req, res) => {
                         response(res, 500, 'Server error.');
                     });
             } else {
-                res.status(400);
+                res.status(500).send("No data");
             }
         });
 }
@@ -148,7 +169,7 @@ const saveTeacherJudgement = async (req, res) => {
     // 注意student_id和class_id是否存在
     let sid = req.params.student_id;
     let mid = req.params.class_id;
-    if (!req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
+    if (req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
 
         // 参数类型检查和范围检查 其实很丑，看看有什么比较好看的解决方案
         if (typeof (req.body.score) == 'number' && typeof (req.body.body == 'string') && (req.body.score >= 0 && req.body.score <= 100)) {
@@ -173,7 +194,7 @@ const saveTeacherJudgement = async (req, res) => {
 const deleteTeacherJudgement = async (req, res) => {
     let sid = req.params.student_id;
     let mid = req.params.class_id;
-    if (!req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
+    if (req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
         feedback.removeJudgement(sid, mid)
             .then(() => {
                 response(res, {});
@@ -187,6 +208,7 @@ const deleteTeacherJudgement = async (req, res) => {
 }
 
 module.exports = {
+    getStudentList,
     getPageByUserType,
     getStudentReport,
     saveStudentReport,

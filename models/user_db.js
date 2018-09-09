@@ -28,6 +28,20 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
     }
 })
 
+const getStudentListByTeaID = async function (teacherID) {
+    console.log(teacherID);
+    var user = db.collection('user');
+    try {
+        var teacherData = await user.findOne({ type: 'user-info', userid: teacherID });
+        console.log(teacherData);
+        var studentList =teacherData.list;
+    } catch (err) {
+        UserLogger.error(`database error => ${err.stack}`);
+        throw err
+    }
+    return studentList;
+}
+
 const changeUserData = async function (data) {
     var user = db.collection('user');
     await user.update({ userid: data.uid }, { $set: { username: data.name, password: data.pwd } }, function (err, res) {
@@ -52,7 +66,7 @@ const findUserByName = async function (username) {
 
 const findUserById = async function (userid) {
     var user = db.collection('user');
-    console.log(userid);
+   // console.log(userid);
     try {
         var result = await user.findOne({ type: 'user-info', userid: userid });
     } catch (err) {
@@ -65,5 +79,6 @@ const findUserById = async function (userid) {
 module.exports = {
     findUserByName,
     findUserById,
+    getStudentListByTeaID,
     changeUserData
 }
