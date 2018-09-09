@@ -15,6 +15,8 @@ let FeedbackValidator = require('../validators/feedback_validator');
     考虑添加一个全局的ErrorHandler(如果有这种玩意儿)
 */
 
+
+
 const getPageByUserType = (req, res) => {
 
     if (!req.session.loginUser) {
@@ -142,20 +144,6 @@ const getTeacherJudgement = async (req, res, next) => {
     }
 }
 
-<<<<<<< HEAD
-
-}
-
-const saveTeacherJudgement = async (req, res) => {
-    // 注意student_id和class_id是否存在
-    let sid = req.params.student_id;
-    let mid = req.params.class_id;
-    if (!req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
-
-        // 参数类型检查和范围检查 其实很丑，看看有什么比较好看的解决方案
-        if (typeof (req.body.score) == 'number' && typeof (req.body.body == 'string') && (req.body.score >= 0 && req.body.score <= 100)) {
-            req.body.score = Math.floor(req.body.score); //取整
-=======
 const saveTeacherJudgement = async (req, res) => {
     // 注意student_id和class_id是否存在
     let sid = req.params.student_id;
@@ -165,7 +153,6 @@ const saveTeacherJudgement = async (req, res) => {
         // 参数类型检查和范围检查 其实很丑，看看有什么比较好看的解决方案
         if (typeof (req.body.score) == 'number' && typeof (req.body.body == 'string') && (req.body.score >= 0 && req.body.score <= 100)) {
             req.body.score = Math.floor(req.body.score);//取整
->>>>>>> 261313ecd9d6e03ff6fc1ecdbe8e9c6e82fb4fbd
             // 注意HTML转义的问题，先尝试在前端解决
             feedback.upsertJudgement(sid, mid, req.body.score, req.body.text)
                 .then(() => {
