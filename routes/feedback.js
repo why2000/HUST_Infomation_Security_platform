@@ -24,6 +24,8 @@ router.get('/:class_id/:student_id/judgement', feedback.getTeacherJudgement);
 router.post('/:class_id/:student_id/judgement', feedback.saveTeacherJudgement);
 router.delete('/:class_id/:student_id/judgement', feedback.deleteTeacherJudgement);
 
+router.get('/:student_id/studentlist', )
+
 router.get('/*userid', UserController.getUserId);
 
 router.get('/*username', UserController.getUserNameById);
