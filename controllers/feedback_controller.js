@@ -16,6 +16,7 @@ let FeedbackLogger = require('../logger').FeedbackLogger;
 */
 
 const getStudentList = async (req, res) => {
+    //console.log(req.session.loginUser);
     if (req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
         var teacherID = req.session.loginUser;
         user.getStudentListByTeaID(teacherID)
@@ -31,7 +32,7 @@ const getStudentList = async (req, res) => {
                 }
             })
     } else {
-        response(res, 400, "premission denied");
+        res.status(400).send("permission denied");
     }
 }
 
@@ -72,7 +73,7 @@ const getStudentReport = async (req, res) => {
             });
     }
     else {
-        response(res, 400, "premission denied");
+        res.status(400).send("permission denied");
     }
 }
 
@@ -81,59 +82,66 @@ const saveStudentReport = async (req, res) => {
     // form内input file的id为upload
     let sid = req.session.loginUser;
     let mid = req.params.class_id;
+    if (sid) {
+        if (!req.file) { // 没上传文件
+            response(res, 400, "Argument error.");
+            return;
+        }
 
-    if (!req.file) { // 没上传文件
-        response(res, 400, "Argument error.");
-        return;
+        if (cfg.EXTENSIONS.indexOf(extname(req.file.originalname).toLowerCase()) == -1) { // 不在允许的扩展名内
+            response(res, 400, 'File is not allowed to upload.');
+            fs.unlink(req.file.path); // 删掉文件，其实感觉不太对，不应该放在这儿
+            return;
+        }
+
+
+        feedback.getReportByStudentIDAndModuleID(sid, mid)
+            .then(result => {
+                if (result) {
+                    // 注意，这里是异步
+                    file.removeFile(result.file_id);
+                }
+                return file.saveFile(req.file.originalname, req.file.path, `student:${sid}`);
+            })
+            .then(fid => {
+                return feedback.upsertReport(sid, mid, fid);
+            })
+            .then(() => {
+                response(res, {});
+            })
+            .catch(err => {
+                console.log(err);
+                response(res, 500, 'Server error.');
+            });
+    } else {
+        res.status(400).send("permission denied");
     }
-
-    if (cfg.EXTENSIONS.indexOf(extname(req.file.originalname).toLowerCase()) == -1) { // 不在允许的扩展名内
-        response(res, 400, 'File is not allowed to upload.');
-        fs.unlink(req.file.path); // 删掉文件，其实感觉不太对，不应该放在这儿
-        return;
-    }
-
-
-    feedback.getReportByStudentIDAndModuleID(sid, mid)
-        .then(result => {
-            if (result) {
-                // 注意，这里是异步
-                file.removeFile(result.file_id);
-            }
-            return file.saveFile(req.file.originalname, req.file.path, `student:${sid}`);
-        })
-        .then(fid => {
-            return feedback.upsertReport(sid, mid, fid);
-        })
-        .then(() => {
-            response(res, {});
-        })
-        .catch(err => {
-            console.log(err);
-            response(res, 500, 'Server error.');
-        });
 }
 
 const deleteStudentReport = async (req, res) => {
     let sid = req.session.loginUser;
     let mid = req.params.class_id;
-    feedback.getReportByStudentIDAndModuleID(sid, mid)
-        .then(result => {
-            if (result) {
-                file.removeFile(result.file_id)
-                    .then(() => {
-                        return feedback.removeReport(sid, mid);
-                    })
-                    .then(() => {
-                        response(res, {});
-                    })
-                    .catch(err => {
-                        response(res, 500, 'Server error.');
-                    });
-            } else {
-                res.status(500).send("No data");
-            }
-        });
+    if (sid) {
+        feedback.getReportByStudentIDAndModuleID(sid, mid)
+            .then(result => {
+                if (result) {
+                    file.removeFile(result.file_id)
+                        .then(() => {
+                            return feedback.removeReport(sid, mid);
+                        })
+                        .then(() => {
+                            response(res, {});
+                        })
+                        .catch(err => {
+                            response(res, 500, 'Server error.');
+                        });
+                } else {
+                    res.status(500).send("No data");
+                }
+            });
+    } else {
+        res.status(400).send("permission denied");
+    }
 }
 
 const getTeacherJudgement = async (req, res, next) => {
