@@ -89,6 +89,8 @@ $(document).ready(function () {
             location.reload();
           }
         });
+      }else{
+        alert("文件格式错误！");
       }
     }
   });

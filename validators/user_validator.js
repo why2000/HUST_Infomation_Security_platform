@@ -19,9 +19,10 @@ exports.loginCheck = async params => {
         var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
         UserLogger.error(`controller error => ${err.stack}`);
     }else{
+        //console.log(userid);
         var user_info = await UserDB.findUserById(userid);
         if(user_info){
-            // console.log(user_info)
+            //console.log(user_info);
             if(user_info.password == password){
                 return true;
             }

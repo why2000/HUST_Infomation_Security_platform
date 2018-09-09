@@ -9,8 +9,6 @@ var fs = require('fs');
 var UserValidator = require('../validators/user_validator');
 let FeedbackLogger = require('../logger').FeedbackLogger;
 
-
-
 /* 
     考虑添加一个全局的ErrorHandler(如果有这种玩意儿)
 */
