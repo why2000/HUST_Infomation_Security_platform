@@ -14,11 +14,12 @@ router.get('/*logout', UserController.getLogout);
 
 router.get('/studentlist', feedback.getStudentList);
 
+
 router.get('/*userid', UserController.getUserId);
 
 router.get('/*username', UserController.getUserNameById);
 
-router.get('/:class_id/class', feedback.getPageByUserType);
+router.get('/:class_id/class/:student_id', feedback.getPageByUserType);
 
 // 报告文件
 router.post('/:class_id/report', upload.single('upload'), feedback.saveStudentReport);

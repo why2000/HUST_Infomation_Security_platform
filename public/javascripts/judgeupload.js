@@ -1,7 +1,18 @@
+'use strict'
 $('document').ready(function () {
 
     let localURLArgs = location.href.split('/')
-    var mid = localURLArgs.pop(), sid = localURLArgs.pop();
+    let mid = localURLArgs[localURLArgs.length - 3];
+    let sid = localURLArgs[localURLArgs.length - 1];
+
+    $.ajax({
+        type: "get",
+        url: `/feedback/${mid}/${sid}/judgement`,
+        success: (data) => {
+            $('#inputScore').val(data.result.info.score);
+            $('#inputText').val(data.result.info.text);
+        }
+    })
 
     $('#submit').click(function () {
         var score = $('#inputScore').val();
@@ -12,9 +23,11 @@ $('document').ready(function () {
         } else if (!/^0$|^[1-9][0-9]{0,1}$|^100$/.test(score)) { // 是否0-100
             alert('分数应为0-100间的整数！')
         } else {
+            let url = `/feedback/${mid}/${sid}/judgement`
             score = parseInt(score);
-            $.post({
-                url: `/feedback/judgement/${sid}/${mid}`,
+            $.ajax({
+                type: "post",
+                url: url,
                 contentType: 'application/json',
                 data: JSON.stringify({ score: score, text: text }),
                 success: () => {

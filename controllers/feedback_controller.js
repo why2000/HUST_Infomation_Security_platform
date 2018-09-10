@@ -144,15 +144,18 @@ const deleteStudentReport = async (req, res) => {
 
 const getTeacherJudgement = async (req, res, next) => {
     var student_id;
-    if (await UserValidator.getUserTypeById(req.session.loginUser) == 'student') {
+    if (req.session.loginUser &&
+        (await UserValidator.getUserTypeById(req.session.loginUser) == 'student')) {
         student_id = req.session.loginUser.toString();
     }
-    if (!req.session.loginUser &&
-        ((await UserValidator.getUserTypeById(req.session.loginUser) == "teacher"))) {
+    if (req.session.loginUser &&
+        (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
         student_id = req.params.student_id.toString();
     }
     try {
         var class_id = req.params.class_id;
+        console.log(class_id);
+        console.log(student_id);
         feedback.getJudgementByStudentIDAndModuleID(student_id, class_id).then(result => {
             console.log(result);
             res.json({
