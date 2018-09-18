@@ -29,11 +29,9 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
 })
 
 const getStudentListByTeaID = async function (teacherID) {
-    console.log(teacherID);
     var user = db.collection('user');
     try {
         var teacherData = await user.findOne({ type: 'user-info', userid: teacherID });
-        console.log(teacherData);
         var studentList =teacherData.list;
     } catch (err) {
         UserLogger.error(`database error => ${err.stack}`);

@@ -25,7 +25,8 @@ exports.getIndexPage = async (req, res, next) => {
   } else {
     if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
       page += "_teacher"
-    } else if (await UserValidator.getUserTypeById(req.session.loginUser) == "student") {;
+    } else if (await UserValidator.getUserTypeById(req.session.loginUser) == "student") {
+      ;
     }
     res.render(page);
   }
@@ -140,8 +141,6 @@ exports.getFavorList = async (req, res, next) => {
     TutorialLogger.error(`get favor list error => ${err.stack}`);
     next(err);
   }
-  // console.log(favorlist);
-  
 }
 
 
@@ -175,7 +174,6 @@ exports.postFavor = async (req, res, next) => {
     "taskindex": taskindex,
     "userid": userid
   }
-  //console.log(req.body);
   try {
     let result = await TutorialValidator.postFavor(params);
     TutorialLogger.info(`add favor result => ${JSON.stringify(result, null, 2)}`);
@@ -196,7 +194,6 @@ exports.deleteFavor = async (req, res, next) => {
     "taskindex": taskindex,
     "userid": userid
   }
-  //console.log(req.body);
   try {
     let result = await TutorialValidator.deleteFavor(params);
     TutorialLogger.info(`delete favor result => ${JSON.stringify(result, null, 2)}`);

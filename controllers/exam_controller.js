@@ -138,8 +138,6 @@ exports.getFavorList = async (req, res, next) => {
         ExamLogger.error(`get favor list error => ${err.stack}`);
         next(err);
     }
-    // console.log(favorlist);
-
 }
 
 
@@ -173,7 +171,6 @@ exports.postFavor = async (req, res, next) => {
         "taskindex": taskindex,
         "userid": userid
     }
-    //console.log(req.body);
     try {
         let result = await ExamValidator.postFavor(params);
         ExamLogger.info(`add favor result => ${JSON.stringify(result, null, 2)}`);
@@ -194,7 +191,6 @@ exports.deleteFavor = async (req, res, next) => {
         "taskindex": taskindex,
         "userid": userid
     }
-    //console.log(req.body);
     try {
         let result = await ExamValidator.deleteFavor(params);
         ExamLogger.info(`delete favor result => ${JSON.stringify(result, null, 2)}`);

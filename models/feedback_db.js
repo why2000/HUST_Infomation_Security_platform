@@ -6,7 +6,6 @@ let FeedbackLogger = require('../logger').FeedbackLogger;
 let MongoDB = require('mongodb');
 let MongoClient = MongoDB.MongoClient;
 
-
 let db;
 MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
     if (err) {
@@ -122,12 +121,12 @@ const upsertReport = async (student_id, module_id, file_id) => {
         module_id,
         module_id
     }, {
-        $set: {
-            file_id: file_id
-        }
-    }, {
-        upsert: true
-    }).then(res => res.result.ok == 1)
+            $set: {
+                file_id: file_id
+            }
+        }, {
+            upsert: true
+        }).then(res => res.result.ok == 1)
 }
 
 /**
@@ -148,19 +147,18 @@ const removeReport = async (student_id, module_id) => {
  * @param {string} student_id 学生ID
  * @param {string} module_id 模块ID
  */
+
 const getJudgementByStudentIDAndModuleID = async (student_id, module_id) => {
     var colJudgement = db.collection('IS_Judgements');
-    // console.log(`student_id => ${student_id}`);
-    // console.log(`module_id => ${module_id}`);
     try {
         var result = await colJudgement.findOne({
             student_id: student_id,
             module_id: module_id
         }, {
-            "score": 1,
-            "text": 1,
-            "_id": 0
-        });
+                "score": 1,
+                "text": 1,
+                "_id": 0
+            });
     } catch (err) {
         FeedbackLogger.error(`database error => ${err.stack}`);
         throw err;
@@ -228,13 +226,13 @@ const upsertJudgement = async (student_id, module_id, score, text) => {
         module_id,
         module_id
     }, {
-        $set: {
-            score: score,
-            text: text
-        }
-    }, {
-        upsert: true
-    }).then(res => res.result.ok == 1);
+            $set: {
+                score: score,
+                text: text
+            }
+        }, {
+            upsert: true
+        }).then(res => res.result.ok == 1);
 }
 
 /**

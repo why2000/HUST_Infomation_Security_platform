@@ -15,7 +15,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
         throw err;
     } else {
         db = client.db(ConfigSet.DATABASE_NAME);
-        db.createCollection(ConfigSet.COLLECTION_NAME, function(err, res) {
+        db.createCollection(ConfigSet.COLLECTION_NAME, function (err, res) {
             if (err) {
                 ExamLogger.error(`database error => ${err.stack}`);
                 throw err;
@@ -23,11 +23,11 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
                 //console.log("Successfully creat col");
                 ;
             }
-          });
+        });
     }
 });
 
-function getTime(){
+function getTime() {
     var time = new Date();
     var timeinfo = {
         "timestamp": time.valueOf(),
@@ -50,20 +50,18 @@ const getFavor = async params => {
         "userid": userid
     };
     var favor = false;
-    try{
-        var result = await exam.findOne(whyere, {"favor": 1});
-    } catch(err){
+    try {
+        var result = await exam.findOne(whyere, { "favor": 1 });
+    } catch (err) {
         ExamLogger.error(`database error => ${err.stack}`);
         throw err;
     }
-    if(result){
+    if (result) {
         favor = true;
     }
-    else{
+    else {
         favor = false;
     }
-    // console.log(result);
-    // console.log(whyere);
     return favor;
 }
 
@@ -78,8 +76,8 @@ const postFavor = async params => {
         "userid": userid,
         "favor": true
     };
-    exam.insert(data, function(err, res){
-        if(err){
+    exam.insert(data, function (err, res) {
+        if (err) {
             ExamLogger.error(`database error => ${err.stack}`);
             throw err;
         } else {
@@ -98,8 +96,8 @@ const deleteFavor = async params => {
         "userid": userid,
         "favor": true
     }
-    exam.deleteMany(data, function(err, res){
-        if(err){
+    exam.deleteMany(data, function (err, res) {
+        if (err) {
             ExamLogger.error(`database error => ${err.stack}`);
             throw err;
         } else {
@@ -113,85 +111,85 @@ const deleteFavor = async params => {
 // TaskList
 const getTaskList = async params => {
     var exam = db.collection('exam');
-    async function foo(pass){
+    async function foo(pass) {
         var test = {
-        type: "index-info",
-        content: [
-            {
-                type: "text",
-                text: "因主校区东边泵房升级改造施工，定于8月3日23:30——8月4日2:00停水，主校区大部分区域停水（喻园小区、西边高层小区、紫菘学生公寓与紫菘教师小区不受影响），请各单位和各住户做好储水备用，早完工，早送水，不便之处敬请谅解。",
-                indents: 0,
-            },
-            {
-                type: "text",
-                text: "",
-                indents: 0,
-            },
-            {
-                type: "sc",
-                text: "测试单选",
-                indents: 0,
-                options: [
-                    {
-                        src: "",
-                        text: "第一个答案测试",
-                        choice: "A"
-                    },
-                    {
-                        src: "",
-                        text: "第二个答案测试",
-                        choice: "B"
-                    }
-                ]
-            },
-            {
-                type: "text",
-                text: "后勤集团建安总公司",
-                indents: 15,
-            },
-            {
-                type: "text",
-                text: "2018年8月3日",
-                indents: 15,
-            },
-            {
-                type: "mc",
-                text: "测试多选题如果很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长",
-                indents: 0,
-                options:[
-                    {
-                        text: "第一个多选项",
-                        choice: "A"
-                    },
-                    {
-                        text: "第二个",
-                        choice: "B"
-                    }
-                ]
-            },
-            {
-                type: "img",
-                src: "",
-            },
-            {
-                type: "fb",
-                text: "这是一道_____题",
-                indents: 0,
-                options: [
-                    {
-                        src: "",
-                        text: "",
-                        choice: "1"
-                    }
-                ]
-            }
-        ],
-        title: '主校区短时停水通知',
-        author: 'why',
-        category: '通知',
-        time: '2018-08-03 15:52',
-        hot: '111'
-    }
+            type: "index-info",
+            content: [
+                {
+                    type: "text",
+                    text: "因主校区东边泵房升级改造施工，定于8月3日23:30——8月4日2:00停水，主校区大部分区域停水（喻园小区、西边高层小区、紫菘学生公寓与紫菘教师小区不受影响），请各单位和各住户做好储水备用，早完工，早送水，不便之处敬请谅解。",
+                    indents: 0,
+                },
+                {
+                    type: "text",
+                    text: "",
+                    indents: 0,
+                },
+                {
+                    type: "sc",
+                    text: "测试单选",
+                    indents: 0,
+                    options: [
+                        {
+                            src: "",
+                            text: "第一个答案测试",
+                            choice: "A"
+                        },
+                        {
+                            src: "",
+                            text: "第二个答案测试",
+                            choice: "B"
+                        }
+                    ]
+                },
+                {
+                    type: "text",
+                    text: "后勤集团建安总公司",
+                    indents: 15,
+                },
+                {
+                    type: "text",
+                    text: "2018年8月3日",
+                    indents: 15,
+                },
+                {
+                    type: "mc",
+                    text: "测试多选题如果很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长",
+                    indents: 0,
+                    options: [
+                        {
+                            text: "第一个多选项",
+                            choice: "A"
+                        },
+                        {
+                            text: "第二个",
+                            choice: "B"
+                        }
+                    ]
+                },
+                {
+                    type: "img",
+                    src: "",
+                },
+                {
+                    type: "fb",
+                    text: "这是一道_____题",
+                    indents: 0,
+                    options: [
+                        {
+                            src: "",
+                            text: "",
+                            choice: "1"
+                        }
+                    ]
+                }
+            ],
+            title: '主校区短时停水通知',
+            author: 'why',
+            category: '通知',
+            time: '2018-08-03 15:52',
+            hot: '111'
+        }
         await exam.insertOne(test);
     }
     // await foo();
@@ -199,7 +197,7 @@ const getTaskList = async params => {
         "type": "task-name"
     };
     var result;
-    await exam.find(whyere, {"index": 1, "name": 1}, function(err, res) {
+    await exam.find(whyere, { "index": 1, "name": 1 }, function (err, res) {
         if (err) {
             ExamLogger.error(`database error => ${err.stack}`);
             throw err;
@@ -207,8 +205,6 @@ const getTaskList = async params => {
             result = res.toArray();
         }
     });
-    // console.log(result);
-    // console.log(whyere);
     return result;
 }
 
@@ -221,28 +217,27 @@ const getFavorList = async params => {
         "type": "task-favor",
         "userid": userid
     };
-    try{
-        var indexes = await exam.find(whyere, {"index": 1, "name":  1}).toArray();
-    } catch(err){
+    try {
+        var indexes = await exam.find(whyere, { "index": 1, "name": 1 }).toArray();
+    } catch (err) {
         ExamLogger.error(`database error => ${err.stack}`);
         throw err;
     }
     var favors = new Array();
     var length = 0;
-    if(indexes){
+    if (indexes) {
         length = indexes.length;
     }
-    // console.log(length);
-    for(var i = 0; i < length; i++){
+    for (var i = 0; i < length; i++) {
         var single = indexes[i];
         var index = parseInt(single.taskindex);
         var namewhere = {
             "type": "task-name",
             "index": index.toString()
         };
-        try{
-            var namecol = await exam.findOne(namewhere, {"index": 1, "name": 1});
-        } catch(err){
+        try {
+            var namecol = await exam.findOne(namewhere, { "index": 1, "name": 1 });
+        } catch (err) {
             ExamLogger.error(`database error => ${err.stack}`);
             throw err;
         }
@@ -251,31 +246,30 @@ const getFavorList = async params => {
             "name": namecol.name
         }
     }
-    
-    var result = favors.filter( function(currentValue) { 
-        return currentValue && currentValue!= null && currentValue != undefined;
+
+    var result = favors.filter(function (currentValue) {
+        return currentValue && currentValue != null && currentValue != undefined;
     });
-    // console.log(result);
     return result;
 }
 
 // IndexInfo
 const getInfo = async params => {
     var exam = db.collection('exam');
-    if(params.taskindex == "index"){
+    if (params.taskindex == "index") {
         var whyere = {
             "type": "index-info"
         }
     }
-    else{
+    else {
         var whyere = {
             "type": "exam-info",
             "taskindex": params.taskindex
         }
     }
-    try{
-        var result = await exam.findOne(whyere, {"_id": 0});
-    } catch(err){
+    try {
+        var result = await exam.findOne(whyere, { "_id": 0 });
+    } catch (err) {
         ExamLogger.error(`database error => ${err.stack}`);
         throw err;
     }

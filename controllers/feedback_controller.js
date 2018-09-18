@@ -14,7 +14,6 @@ let FeedbackLogger = require('../logger').FeedbackLogger;
 */
 
 const getStudentList = async (req, res) => {
-    //console.log(req.session.loginUser);
     if (req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
         var teacherID = req.session.loginUser;
         user.getStudentListByTeaID(teacherID)
@@ -30,7 +29,7 @@ const getStudentList = async (req, res) => {
                 }
             })
     } else {
-        res.status(400).send("permission denied");
+        res.status(401).send("permission denied");
     }
 }
 
@@ -71,7 +70,7 @@ const getStudentReport = async (req, res) => {
             });
     }
     else {
-        res.status(400).send("permission denied");
+        res.status(401).send("permission denied");
     }
 }
 
@@ -112,7 +111,7 @@ const saveStudentReport = async (req, res) => {
                 response(res, 500, 'Server error.');
             });
     } else {
-        res.status(400).send("permission denied");
+        res.status(401).send("permission denied");
     }
 }
 
@@ -138,7 +137,7 @@ const deleteStudentReport = async (req, res) => {
                 }
             });
     } else {
-        res.status(400).send("permission denied");
+        res.status(401).send("permission denied");
     }
 }
 
@@ -154,10 +153,7 @@ const getTeacherJudgement = async (req, res, next) => {
     }
     try {
         var class_id = req.params.class_id;
-        console.log(class_id);
-        console.log(student_id);
         feedback.getJudgementByStudentIDAndModuleID(student_id, class_id).then(result => {
-            console.log(result);
             res.json({
                 result: {
                     info: {
@@ -167,7 +163,6 @@ const getTeacherJudgement = async (req, res, next) => {
                 }
             });
         });
-        // console.log(judgeinfo);
     } catch (err) {
         FeedbackLogger.error(`controller error => ${err.stack}`)
         next(err);
@@ -196,7 +191,7 @@ const saveTeacherJudgement = async (req, res) => {
             response(res, 400, 'Data error.');
         }
     } else {
-        response(res, 400, "premission denied");
+        response(res, 401, "premission denied");
     }
 }
 
@@ -212,7 +207,7 @@ const deleteTeacherJudgement = async (req, res) => {
                 response(res, 500, 'Server error.');
             });
     } else {
-        response(res, 400, "premission denied");
+        response(res, 401, "premission denied");
     }
 }
 

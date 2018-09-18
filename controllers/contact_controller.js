@@ -26,7 +26,6 @@ exports.postContact = async (req, res, next) => {
         }
     }
     else{
-        //console.log(req.body);
         try {
             let result = await ContactValidator.sendInf(info);
             ContactLogger.info(`add contact result => ${JSON.stringify(result, null, 2)}`);
