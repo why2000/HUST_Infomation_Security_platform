@@ -118,8 +118,7 @@ const upsertReport = async (student_id, module_id, file_id) => {
     let colReport = db.collection('IS_Reports');
     return colReport.updateOne({
         student_id: student_id,
-        module_id,
-        module_id
+        module_id: module_id
     }, {
             $set: {
                 file_id: file_id
@@ -223,8 +222,7 @@ const upsertJudgement = async (student_id, module_id, score, text) => {
     let colReport = db.collection('IS_Judgements');
     return colReport.updateOne({
         student_id: student_id,
-        module_id,
-        module_id
+        module_id: module_id
     }, {
             $set: {
                 score: score,
