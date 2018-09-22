@@ -5,37 +5,45 @@ var path = require('path')
 var filedb = require('../models/courseware_db')
 
 exports.getIndexPage = async (req, res, next) => {
-  res.render("courseware-download");
+  res.render("courseware-upload");
 }
 
 exports.getCourseList = async (req, res, next) => {
-  res.json({
-    "course_name": [
-      "aaa",
-      "bbb",
-      "ccc",
-      "ddd",
-      "eee"]
-  })
+  filedb.getAllCoursewareStatus()
+    .then(result => {
+      res.json({
+        data: result
+      })
+    })
+    .catch(err => {
+      res.status(500).send("Server error");
+    })
 }
 
 exports.getCoursewareFile = async (req, res, next) => {
-
-  let stream = fs.createReadStream(path.join("coursewareFile/", req.params.course_id));
-
-  if (true) {
-    res.set({
-      "Content-type": "application/octet-stream",
-      "Content-Disposition": "attachment;filename=" + req.params.course_id
-    });
-    stream.on("data", function (chunk) { res.write(chunk, "binary") });
-    stream.on("end", function () {
-      res.end();
-    });
-  } else {
-    response(res, 404, 'Not found!');
-  }
-
+  let course_id = req.params.course_id;
+  filedb.getCoursewareFileStatusByCourseID(course_id)
+    .then(result => {
+      if (result && result.status == true) {
+        console.log(result);
+        let stream = fs.createReadStream(path.join("coursewareFile/", req.params.course_id));
+        console.log(result);
+        res.set({
+          "Content-type": "application/octet-stream",
+          "Content-Disposition": "attachment;filename=" + result.name
+        });
+        stream.on("data", function (chunk) { res.write(chunk, "binary") });
+        stream.on("end", function () {
+          res.end();
+        });
+      } else {
+        res.status(500).send("No Data");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send("Server error");
+    })
 }
 
 exports.uploadCoursewareFile = async (req, res, next) => {
@@ -53,7 +61,7 @@ exports.uploadCoursewareFile = async (req, res, next) => {
           fs.unlinkSync(path.join("coursewareFile/", course_id));
         }
       }
-      return filedb.uploadFile("coursewareFile/", req.file.path, course_id);
+      return filedb.uploadFile("coursewareFile/", req.file.originalname, req.file.path, course_id);
     })
     .then(() => {
       res.status(200).send();

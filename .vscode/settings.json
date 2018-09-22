@@ -5,6 +5,7 @@
     "courseware",
     "filedb",
     "id",
+    "originalname",
     "status",
     "upsert"
   ]

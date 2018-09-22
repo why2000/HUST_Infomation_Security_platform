@@ -27,7 +27,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
 
 const getAllCoursewareStatus = async function () {
     var collection = db.collection('coursefile');
-    return collection.find().toArray();
+    return await collection.find().toArray();
 }
 
 const getCoursewareFileStatusByCourseID = async function (course_id) {
@@ -44,6 +44,7 @@ const removeFile = async function (file_path, course_id) {
         course_id: course_id
     }, {
             $set: {
+                name: "",
                 status: false
             }
         }, {
@@ -51,13 +52,14 @@ const removeFile = async function (file_path, course_id) {
         }).then(res => res.result.ok == 1);
 }
 
-const uploadFile = async function (target_path, tmp_path, course_id) {
+const uploadFile = async function (target_path, origin_name, tmp_path, course_id) {
     var collection = db.collection('coursefile');
     fs.renameSync(tmp_path, path.join(target_path, course_id));
     return collection.updateOne({
         course_id: course_id
     }, {
             $set: {
+                name: origin_name,
                 status: true
             }
         }, {
