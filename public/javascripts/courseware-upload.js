@@ -6,7 +6,7 @@ $(document).ready(function () {
     success: (data) => {
       let html = "";
       for (let course_id = 1, dLen = data.data.length; course_id <= dLen; course_id++) {
-        html += '<li class="list-group-item" href="' + url + '/file/course' + course_id + '" download>'
+        html += '<li class="list-group-item" >'
           + "No." + course_id + "：" + data.data[course_id - 1].course_name
           + '<div class="btn-group pull-right">'
         let disable;

@@ -191,7 +191,7 @@ const saveTeacherJudgement = async (req, res) => {
             response(res, 400, 'Data error.');
         }
     } else {
-        response(res, 401, "premission denied");
+        response(res, 401, "permission denied");
     }
 }
 
@@ -207,7 +207,7 @@ const deleteTeacherJudgement = async (req, res) => {
                 response(res, 500, 'Server error.');
             });
     } else {
-        response(res, 401, "premission denied");
+        response(res, 401, "permission denied");
     }
 }
 

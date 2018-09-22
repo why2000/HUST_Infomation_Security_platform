@@ -1,11 +1,14 @@
-var express = require('express');
-var UserController = require('../controllers/user_controller')
-var CoursewareController = require('../controllers/courseware_controller')
-var multer = require('multer');
-var tmp_path = '../coursewareFile/tmp/';
-var upload = multer({ dest: tmp_path });
+let express = require('express');
+let UserController = require('../controllers/user_controller')
+let CoursewareController = require('../controllers/courseware_controller')
+let multer = require('multer');
+let tmp_path = '../coursewareFile/tmp/';
+let upload = multer({ dest: tmp_path });
 
-var router = express.Router();
+
+let router = express.Router();
+
+router.get('/*logout', UserController.getLogout);
 
 router.get('/', CoursewareController.getIndexPage);
 router.get("/list", CoursewareController.getCourseList);
