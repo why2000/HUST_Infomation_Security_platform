@@ -1,6 +1,6 @@
 'use strict'
 let coursewareFileList;
-let url = window.location.protocol + window.location.pathname;
+let current_url_valid = window.location.protocol + window.location.pathname;
 let courseNum = new Set();
 
 $(document).ready(function () {
