@@ -2,22 +2,19 @@
 
 let coursewareFileList;
 let current_url_valid = window.location.protocol + window.location.pathname;
+let courseNum = new Set();
 
 $(document).ready(function () {
-  let url = window.location.href;
   $.get({
     url: '/courseware/list',
     success: (data) => {
       coursewareFileList = data.data;
       coursewareFileList.sort()
-      let html = "";
+      render(coursewareFileList, 'All');
       for (let n = 0, dLen = coursewareFileList.length; n < dLen; n++) {
-        html += '<li class="list-group-item" >'
-          + "课程序号: " + coursewareFileList[n].course_id + " 课件名称: " + coursewareFileList[n].file_name
-        html += `<button type="button" class="my-download-button btn btn-primary pull-right" nid='${n}'>下载</button>`
-          + '</li >';
+        courseNum.add(coursewareFileList[n].course_id);
       }
-      $('#course-list').append(html);
+      courseNum.forEach(val => { $('#course-select').append('<option>' + val + '</option>') });
     }
   });
   console.log("get list suc");
@@ -32,6 +29,23 @@ $(document).ready(function () {
     $form.appendTo($('body'));
     $form.submit();
   })
+  .on('change', '#course-select', async function () {
+    render(coursewareFileList,$(this).val());
+  })
+
+async function render(coursewareFileList, courseLimit) {
+  let html = "";
+  $('#course-list').empty();
+  for (let n = 0, dLen = coursewareFileList.length; n < dLen; n++) {
+    if (courseLimit == 'All' || coursewareFileList[n].course_id == courseLimit) {
+      html += '<li class="list-group-item" >'
+        + "课程序号: " + coursewareFileList[n].course_id + " 课件名称: " + coursewareFileList[n].file_name
+      html += `<button type="button" class="my-download-button btn btn-primary pull-right" nid='${n}'>下载</button>`
+        + '</li >';
+    }
+  }
+  $('#course-list').append(html);
+}
 
 /* General */
 

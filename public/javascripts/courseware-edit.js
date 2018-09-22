@@ -1,6 +1,7 @@
 'use strict'
 let coursewareFileList;
-let current_url_valid = window.location.protocol + window.location.pathname;
+let url = window.location.protocol + window.location.pathname;
+let courseNum = new Set();
 
 $(document).ready(function () {
 
@@ -9,16 +10,11 @@ $(document).ready(function () {
     success: (data) => {
       coursewareFileList = data.data;
       coursewareFileList.sort()
-      let html = "";
+      render(coursewareFileList, 'All');
       for (let n = 0, dLen = coursewareFileList.length; n < dLen; n++) {
-        html += '<li class="list-group-item" >'
-          + "课程序号: " + coursewareFileList[n].course_id + " 课件名称: " + coursewareFileList[n].file_name
-          + '<div class="btn-group pull-right">'
-        html += `<button type="button" class="my-delete-button btn btn-primary btn-warning" cid='${coursewareFileList[n].course_id}' nid='${n}'>删除</button>`
-          + `<button type="button" class="my-download-button btn btn-primary" cid='${coursewareFileList[n].course_id}' nid='${n}'>下载</button>`
-          + '</div > </li>';
+        courseNum.add(coursewareFileList[n].course_id);
       }
-      $('#course-list').append(html);
+      courseNum.forEach(val => { $('#course-select').append('<option>' + val + '</option>') });
     }
   });
   console.log("get list suc");
@@ -96,7 +92,25 @@ $(document).ready(function () {
       }
     }
   })
+  .on('change', '#course-select', async function () {
+    render(coursewareFileList, $(this).val());
+  })
 
+async function render(coursewareFileList, courseLimit) {
+  let html = "";
+  $('#course-list').empty();
+  for (let n = 0, dLen = coursewareFileList.length; n < dLen; n++) {
+    if (courseLimit == 'All' || coursewareFileList[n].course_id == courseLimit) {
+      html += '<li class="list-group-item" >'
+        + "课程序号: " + coursewareFileList[n].course_id + " 课件名称: " + coursewareFileList[n].file_name
+        + '<div class="btn-group pull-right">'
+      html += `<button type="button" class="my-delete-button btn btn-primary btn-warning" cid='${coursewareFileList[n].course_id}' nid='${n}'>删除</button>`
+        + `<button type="button" class="my-download-button btn btn-primary" cid='${coursewareFileList[n].course_id}' nid='${n}'>下载</button>`
+        + '</div > </li>';
+    }
+  }
+  $('#course-list').append(html);
+}
 
 /* General */
 
