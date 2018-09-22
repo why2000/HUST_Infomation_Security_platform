@@ -20,7 +20,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
                 TutorialLogger.error(`database error => ${err.stack}`);
                 throw err;
             } else {
-                //console.log("Successfully creat col");
+                // Successfully creat col
                 ;
             }
           });
@@ -62,8 +62,6 @@ const getFavor = async params => {
     else{
         favor = false;
     }
-    // console.log(result);
-    // console.log(whyere);
     return favor;
 }
 
@@ -207,8 +205,6 @@ const getTaskList = async params => {
             result = res.toArray();
         }
     });
-    // console.log(result);
-    // console.log(whyere);
     return result;
 }
 
@@ -232,7 +228,6 @@ const getFavorList = async params => {
     if(indexes){
         length = indexes.length;
     }
-    // console.log(length);
     for(var i = 0; i < length; i++){
         var single = indexes[i];
         var index = parseInt(single.taskindex);
@@ -240,10 +235,8 @@ const getFavorList = async params => {
             "type": "task-name",
             "index": index.toString()
         };
-        // console.log(namewhere)
         try{
             var namecol = await tutorial.findOne(namewhere, {"index": 1, "name": 1});
-            // console.log(namecol)
             favors[index] = {
                 "index": namecol.index,
                 "name": namecol.name
@@ -258,7 +251,6 @@ const getFavorList = async params => {
     var result = favors.filter( function(currentValue) { 
         return currentValue && currentValue!= null && currentValue != undefined;
     });
-    // console.log(result);
     return result;
 }
 

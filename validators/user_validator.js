@@ -46,7 +46,6 @@ exports.getUserTypeById = async userid => {
 
 // UserName
 exports.getUserNameById = async userid => {
-    // console.log(typeof favor);
     if(!await Validator._validateuserid(userid)){
         var err = ErrorUtil.createError(ErrorUtil.ErrorSet.REQUEST_PARAMETER_ERROR);
         UserLogger.error(`controller error => ${err.stack}`);

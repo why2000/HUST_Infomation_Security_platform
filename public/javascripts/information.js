@@ -56,7 +56,7 @@ function Logout() {
                     callback();
                 }
             } else {
-                // console.log("发生错误" + xmlhttp.status);
+                 console.log("发生错误" + xmlhttp.status);
             }
         }
     });

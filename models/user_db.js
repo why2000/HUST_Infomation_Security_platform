@@ -21,7 +21,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
                 UserLogger.error(`database error => ${err.stack}`);
                 throw err;
             } else {
-                //console.log("Successfully creat col");
+                // Successfully creat col
                 ;
             }
         });
@@ -64,7 +64,6 @@ const findUserByName = async function (username) {
 
 const findUserById = async function (userid) {
     var user = db.collection('user');
-   // console.log(userid);
     try {
         var result = await user.findOne({ type: 'user-info', userid: userid });
     } catch (err) {

@@ -18,7 +18,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
                 FeedbackLogger.error(`database error => ${err.stack}`);
                 throw err;
             } else {
-                //console.log("Successfully creat col");
+                // Successfully creat col
                 ;
             }
         });
@@ -27,7 +27,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
                 FeedbackLogger.error(`database error => ${err.stack}`);
                 throw err;
             } else {
-                //console.log("Successfully creat col");
+                // Successfully creat col
                 ;
             }
         });
@@ -36,7 +36,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
                 FeedbackLogger.error(`database error => ${err.stack}`);
                 throw err;
             } else {
-                //console.log("Successfully creat col");
+                // Successfully creat col
                 ;
             }
         });
