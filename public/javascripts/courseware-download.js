@@ -17,7 +17,6 @@ $(document).ready(function () {
       courseNum.forEach(val => { $('#course-select').append('<option>' + val + '</option>') });
     }
   });
-  console.log("get list suc");
 })
   .on('click', '.my-download-button', async function () {
     let nid = $(this).attr('nid');

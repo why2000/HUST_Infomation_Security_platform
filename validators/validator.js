@@ -33,7 +33,6 @@ exports._validatefavortype = async params => {
     if(typeof params == 'boolean'){
         return true;
     }
-    console.log(params);
     return false;
 }
 
