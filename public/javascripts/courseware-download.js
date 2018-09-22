@@ -30,7 +30,7 @@ $(document).ready(function () {
     $form.submit();
   })
   .on('change', '#course-select', async function () {
-    render(coursewareFileList,$(this).val());
+    render(coursewareFileList, $(this).val());
   })
 
 async function render(coursewareFileList, courseLimit) {
@@ -108,9 +108,5 @@ function Logout(callback) {
 }
 
 function up(x, y) {
-  if (x, course_id == y.course_id) {
-    return x.part_id - y.part_id;
-  } else {
-    return x.course_id - y.course_id
-  }
+  return x.course_id - y.course_id
 }

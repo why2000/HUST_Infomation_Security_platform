@@ -16,7 +16,7 @@ exports.setData = async (req, res, next) => {
   if (req.session.loginUser) {
 
     let data = {
-      uid: req.body.uid,
+      uid: req.session.loginUser,
       pwd: req.body.pw,
       name: req.body.name
     }

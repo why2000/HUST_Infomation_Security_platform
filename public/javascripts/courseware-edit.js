@@ -17,7 +17,6 @@ $(document).ready(function () {
       courseNum.forEach(val => { $('#course-select').append('<option>' + val + '</option>') });
     }
   });
-  console.log("get list suc");
 })
   .on('click', '.btn-warning', async function () {
     $(this).removeClass("btn-warning");

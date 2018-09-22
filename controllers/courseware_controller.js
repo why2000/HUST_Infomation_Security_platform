@@ -23,7 +23,6 @@ exports.getCourseList = async (req, res, next) => {
   if (req.session.loginUser) {
     courseware.getAllCoursewareStatus()
       .then(result => {
-
         res.json({
           data: result
         })
@@ -41,7 +40,6 @@ exports.uploadCoursewareFile = async (req, res, next) => {
     if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
       let course_id = req.params.course_id;
 
-      console.log(course_id);
       if (!req.file) { // 没上传文件
         res.status(400).send("No file upload");
         return;
@@ -75,7 +73,7 @@ exports.deleteCoursewareFile = async (req, res, next) => {
       courseware.getCoursewareFileStatusByFileID(file_id)
         .then(result => {
           if (result) {
-            console.log(result);
+
             file.removeFile(result.file_id)
               .then(() => {
                 return courseware.removeFile(file_id);
