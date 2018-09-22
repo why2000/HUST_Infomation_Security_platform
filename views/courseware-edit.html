@@ -9,7 +9,7 @@
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/public/javascripts/courseware-upload.js"></script>
+  <script type="text/javascript" src="/public/javascripts/courseware-edit.js"></script>
   <!-- load CSS -->
   <!-- Google web font "Open Sans" -->
   <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
@@ -41,15 +41,22 @@
     <div class="row">
       <div class="col-12">
         <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课件上传</h5>
+        <form id="uploadFrom" class="import-file-form" enctype="multipart/form-data">
+          <p>请输入课程序号:</p>
+          <input type="text" id="uploadCourse">
+          <br>
+          <br>
+          <input type="file" name="upload" id="uploadFile" accept=".ppt,.pptx,.doc,.docx,.pdf">
+          <br>
+          <br>
+          <button type="button" class="my-upload-button btn btn-primary">上传</button>
+        </form>
       </div>
     </div>
     <br>
     <div class="row">
       <div class="col-12">
-        <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课程列表</h5>
-        <form id="FakeUploadFrom" class="import-file-form" enctype="multipart/form-data">
-          <input type="file" name="upload" id="FakeUpload" style="display:none" accept=".ppt,.pptx,.doc,.docx,.pdf">
-        </form>
+        <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">已上传课件列表</h5>
         <div id="course-list" class="list-group">
         </div>
       </div>
