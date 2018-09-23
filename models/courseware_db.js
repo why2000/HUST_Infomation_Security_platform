@@ -19,7 +19,6 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
                 throw err;
             } else {
                 //console.log("Successfully creat col");
-                ;
             }
         });
     }
@@ -34,7 +33,7 @@ const getCoursewareFileStatusByFileID = async function (file_id) {
     var collection = db.collection('coursefile');
     return collection.findOne({
         file_id: file_id
-    })
+    });
 }
 
 const removeFile = async function (file_id) {
@@ -54,10 +53,17 @@ const uploadFile = async function (course_id, file_id, file_name) {
     }).then(res => res.result.ok == 1);
 }
 
+const getCoursewareFilesByCourseID = async function (course_id) {
+    var collection = db.collection('coursefile')
+    return collection.insertOne({
+        course_id: course_id
+    }).toArray()
+}
 
 module.exports = {
     getAllCoursewareStatus,
     uploadFile,
     removeFile,
-    getCoursewareFileStatusByFileID
+    getCoursewareFileStatusByFileID,
+    getCoursewareFilesByCourseID
 }

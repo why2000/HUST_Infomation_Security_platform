@@ -23,6 +23,7 @@ var fileRouter = require('./routes/file');
 var tutorialRouter = require('./routes/tutorial')
 var informationRouter = require('./routes/information')
 var coursewareRouter = require('./routes/courseware');
+var courseRouter = require('./routes/course');
 
 var app = express();
 
@@ -62,6 +63,7 @@ app.use('/file', fileRouter);
 app.use('/tutorial', tutorialRouter);
 app.use('/information', informationRouter)
 app.use('/courseware', coursewareRouter);
+app.use('/course', courseRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

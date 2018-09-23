@@ -22,7 +22,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
                 ;
             }
         });
-        db.createCollection('IS_Reports', function (err, res) {
+        db.createCollection('report', function (err, res) {
             if (err) {
                 FeedbackLogger.error(`database error => ${err.stack}`);
                 throw err;
@@ -31,7 +31,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
                 ;
             }
         });
-        db.createCollection('IS_Judgements', function (err, res) {
+        db.createCollection('judgement', function (err, res) {
             if (err) {
                 FeedbackLogger.error(`database error => ${err.stack}`);
                 throw err;
@@ -49,8 +49,8 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
  * @param {string} module_id 模块ID
  */
 const getReportByStudentIDAndModuleID = async (student_id, module_id) => {
-    let colReport = db.collection('IS_Reports');
-    let ret = undefined;
+    let colReport = db.collection('report');
+    let ret = null;
     let res = await colReport.findOne({
         student_id: student_id,
         module_id: module_id
@@ -69,7 +69,7 @@ const getReportByStudentIDAndModuleID = async (student_id, module_id) => {
  * @param {string} student_id 学生ID
  */
 const getReportsByStudentID = async (student_id) => {
-    let colReport = db.collection('IS_Reports');
+    let colReport = db.collection('report');
     return colReport.find({
         student_id: student_id
     }).project({
@@ -82,7 +82,7 @@ const getReportsByStudentID = async (student_id) => {
  * @param {string} module_id 模块ID
  */
 const getReportsByModuleID = async (module_id) => {
-    let colReport = db.collection('IS_Reports');
+    let colReport = db.collection('report');
     return colReport.find({
         module_id: module_id
     }).project({
@@ -97,7 +97,7 @@ const getReportsByModuleID = async (module_id) => {
  * @param {string} file_id 文件ID
  */
 const insertReport = async (student_id, module_id, file_id) => {
-    let colReport = db.collection('IS_Reports');
+    let colReport = db.collection('report');
     let doc = {
         student_id: student_id,
         module_id: module_id,
@@ -115,7 +115,7 @@ const insertReport = async (student_id, module_id, file_id) => {
  * @param {string} file_id 文件ID
  */
 const upsertReport = async (student_id, module_id, file_id) => {
-    let colReport = db.collection('IS_Reports');
+    let colReport = db.collection('report');
     return colReport.updateOne({
         student_id: student_id,
         module_id: module_id
@@ -134,7 +134,7 @@ const upsertReport = async (student_id, module_id, file_id) => {
  * @param {string} module_id 模块ID
  */
 const removeReport = async (student_id, module_id) => {
-    let colReport = db.collection('IS_Reports');
+    let colReport = db.collection('report');
     return colReport.deleteOne({
         student_id: student_id,
         module_id: module_id
@@ -148,7 +148,7 @@ const removeReport = async (student_id, module_id) => {
  */
 
 const getJudgementByStudentIDAndModuleID = async (student_id, module_id) => {
-    var colJudgement = db.collection('IS_Judgements');
+    var colJudgement = db.collection('judgement');
     try {
         var result = await colJudgement.findOne({
             student_id: student_id,
@@ -170,7 +170,7 @@ const getJudgementByStudentIDAndModuleID = async (student_id, module_id) => {
  * @param {string} student_id 学生ID
  */
 const getJudgementsByStudentID = async (student_id) => {
-    let colJudgement = db.collection('IS_Judgements');
+    let colJudgement = db.collection('judgement');
     return colJudgement.find({
         student_id: student_id
     }).project({
@@ -183,7 +183,7 @@ const getJudgementsByStudentID = async (student_id) => {
  * @param {string} module_id 模块ID
  */
 const getJudgementsByModuleID = async (module_id) => {
-    let colJudgement = db.collection('IS_Judgements');
+    let colJudgement = db.collection('judgement');
     return colJudgement.find({
         module_id: module_id
     }).project({
@@ -199,7 +199,7 @@ const getJudgementsByModuleID = async (module_id) => {
  * @param {string} text 评价文字
  */
 const insertJudgement = async (student_id, module_id, score, text) => {
-    let colJudgement = db.collection('IS_Judgements');
+    let colJudgement = db.collection('judgement');
     let doc = {
         student_id: student_id,
         module_id: module_id,
@@ -219,11 +219,11 @@ const insertJudgement = async (student_id, module_id, score, text) => {
  * @param {string} text 评价文字
  */
 const upsertJudgement = async (student_id, module_id, score, text) => {
-    let colReport = db.collection('IS_Judgements');
+    let colReport = db.collection('judgement');
     return colReport.updateOne({
         student_id: student_id,
         module_id: module_id
-    }, {
+        }, {
             $set: {
                 score: score,
                 text: text
@@ -239,7 +239,7 @@ const upsertJudgement = async (student_id, module_id, score, text) => {
  * @param {string} module_id 模块ID
  */
 const removeJudgement = async (student_id, module_id) => {
-    let colJudgement = db.collection('IS_Judgements');
+    let colJudgement = db.collection('judgement');
     return colJudgement.deleteOne({
         student_id: student_id,
         module_id: module_id

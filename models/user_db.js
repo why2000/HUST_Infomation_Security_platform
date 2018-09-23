@@ -22,7 +22,6 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
                 throw err;
             } else {
                 //console.log("Successfully creat col");
-                ;
             }
         });
     }

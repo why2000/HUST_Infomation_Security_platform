@@ -1,5 +1,6 @@
 var file = require('../models/file_db')
 var response = require('../utils/response')
+var UserValidator = require('../validators/user_validator');
 
 const getAllFiles = (req, res) => {
     file.getAllFiles()
@@ -9,7 +10,14 @@ const getAllFiles = (req, res) => {
 }
 
 const uploadFile = (req, res) => {
-    let identity, id // 等用户系统接入
+
+    if(!req.session.loginUser) {
+        response(res, 401, "Not login.")
+        return
+    }
+
+    let id = req.session.loginUser
+    let identity = UserValidator.getUserTypeById(id)
 
     file.saveFile(req.files.upload.name, req.files.upload.path, `${identity}:${id}`)
         .then(fid => {

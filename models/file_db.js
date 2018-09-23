@@ -50,7 +50,7 @@ const genFileID = (file_name) => {
  * 获得全部已上传的文件
  */
 const getAllFiles = async () => {
-    let colFiles = db.collection('IS_Files');
+    let colFiles = db.collection('file');
     return colFiles.find({}).project({_id: 0}).toArray();
 }
 
@@ -61,7 +61,7 @@ const getAllFiles = async () => {
  * @param {string} file_id 文件ID
  */
 const getFile = async (file_id) => {
-    var colFiles = db.collection('IS_Files');
+    var colFiles = db.collection('file');
     return colFiles.findOne({file_id: file_id})
            .then(res => {
                if(res) {
@@ -84,7 +84,7 @@ const getFile = async (file_id) => {
  */
 const saveFile = async (file_name, tmp_path, uploader) => {
     // return some file_id
-    let colFiles = db.collection('IS_Files');
+    let colFiles = db.collection('file');
     let file_id = genFileID(file_name);
     fs.renameSync(tmp_path, path.join(cfg.PATH, file_id));
     return colFiles.insertOne({name: file_name, file_id: file_id, uploader: uploader})
@@ -96,7 +96,7 @@ const saveFile = async (file_name, tmp_path, uploader) => {
  * @param {string} file_id 
  */
 const removeFile = async (file_id) => {
-    var colFiles = db.collection('IS_Files');
+    var colFiles = db.collection('file');
     fs.unlinkSync(path.join(cfg.PATH, file_id))
     return colFiles.deleteOne({file_id: file_id}).then(res => res.result.ok == 1);
 }

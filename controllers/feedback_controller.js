@@ -1,4 +1,3 @@
-'use strict'
 var feedback = require('../models/feedback_db');
 var file = require('../models/file_db');
 var user = require('../models/user_db');

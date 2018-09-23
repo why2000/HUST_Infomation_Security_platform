@@ -139,7 +139,7 @@ function getUserId(callback) {
 }
 
 function setUserId(){
-    $('.form-control#userid').attr('placeholder', userid);
+    $('.form-control#userid').attr('value', userid);
 }
 
 
