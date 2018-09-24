@@ -19,7 +19,23 @@ exports.getIndexPage = async (req, res, next) => {
   }
 }
 
-exports.getCourseList = async (req, res, next) => {
+exports.getCoursewareList = async (req, res, next) => {
+  if (req.session.loginUser) {
+    courseware.getCoursewareStatusByCourseID(req.params.course_id)
+      .then(result => {
+        res.json({
+          data: result
+        })
+      })
+      .catch(err => {
+        res.status(500).send("Server error");
+      })
+  } else {
+    res.status(401).send("No login");
+  }
+}
+
+exports.getAllCoursewareList = async (req, res, next) => {
   if (req.session.loginUser) {
     courseware.getAllCoursewareStatus()
       .then(result => {
@@ -36,32 +52,32 @@ exports.getCourseList = async (req, res, next) => {
 }
 
 exports.uploadCoursewareFile = async (req, res, next) => {
-  if (req.session.loginUser) {
-    if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
-      let course_id = req.params.course_id;
+  //if (req.session.loginUser) {
+  //if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+  let course_id = req.params.course_id;
 
-      if (!req.file) { // 没上传文件
-        res.status(400).send("No file upload");
-        return;
-      }
-
-      file.saveFile(req.file.originalname, req.file.path, `teacher:${req.session.loginUser}`)
-        .then(file_id => {
-          return courseware.uploadFile(course_id, file_id, req.file.originalname);
-        })
-        .then(() => {
-          res.status(200).send();
-        })
-        .catch(err => {
-          res.status(500).send("Server error");
-        })
-    } else {
-      req.status(401).send("Permission denied");
-    }
-  } else {
-    res.status(401).send("No login");
+  if (!req.file) { // 没上传文件
+    res.status(400).send("No file upload");
+    return;
   }
 
+  file.saveFile(req.file.originalname, req.file.path, `teacher:${req.session.loginUser}`)
+    .then(file_id => {
+      return courseware.uploadFile(course_id, file_id, req.file.originalname);
+    })
+    .then(() => {
+      res.status(200).send();
+    })
+    .catch(err => {
+      res.status(500).send("Server error");
+    })
+  /*   } else {
+       req.status(401).send("Permission denied");
+     }
+   } else {
+     res.status(401).send("No login");
+   }
+ */
 }
 
 exports.deleteCoursewareFile = async (req, res, next) => {

@@ -10,7 +10,8 @@ let router = express.Router();
 router.get('/logout', UserController.getLogout);
 
 router.get('/', CoursewareController.getIndexPage);
-router.get("/list", CoursewareController.getCourseList);
+router.get("/list/:course_id", CoursewareController.getCoursewareList);
+router.get('/list', CoursewareController.getAllCoursewareList);
 
 router.post("/file/:course_id", upload.single('upload'), CoursewareController.uploadCoursewareFile);
 router.delete("/file/:file_id", CoursewareController.deleteCoursewareFile);

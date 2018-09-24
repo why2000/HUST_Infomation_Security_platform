@@ -1,47 +1,54 @@
 'use strict'
 
 let coursewareFileList;
+let courseList;
 let current_url_valid = window.location.protocol + window.location.pathname;
 let courseNum = new Set();
 
 $(document).ready(function () {
   $.get({
-    url: '/courseware/list',
-    success: (data) => {
-      coursewareFileList = data.data;
-      coursewareFileList.sort()
-      render(coursewareFileList, 'All');
-      for (let n = 0, dLen = coursewareFileList.length; n < dLen; n++) {
-        courseNum.add(coursewareFileList[n].course_id);
-      }
-      courseNum.forEach(val => { $('#course-select').append('<option>' + val + '</option>') });
+    url: '/course',
+  }).done(result => {
+    courseList = result.data;
+    for (let n = 0, dLen = courseList.length; n < dLen; n++) {
+      courseNum.add(courseList[n]._id);
     }
+    courseNum.forEach(val => { $('#course-select').append('<option>' + val + '</option>') });
   });
 })
   .on('click', '.my-download-button', async function () {
     let nid = $(this).attr('nid');
     let file_id = coursewareFileList[nid].file_id;
     let url = 'http://' + window.location.host + '/file/' + file_id;
-
     let $form = $('<form method="GET"></form>');
     $form.attr('action', url);
     $form.appendTo($('body'));
     $form.submit();
   })
   .on('change', '#course-select', async function () {
-    render(coursewareFileList, $(this).val());
+    let $this = $(this);
+    let selectedCorse = courseList.filter((e) => {
+      return e._id == $this.val();
+    });
+    if ($this.val() != '请选择课程') {
+      $.get({
+        url: '/courseware/list/' + $this.val(),
+        success: (data) => {
+          coursewareFileList = data.data;
+          render(coursewareFileList, selectedCorse[0].name);
+        }
+      });
+    }
   })
 
-async function render(coursewareFileList, courseLimit) {
+async function render(coursewareFileList, courseName) {
   let html = "";
   $('#course-list').empty();
   for (let n = 0, dLen = coursewareFileList.length; n < dLen; n++) {
-    if (courseLimit == 'All' || coursewareFileList[n].course_id == courseLimit) {
-      html += '<li class="list-group-item" >'
-        + "课程序号: " + coursewareFileList[n].course_id + " 课件名称: " + coursewareFileList[n].file_name
-      html += `<button type="button" class="my-download-button btn btn-primary pull-right" nid='${n}'>下载</button>`
-        + '</li >';
-    }
+    html += '<li class="list-group-item" >'
+      + "课程序号: " + coursewareFileList[n].course_id + "  课程名称: " + courseName + "  课件名称: " + coursewareFileList[n].file_name
+    html += `<button type="button" class="my-download-button btn btn-primary pull-right" nid='${n}'>下载</button>`
+      + '</li >';
   }
   $('#course-list').append(html);
 }
@@ -104,8 +111,4 @@ function Logout(callback) {
       }
     }
   });
-}
-
-function up(x, y) {
-  return x.course_id - y.course_id
 }
