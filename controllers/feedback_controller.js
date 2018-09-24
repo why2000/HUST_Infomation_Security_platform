@@ -52,9 +52,12 @@ const getPageByUserType = async (req, res) => {
 }
 
 const getStudentReport = async (req, res) => {
+    console.log(req.session.loginUser)
+    console.log(req.params.student_id)
+
     if (req.session.loginUser &&
-        ((await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) ||
-        (req.session.loginUser == req.params.student_id)) {
+        ((await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") ||
+            (req.session.loginUser == req.params.student_id))) {
         feedback.getReportByStudentIDAndModuleID(req.params.student_id, req.params.class_id)
             .catch(err => {
                 //need a logger

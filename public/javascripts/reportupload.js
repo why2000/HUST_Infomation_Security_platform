@@ -3,8 +3,10 @@ let userid;
 let username;
 let score;
 let judgetext;
-let classindex;
+let classid;
 let classname;
+let courseList;
+let fileid;
 
 function creatURL(URLarray) {
   var length;
@@ -47,24 +49,7 @@ function RESTful(xmlhttp, method, url, queryString, async, fnc) { //获取JSON�
 
 
 $(document).ready(function () {
-
-  let localURLArgs = location.href.split('/');
-  var mid = localURLArgs.pop();
-
-  $.getJSON({
-    url: `/feedback/${userid}/${mid}/report`,
-    success: (data) => {
-      $('#reportaddr').attr('href', `/file/${data.data.file_id}`);
-      $('#fileUploaded').show();
-    }
-  })
-
-  $('#upload').on('change', function () {
-    var fileName = $(this)[0].files[0]['name'];
-    $('#fileHelpId').html(fileName);
-  });
-
-  $('#submit').click(function () {
+  $('.my-upload-button').click(function () {
     var file = $('#upload')[0].files[0];
     if (!file) {
       alert('您还未选择文件！');
@@ -75,7 +60,7 @@ $(document).ready(function () {
         form.append('upload', file);
         $.ajax({
           type: 'post',
-          url: `/feedback/${mid}/report/`,
+          url: `/feedback/${classid}/report/`,
           data: form,
           contentType: false,
           processData: false,
@@ -89,12 +74,20 @@ $(document).ready(function () {
             location.reload();
           }
         });
-      }else{
+      } else {
         alert("文件格式错误！");
       }
     }
   });
-});
+})
+  .on('click', '.my-download-button', async () => {
+    let url = 'http://' + window.location.host + '/file/' + fileid;
+
+    let $form = $('<form method="GET"></form>');
+    $form.attr('action', url);
+    $form.appendTo($('body'));
+    $form.submit();
+  })
 
 
 
@@ -118,22 +111,19 @@ function Logout(callback) {
 
 
 function getUserId(callback) {
-  var xmlhttp = setXmlHttp();
-  RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'userid']), null, true, function () {
-    if (xmlhttp.readyState == 4) {
-      if (xmlhttp.status == 200) {
-        // alert(xmlhttp.responseText);
-        userid = JSON.parse(xmlhttp.responseText).result.userid;
-        // alert(tasklist);
-        // setTaskList(tasklist);
-        if (callback) {
-          callback();
-        }
-      } else {
-        console.log("发生错误" + xmlhttp.status);
+  $.get({
+    url: 'userid'
+  }).done(result => {
+    userid = result.result.userid;
+    $.get({
+      url: `/feedback/${classid}/${userid}/report`,
+      success: (data) => {
+        fileid = data.data.file_id;
+        $('#result-table tbody .uploaded').text('已上传');
+        $('#control-button-group').append('<button type="button" class="my-download-button btn btn-primary">下载</button>')
       }
-    }
-  });
+    })
+  })
 }
 
 function getUserName(callback) {
@@ -175,24 +165,36 @@ function openJudge() {
 }
 
 function getClassname() {
-  classname = '没写好'
-  setClassName();
+  console.log(classid);
+  $.get({
+    url: '/course',
+  }).done(result => {
+    courseList = result.data;
+    let selectedCourse = courseList.filter(e => {
+      return e._id == classid;
+    })[0];
+    classname = selectedCourse.name;
+    setClassName();
+  });
+}
+
+function getClassid() {
+  let localURLArgs = location.href.split('/');
+  classid = localURLArgs[localURLArgs.length - 2];
 }
 
 $(function parpare() {
-  classindex = window.location.pathname.substring;
+  getClassid();
   getUserId();
   getUserName();
   getClassname();
   getJudge();
 })
 
-
-
 function getJudge(callback) {
   var xmlhttp = setXmlHttp();
   //此处学号随意输入，后台处理
-  RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'U201700000', 'judgement']), null, true, function () {
+  RESTful(xmlhttp, "GET", creatURL([current_url_valid, userid, 'judgement']), null, true, function () {
     // alert(userid);
     if (xmlhttp.readyState == 4) {
       if (xmlhttp.status == 200) {
@@ -227,6 +229,6 @@ function setResult() {
     $('#result-table tbody .score').text(score);
   }
   if (judgetext) {
-    $('textarea#judgement-text').text(judgetext);
+    $('#judgement-text').text(judgetext);
   }
 }

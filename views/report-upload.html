@@ -62,23 +62,28 @@
           <div class="card-body">
             <form id="uploadForm">
               <small class="form-text text-muted">选择要上传的文件，并点击“上传”按钮。支持上传的文件格式： doc、docx、pdf、txt</small>
-              <br />
-              <center>
-                <div class="form-group" style="width: 30%; text-align: center;">
-                  <input type="file" class="form-control-file" id="upload" placeholder="" aria-describedby="fileHelpId" style="font-size: 14px" accept=".txt,.doc,.docx,.pdf">
-                  <small id="fileHelpId" class="form-text text-muted" style="text-align: left;" hidden>当前未选择文件</small>
-                </div>
-                <small id="fileUploaded" class="form-text text-muted" style="display: none">已上传报告，<a id='reportaddr'
-                    href="/">点击下载</a></small>
-                <button id="text" type="button" class="btn btn-primary" style="cursor: pointer; float:left;" onclick="javascript:history.back();">返回</button>
-                <button id="submit" type="button" class="btn btn-primary">上传</button>
+              <br>
+              <input type="file" class="form-control-file" id="upload" placeholder="" aria-describedby="fileHelpId"
+                style="font-size: 14px" accept=".txt,.doc,.docx,.pdf">
+                <br>
+              <button id="text" type="button" class="btn btn-primary" style="cursor: pointer; float:right;" onclick="javascript:history.back();">返回</button>
+              <div class="btn-group pull-left" id="control-button-group">
+                <button type="button" class="my-upload-button btn btn-primary">上传</button>
+              </div>
               </center>
             </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
             <table class="table" style="margin-top: 10px;" id="result-table">
               <thead>
                 <tr>
                   <th>姓名</th>
                   <th>课程名</th>
+                  <th>文件状态</th>
                   <th>得分</th>
                   <th style="text-align: right">教师评价</th>
                 </tr>
@@ -87,24 +92,24 @@
                 <tr class="classindex" id="1">
                   <td scope="row" class="username">伍瀚缘</td>
                   <td class="classname">未找到课程</td>
+                  <td class="uploaded">未上传</td>
                   <td class="score">未评分</td>
                   <td class="judge">
                     <button id="show-judgement" type="button" class="btn btn-primary" style="cursor: pointer; float:right;"
-                      onclick="openJudge(classindex);">查看评价</button>
-                      <br>
-                    <form role="form" id='judgement-text-form' class='hidden' style="display: none; ">
-                      <div class="form-group">
-                        <label for="name"></label>
-                        <textarea class="form-control" id="judgement-text" rows="3" readonly="readonly"></textarea>
-                      </div>
-                    </form>
-
+                      onclick="openJudge();">查看评价</button>
                   </td>
                 </tr>
               </tbody>
-
             </table>
-
+            <form role="form" id='judgement-text-form' class='hidden' style="display: none">
+              <div class="form-group">
+                <label for="name"></label>
+                <textarea class="form-control" id="judgement-text" rows="3" readonly="readonly">尚无评价</textarea>
+              </div>
+            </form>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
 </body>
