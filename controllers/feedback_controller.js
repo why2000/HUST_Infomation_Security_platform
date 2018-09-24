@@ -27,6 +27,9 @@ const getStudentList = async (req, res) => {
             if (result) {
                 for (let n = 0; n < result.length; n++) {
                     let stu = await user.findUserById(result[n]);
+                    console.log(result[n])
+                    console.log(course_id)
+
                     let report = await feedback.getReportByStudentIDAndModuleID(result[n], course_id)
                     let reportFileID;
                     if (report) {
@@ -64,17 +67,26 @@ const getTeacherIndexPage = async (req, res) => {
 }
 
 const getPageByUserType = async (req, res) => {
-
     if (!req.session.loginUser) {
         res.redirect('/');
     } else {
         UserValidator.getUserTypeById(req.session.loginUser).then(user_type => {
             if (user_type == "student") {
                 if (req.params.class_id != 'index') {
-                    res.render('report-upload');
+                    course.studentInCourse(req.params.class_id, req.session.loginUser).then(result => {
+                        if (result) {
+                            res.render('report-upload');
+                        } else {
+                            res.render('report-index');
+                        }
+                    }).catch(err => {
+                        res.render('report-index');
+                    })
                 } else {
                     res.render('report-index');
                 }
+            } else {
+                res.render('judge-upload');
             }
         });
     }
