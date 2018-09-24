@@ -57,7 +57,6 @@ $(document).ready(function () {
     $form.submit();
   })
   .on('click', '.my-upload-button', async function () {
-    let $this = $(this);
     if ($('#course-select').val() != '请选择课程') {
       let nid = $('#course-select').val().split(' ')[1] - 1;
       let selectedCorse = courseList[nid];

@@ -10,9 +10,9 @@ var router = express.Router();
 //Logout
 router.get('/*logout', UserController.getLogout);
 
-//router.get('/', feedback.getIndex);
+router.get('/:class_id/list', feedback.getStudentList);
 
-router.get('/studentlist', feedback.getStudentList);
+router.get('/', feedback.getTeacherIndexPage);
 
 router.get('/*userid', UserController.getUserId);
 
