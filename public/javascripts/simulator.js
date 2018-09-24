@@ -98,13 +98,13 @@ function keepAlive() {
     }
 }
 
-function Logout(){
+function Logout() {
     var xmlhttp = setXmlHttp();
     RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'logout']), null, true, function () {
         if (xmlhttp.readyState == 4) {
             if (xmlhttp.status == 200) {
                 alert("退出成功！");
-                window.location.href='/';
+                window.location.href = '/';
                 if (callback) {
                     callback();
                 }
@@ -160,6 +160,6 @@ function connectToCon() {
 }
 
 /* tasks init */
-$(function mainpart(){
+$(function mainpart() {
     getTasks();
 });

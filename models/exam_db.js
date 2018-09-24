@@ -20,7 +20,7 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
                 ExamLogger.error(`database error => ${err.stack}`);
                 throw err;
             } else {
-                //console.log("Successfully creat col");
+                // Successfully creat col
                 ;
             }
         });

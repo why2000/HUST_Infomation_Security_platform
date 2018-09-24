@@ -106,7 +106,7 @@ const saveStudentReport = async (req, res) => {
                 response(res, {});
             })
             .catch(err => {
-                console.log(err);
+
                 response(res, 500, 'Server error.');
             });
     } else {
