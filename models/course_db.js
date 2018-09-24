@@ -66,7 +66,7 @@ const createCourse = async (data) => {
     data = await assembleCourseData(data);
 
     let colCourse = db.collection('course')
-    return colCourse.insertOne(doc).then(res => res.result.ok == 1);
+    return colCourse.insertOne(data).then(res => res.result.ok == 1);
 }
 
 /**

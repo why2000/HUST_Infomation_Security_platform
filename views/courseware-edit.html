@@ -40,23 +40,19 @@
   <div style="width: 1200px ; margin: auto; margin-top: 80px;">
     <div class="row">
       <div class="col-6">
+        <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择课程</h5>
+        <select id="course-select" class="form-control">
+          <option>请选择课程</option>
+        </select>
+      </div>
+      <div class="col-6">
         <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课件上传</h5>
         <form id="uploadFrom" class="import-file-form" enctype="multipart/form-data">
-          <label for="name">请输入课程序号:</label>
-          <input type="text" id="uploadCourse">
-          <br>
-          <br>
           <input type="file" name="upload" id="uploadFile" accept=".ppt,.pptx,.doc,.docx,.pdf">
           <br>
           <br>
           <button type="button" class="my-upload-button btn btn-primary">上传</button>
         </form>
-      </div>
-      <div class="col-6">
-        <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择课程</h5>
-        <select id="course-select" class="form-control">
-          <option>请选择课程</option>
-        </select>
       </div>
     </div>
     <br>

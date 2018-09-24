@@ -1,10 +1,9 @@
 'use strict'
 
-let fs = require('fs');
-let path = require('path')
 let courseware = require('../models/courseware_db')
 let UserValidator = require('../validators/user_validator');
-var file = require('../models/file_db');
+let file = require('../models/file_db');
+let course = require('../models/course_db');
 
 exports.getIndexPage = async (req, res, next) => {
   if (!req.session.loginUser) {
@@ -52,42 +51,53 @@ exports.getAllCoursewareList = async (req, res, next) => {
 }
 
 exports.uploadCoursewareFile = async (req, res, next) => {
-  //if (req.session.loginUser) {
-  //if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
-  let course_id = req.params.course_id;
+  if (req.session.loginUser) {
+    if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+      let course_id = req.params.course_id;
 
-  if (!req.file) { // 没上传文件
-    res.status(400).send("No file upload");
-    return;
+      if (!(await course.teacherInCourse(course_id, req.session.loginUser))) {
+        res.status(401).send('You are not an admin of this course');
+        return;
+      }
+
+      if (!req.file) { // 没上传文件
+        res.status(400).send("No file upload");
+        return;
+      }
+
+      file.saveFile(req.file.originalname, req.file.path, `teacher:${req.session.loginUser}`)
+        .then(file_id => {
+          return courseware.uploadFile(course_id, file_id, req.file.originalname);
+        })
+        .then(() => {
+          res.status(200).send();
+        })
+        .catch(err => {
+          res.status(500).send("Server error");
+        })
+    } else {
+      req.status(401).send("Permission denied");
+    }
+  } else {
+    res.status(401).send("No login");
   }
 
-  file.saveFile(req.file.originalname, req.file.path, `teacher:${req.session.loginUser}`)
-    .then(file_id => {
-      return courseware.uploadFile(course_id, file_id, req.file.originalname);
-    })
-    .then(() => {
-      res.status(200).send();
-    })
-    .catch(err => {
-      res.status(500).send("Server error");
-    })
-  /*   } else {
-       req.status(401).send("Permission denied");
-     }
-   } else {
-     res.status(401).send("No login");
-   }
- */
 }
 
 exports.deleteCoursewareFile = async (req, res, next) => {
   if (req.session.loginUser) {
     if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+
       let file_id = req.params.file_id;
 
       courseware.getCoursewareStatusByFileID(file_id)
         .then(result => {
           if (result) {
+
+            if (!course.teacherInCourse(result.course_id, req.session.loginUser)) {
+              res.status(401).send('You are not an admin of this course');
+              return;
+            }
 
             file.removeFile(result.file_id)
               .then(() => {

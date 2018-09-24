@@ -10,7 +10,9 @@ $(document).ready(function () {
     url: '/course',
   }).done(result => {
     courseList = result.data;
-    courseList.forEach(e => { $('#course-select').append('<option>课程序号: ' + e._id + '<span>  课程名称: ' + e.name + '</span>' + '</option>') });
+    for (let n = 0; n < courseList.length; n++) {
+      $('#course-select').append('<option>课程序号: ' + (n + 1) + ' 课程名称: ' + courseList[n].name + '</option>')
+    };
   });
 })
   .on('click', '.my-download-button', async function () {
@@ -24,18 +26,19 @@ $(document).ready(function () {
   })
   .on('change', '#course-select', async function () {
     let $this = $(this);
-    let cid = $this.val().split(' ')[1]
-    let selectedCorse = courseList.filter((e) => {
-      return e._id == cid;
-    });
     if ($this.val() != '请选择课程') {
-      $.get({
-        url: '/courseware/list/' + cid,
-        success: (data) => {
-          coursewareFileList = data.data;
-          render(coursewareFileList, selectedCorse[0].name);
-        }
-      });
+      let nid = $this.val().split(' ')[1] - 1;
+      let selectedCorse = courseList[nid];
+      let cid = selectedCorse._id;
+      if ($this.val() != '请选择课程') {
+        $.get({
+          url: '/courseware/list/' + cid,
+          success: (data) => {
+            coursewareFileList = data.data;
+            render(coursewareFileList, selectedCorse.name);
+          }
+        });
+      }
     }
   })
 
@@ -44,7 +47,7 @@ async function render(coursewareFileList, courseName) {
   $('#course-list').empty();
   for (let n = 0, dLen = coursewareFileList.length; n < dLen; n++) {
     html += '<li class="list-group-item" >'
-      + "课程序号: " + coursewareFileList[n].course_id + "  课程名称: " + courseName + "  课件名称: " + coursewareFileList[n].file_name
+      + "  课程名称: " + courseName + "  课件名称: " + coursewareFileList[n].file_name
     html += `<button type="button" class="my-download-button btn btn-primary pull-right" nid='${n}'>下载</button>`
       + '</li >';
   }
