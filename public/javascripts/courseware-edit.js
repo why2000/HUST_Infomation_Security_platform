@@ -10,10 +10,7 @@ $(document).ready(function () {
     url: '/course',
   }).done(result => {
     courseList = result.data;
-    for (let n = 0, dLen = courseList.length; n < dLen; n++) {
-      courseNum.add(courseList[n]._id);
-    }
-    courseNum.forEach(val => { $('#course-select').append('<option>' + val + '</option>') });
+    courseList.forEach(e => { $('#course-select').append('<option>课程序号: ' + e._id + '<span>  课程名称: ' + e.name + '</span>' + '</option>') });
   });
 })
   .on('click', '.btn-warning', async function () {
@@ -28,7 +25,6 @@ $(document).ready(function () {
   })
   .on('click', '.btn-danger', async function () {
     let $this = $(this);
-    let cid = $(this).attr('cid');
     let nid = $(this).attr('nid');
     let file_id = coursewareFileList[nid].file_id;
 
@@ -42,7 +38,8 @@ $(document).ready(function () {
       $this.addClass("btn-success");
       $this.text("删除成功");
       $this.attr('disabled', 'disabled');
-      $(`.my-download-button[cid='${cid}']`).attr('disabled', 'disabled');
+      $(`.my-download-button[nid='${nid}']`).attr('disabled', 'disabled');
+      $('#course-select').trigger('change');
     }).fail(function () {
       $this.text("删除失败，请重试。");
     })
@@ -91,12 +88,13 @@ $(document).ready(function () {
   })
   .on('change', '#course-select', async function () {
     let $this = $(this);
+    let cid = $this.val().split(' ')[1]
     let selectedCorse = courseList.filter((e) => {
-      return e._id == $this.val();
+      return e._id == cid;
     });
     if ($this.val() != '请选择课程') {
       $.get({
-        url: '/courseware/list/' + $this.val(),
+        url: '/courseware/list/' + cid,
         success: (data) => {
           coursewareFileList = data.data;
           console.log(coursewareFileList);

@@ -85,7 +85,7 @@ exports.deleteCoursewareFile = async (req, res, next) => {
     if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
       let file_id = req.params.file_id;
 
-      courseware.getCoursewareFileStatusByFileID(file_id)
+      courseware.getCoursewareStatusByFileID(file_id)
         .then(result => {
           if (result) {
 

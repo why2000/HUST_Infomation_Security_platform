@@ -10,6 +10,8 @@ let router = express.Router();
 router.get('/logout', UserController.getLogout);
 
 router.get('/', CoursewareController.getIndexPage);
+router.get('/course/:course_id', CoursewareController.getIndexPage)
+
 router.get("/list/:course_id", CoursewareController.getCoursewareList);
 router.get('/list', CoursewareController.getAllCoursewareList);
 
