@@ -214,6 +214,7 @@ function getJudge(callback) {
 
 function setClassName() {
   if (classname) {
+    $('#big-title').text('上传报告 当前课程: '+ classname);
     $('#result-table tbody .classname').text(classname);
   }
 }
