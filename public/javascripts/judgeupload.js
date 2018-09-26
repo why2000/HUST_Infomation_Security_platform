@@ -14,7 +14,7 @@ $(document)
     }).done(result => {
       courseList = result.data;
       for (let n = 0; n < courseList.length; n++) {
-        $('#course-select').append('<option>课程序号: ' + (n + 1) + ' 课程名称: ' + courseList[n].name + '</option>')
+        $('#course-select').append('<option nid="' + n + '">课程名称: ' + courseList[n].name + '</option>')
       };
     });
   })
@@ -24,45 +24,21 @@ $(document)
     $('#inputScore').val('');
     $('#inputText').val('');
     if ($this.val() != '请选择课程') {
-      let nid = $this.val().split(' ')[1] - 1;
+      let nid = $this.find("option:selected").attr('nid');
       let selectedCorse = courseList[nid];
       courseID = selectedCorse._id;
       $.get({
         url: `/feedback/${courseID}/list`,
       }).done(result => {
         studentList = result;
-        $('#student-select').append('<option>请选择学生</option>');
         for (let n = 0; n < studentList.length; n++) {
           if (studentList[n].file_id) {
-            $('#student-select').append('<option>' + (n + 1) + ' 学号: ' + studentList[n].id + ' 学生名称: ' + studentList[n].name + '</option > ')
+            $('#student-select').append('<a class="list-group-item list-group-item-action student-select-item" nid="' + n + '">' + ' 学号: ' + studentList[n].id + ' 学生名称: ' + studentList[n].name + '<span style="float:right;" class="badge badge-success badge-pill">[已上传报告]</span></a > ')
           } else {
-            $('#student-select').append('<option>' + (n + 1) + ' 学号: ' + studentList[n].id + ' 学生名称: ' + studentList[n].name + ' [未上传报告]</option > ')
+            $('#student-select').append('<a class="list-group-item list-group-item-action student-select-item" nid="' + n + '">' + ' 学号: ' + studentList[n].id + ' 学生名称: ' + studentList[n].name + '<span style="float:right;" class="badge badge-danger badge-pill">[未上传报告]</span></a > ')
           }
         };
       });
-    }
-  })
-  .on("change", '#student-select', function () {
-    let $this = $(this);
-    $('#inputScore').val('');
-    $('#inputText').val('');
-    if ($this.val() != '请选择学生') {
-      let nid = $this.val().split(' ')[0] - 1;
-      let selectedStudent = studentList[nid];
-      studentID = selectedStudent.id;
-      $.get({
-        url: `/feedback/${courseID}/${studentID}/judgement`,
-        success: (data) => {
-          $('#inputScore').val(data.result.info.score);
-          $('#inputText').val(data.result.info.text);
-        }
-      })
-      if (selectedStudent.file_id) {
-        $('.my-download-button').removeAttr('disabled');
-      }
-      else {
-        $('.my-download-button').attr('disabled', 'disabled');
-      }
     }
   })
   .on('click', '#submit', function () {
@@ -93,19 +69,36 @@ $(document)
     }
   })
   .on('click', '.my-download-button', function () {
-    if ($('#student-select').val() != '请选择学生') {
-      let nid = $('#student-select').val().split(' ')[0] - 1;
-      let selectedStudent = studentList[nid];
-      let url = 'http://' + window.location.host + '/file/' + selectedStudent.file_id;
+    let nid = $('.list-group-item-success').attr('nid');
+    let selectedStudent = studentList[nid];
+    let url = 'http://' + window.location.host + '/file/' + selectedStudent.file_id;
 
-      let $form = $('<form method="GET"></form>');
-      $form.attr('action', url);
-      $form.appendTo($('body'));
-      $form.submit();
-    }
+    let $form = $('<form method="GET"></form>');
+    $form.attr('action', url);
+    $form.appendTo($('body'));
+    $form.submit();
   })
-  .on("click", "#course-select-item", function () {
+  .on("click", ".student-select-item", function () {
     console.log('item');
-    $('#course-select-item').removeClass('list-group-item-success');
+    $('.student-select-item').removeClass('list-group-item-success');
     $(this).addClass('list-group-item-success');
+
+    let $this = $(this);
+    $('#inputScore').val('');
+    $('#inputText').val('');
+    let nid = $this.attr('nid');
+    studentID = studentList[nid].id;
+    $.get({
+      url: `/feedback/${courseID}/${studentID}/judgement`,
+      success: (data) => {
+        $('#inputScore').val(data.result.info.score);
+        $('#inputText').val(data.result.info.text);
+      }
+    })
+    if (studentList[nid].file_id) {
+      $('.my-download-button').removeAttr('disabled');
+    }
+    else {
+      $('.my-download-button').attr('disabled', 'disabled');
+    }
   })

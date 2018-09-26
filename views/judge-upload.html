@@ -51,7 +51,7 @@
   </div>
   <br>
 
-  <div style="width: 1200px ; margin: auto; margin-top: 80px;" style="">
+  <div class="container" style="margin-top:80px">
     <div class="row">
       <div class="col-12">
         <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">教师评分</h5>
@@ -70,19 +70,20 @@
             </div>
           </div>
         </div>
-        <br>
         <div class="card">
           <div class="card-body">
             <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择学生</h5>
-            <div class="row pre-scrollable">
-              <select id="student-select" class="form-control">
-                <option>请选择学生</option>
-              </select>
+            <div>
+              <div class="row pre-scrollable">
+                <div class="col-12">
+                  <div id="student-select" class="list-group list-group-flush" style="font-size:12px">
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
       <div class="col-8">
         <div class="card">
           <div class="card-body">
@@ -97,7 +98,7 @@
                   </div>
                   <div class="form-group">
                     <label style="color:black; font-size:14px;">评价</label>
-                    <textarea class="form-control" rows="10" style="background-color: white; border:#ced4da solid 1px; color:black;"
+                    <textarea class="form-control" rows="10 " style="background-color: white; border:#ced4da solid 1px; color:black;"
                       id="inputText"></textarea>
                   </div>
                   <button type="button" class="btn btn-primary" id='back' onclick="javascript:history.back()" style="float: left">返回</button>

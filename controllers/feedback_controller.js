@@ -197,14 +197,25 @@ const getTeacherJudgement = async (req, res, next) => {
     try {
         var class_id = req.params.class_id;
         feedback.getJudgementByStudentIDAndModuleID(student_id, class_id).then(result => {
-            res.json({
-                result: {
-                    info: {
-                        score: result.score,
-                        text: result.text
+            if (result) {
+                res.json({
+                    result: {
+                        info: {
+                            score: result.score,
+                            text: result.text
+                        }
                     }
-                }
-            });
+                })
+            } else {
+                res.json({
+                    result: {
+                        info: {
+                            score: '',
+                            text: ''
+                        }   
+                    }
+                })
+            }
         });
     } catch (err) {
         FeedbackLogger.error(`controller error => ${err.stack}`)
