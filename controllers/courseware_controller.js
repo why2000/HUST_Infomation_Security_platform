@@ -1,10 +1,9 @@
 'use strict'
 
-let fs = require('fs');
-let path = require('path')
 let courseware = require('../models/courseware_db')
 let UserValidator = require('../validators/user_validator');
-var file = require('../models/file_db');
+let file = require('../models/file_db');
+let course = require('../models/course_db');
 
 exports.getIndexPage = async (req, res, next) => {
   if (!req.session.loginUser) {
@@ -19,7 +18,23 @@ exports.getIndexPage = async (req, res, next) => {
   }
 }
 
-exports.getCourseList = async (req, res, next) => {
+exports.getCoursewareList = async (req, res, next) => {
+  if (req.session.loginUser) {
+    courseware.getCoursewareStatusByCourseID(req.params.course_id)
+      .then(result => {
+        res.json({
+          data: result
+        })
+      })
+      .catch(err => {
+        res.status(500).send("Server error");
+      })
+  } else {
+    res.status(401).send("No login");
+  }
+}
+
+exports.getAllCoursewareList = async (req, res, next) => {
   if (req.session.loginUser) {
     courseware.getAllCoursewareStatus()
       .then(result => {
@@ -39,6 +54,11 @@ exports.uploadCoursewareFile = async (req, res, next) => {
   if (req.session.loginUser) {
     if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
       let course_id = req.params.course_id;
+
+      if (!(await course.teacherInCourse(course_id, req.session.loginUser))) {
+        res.status(401).send('You are not an admin of this course');
+        return;
+      }
 
       if (!req.file) { // 没上传文件
         res.status(400).send("No file upload");
@@ -67,11 +87,17 @@ exports.uploadCoursewareFile = async (req, res, next) => {
 exports.deleteCoursewareFile = async (req, res, next) => {
   if (req.session.loginUser) {
     if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+
       let file_id = req.params.file_id;
 
-      courseware.getCoursewareFileStatusByFileID(file_id)
+      courseware.getCoursewareStatusByFileID(file_id)
         .then(result => {
           if (result) {
+
+            if (!course.teacherInCourse(result.course_id, req.session.loginUser)) {
+              res.status(401).send('You are not an admin of this course');
+              return;
+            }
 
             file.removeFile(result.file_id)
               .then(() => {

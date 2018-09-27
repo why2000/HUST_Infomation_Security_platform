@@ -1,21 +1,18 @@
 'use strict'
+
 let coursewareFileList;
+let courseList;
 let current_url_valid = window.location.protocol + window.location.pathname;
 let courseNum = new Set();
 
 $(document).ready(function () {
-
   $.get({
-    url: '/courseware/list',
-    success: (data) => {
-      coursewareFileList = data.data;
-      coursewareFileList.sort()
-      render(coursewareFileList, 'All');
-      for (let n = 0, dLen = coursewareFileList.length; n < dLen; n++) {
-        courseNum.add(coursewareFileList[n].course_id);
-      }
-      courseNum.forEach(val => { $('#course-select').append('<option>' + val + '</option>') });
-    }
+    url: '/course',
+  }).done(result => {
+    courseList = result.data;
+    for (let n = 0; n < courseList.length; n++) {
+      $('#course-select').append('<option>课程序号: ' + (n + 1) + ' 课程名称: ' + courseList[n].name + '</option>')
+    };
   });
 })
   .on('click', '.btn-warning', async function () {
@@ -30,7 +27,6 @@ $(document).ready(function () {
   })
   .on('click', '.btn-danger', async function () {
     let $this = $(this);
-    let cid = $(this).attr('cid');
     let nid = $(this).attr('nid');
     let file_id = coursewareFileList[nid].file_id;
 
@@ -44,7 +40,8 @@ $(document).ready(function () {
       $this.addClass("btn-success");
       $this.text("删除成功");
       $this.attr('disabled', 'disabled');
-      $(`.my-download-button[cid='${cid}']`).attr('disabled', 'disabled');
+      $(`.my-download-button[nid='${nid}']`).attr('disabled', 'disabled');
+      $('#course-select').trigger('change');
     }).fail(function () {
       $this.text("删除失败，请重试。");
     })
@@ -60,53 +57,70 @@ $(document).ready(function () {
     $form.submit();
   })
   .on('click', '.my-upload-button', async function () {
-    let cid = $("#uploadCourse").val();
-    let file = $("#uploadFile")[0].files[0]
+    let $this = $(this);
+    if ($('#course-select').val() != '请选择课程') {
+      let nid = $('#course-select').val().split(' ')[1] - 1;
+      let selectedCorse = courseList[nid];
+      let cid = selectedCorse._id;
+      let file = $("#uploadFile")[0].files[0]
 
-    if (!file) {
-      alert('您还未选择文件！');
-    } else {
-      const acceptFile = /^.*(\.doc|\.docx|\.ppt|\.pptx|\.pdf)$/;
-      if (acceptFile.test(file.name)) {
-        let form = new FormData();
-        form.append('upload', file);
-        $.ajax({
-          type: 'post',
-          url: `/courseware/file/${cid}`,
-          data: form,
-          contentType: false,
-          processData: false,
-          mimeType: 'multipart/form-data',
-          success: () => {
-            alert('上传成功！');
-            location.reload();
-          },
-          error: xhr => {
-            alert(JSON.parse(xhr.responseText).msg);
-            location.reload();
-          }
-        });
+      if (!file) {
+        alert('您还未选择文件！');
       } else {
-        alert("文件格式错误！");
+        const acceptFile = /^.*(\.doc|\.docx|\.ppt|\.pptx|\.pdf)$/;
+        if (acceptFile.test(file.name)) {
+          let form = new FormData();
+          form.append('upload', file);
+          $.ajax({
+            type: 'post',
+            url: `/courseware/file/${cid}`,
+            data: form,
+            contentType: false,
+            processData: false,
+            mimeType: 'multipart/form-data',
+            success: () => {
+              alert('上传成功！');
+              location.reload();
+            },
+            error: xhr => {
+              alert(JSON.parse(xhr.responseText).msg);
+              location.reload();
+            }
+          });
+        } else {
+          alert("文件格式错误！");
+        }
       }
     }
   })
   .on('change', '#course-select', async function () {
-    render(coursewareFileList, $(this).val());
+    let $this = $(this);
+    if ($this.val() != '请选择课程') {
+      let nid = $this.val().split(' ')[1] - 1;
+      let selectedCorse = courseList[nid];
+      let cid = selectedCorse._id;
+      $.get({
+        url: '/courseware/list/' + cid,
+        success: (data) => {
+          coursewareFileList = data.data;
+          if (coursewareFileList.length) {
+            render(coursewareFileList, selectedCorse.name);
+          }
+        }
+      });
+    }
   })
 
-async function render(coursewareFileList, courseLimit) {
+async function render(coursewareFileList, courseName) {
   let html = "";
   $('#course-list').empty();
   for (let n = 0, dLen = coursewareFileList.length; n < dLen; n++) {
-    if (courseLimit == 'All' || coursewareFileList[n].course_id == courseLimit) {
-      html += '<li class="list-group-item" >'
-        + "课程序号: " + coursewareFileList[n].course_id + " 课件名称: " + coursewareFileList[n].file_name
-        + '<div class="btn-group pull-right">'
-      html += `<button type="button" class="my-delete-button btn btn-primary btn-warning" cid='${coursewareFileList[n].course_id}' nid='${n}'>删除</button>`
-        + `<button type="button" class="my-download-button btn btn-primary" cid='${coursewareFileList[n].course_id}' nid='${n}'>下载</button>`
-        + '</div > </li>';
-    }
+    html += '<li class="list-group-item" >'
+      + "  课程名称: " + courseName + " 课件名称: " + coursewareFileList[n].file_name
+      + '<div class="btn-group pull-right">'
+    html += `<button type="button" class="my-delete-button btn btn-primary btn-warning" cid='${coursewareFileList[n].course_id}' nid='${n}'>删除</button>`
+      + `<button type="button" class="my-download-button btn btn-primary" cid='${coursewareFileList[n].course_id}' nid='${n}'>下载</button>`
+      + '</div > </li>';
   }
   $('#course-list').append(html);
 }
