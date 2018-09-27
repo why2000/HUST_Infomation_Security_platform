@@ -7,7 +7,7 @@ let UserController = require('../controllers/user_controller');
 
 // root not supported -- redirected
 router.get('/', async (req, res, next) => {
-  res.redirect('/tutorial/index');
+  res.render("course-select");
 });
 
 // Logout

@@ -1,15 +1,9 @@
 'use strict';
 
 let classindex;
-let favor;
 let username;
-let tasklist;
-let favorlist;
 let courselist;
-// let timelimit = '0:00:05';
-let timelimit;
 let info;
-let taskinfo;
 let current_url_valid = window.location.protocol + window.location.pathname;
 
 
@@ -111,10 +105,6 @@ $(function sideBarInit() {
     });
     getCourseList();
     getUserName();
-    getFavor();
-    getTaskList();
-    getFavorList();
-    onFavorClicked();
 });
 
 function getCourseList(callback) {
