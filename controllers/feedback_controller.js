@@ -71,15 +71,7 @@ const getPageByUserType = async (req, res) => {
         UserValidator.getUserTypeById(req.session.loginUser).then(user_type => {
             if (user_type == "student") {
                 if (req.params.class_id != 'index') {
-                    course.studentInCourse(req.params.class_id, req.session.loginUser).then(result => {
-                        if (result) {
-                            res.render('report-upload');
-                        } else {
-                            res.render('report-index');
-                        }
-                    }).catch(err => {
-                        res.render('report-index');
-                    })
+                    res.render('report-upload');
                 } else {
                     res.render('report-index');
                 }

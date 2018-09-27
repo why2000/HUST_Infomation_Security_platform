@@ -41,11 +41,13 @@ $(function sideBarInit() {
     } else {
       height = 0;
     }
+    $('#sidebar-back').css('display','none');
     $(this).find('.submenu').stop().css("height", `${height}px`).slideDown(300);
     $(this).find(".mlist-icon").addClass("fa-rotate-90").css("width", "30px").css("transform", "translateY(-12px) rotate(90deg)");
   }, function () {
     $(this).find(".submenu").stop().slideUp(300);
     $(this).find(".mlist-icon").removeClass("fa-rotate-90").css("width", "55px").css("height", "36px").css("transform", "");
+    $('#sidebar-back').css('display','');
   });
   $(".main-menu").hover(function () {
     $(".settings").stop().animate({

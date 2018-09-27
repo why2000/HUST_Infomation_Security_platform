@@ -81,16 +81,21 @@ $(function sideBarInit() {
         current_list = current_list.split('-').join('');
         console.log(current_list);
         if (current_list != null && current_list != undefined) {
-            console.log(eval(current_list))
-            height = eval(current_list).length * 41;
+            if (eval(current_list) <= 8) {
+                height = eval(current_list).length * 41;
+            } else {
+                height = 328;
+            }
         } else {
             height = 0;
         }
+        $('#sidebar-back').css('display', 'none');
         $(this).find('.submenu').stop().css("height", `${height}px`).slideDown(300);
         $(this).find(".list-icon").addClass("fa-rotate-90").css("width", "30px").css("transform", "translateY(-12px) rotate(90deg)");
     }, function () {
         $(this).find(".submenu").stop().slideUp(300);
         $(this).find(".list-icon").removeClass("fa-rotate-90").css("width", "55px").css("height", "36px").css("transform", "");
+        $('#sidebar-back').css('display', '');
     });
     $(".main-menu").hover(function () {
         $(".settings").stop().animate({
@@ -120,12 +125,7 @@ function getCourseList(callback) {
         console.log(courselist);
         for (var i = 0; i < length; i++) {
 
-            $('#course-list').append(`<li><a href="/tutorial/${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small"></span></a></li>`);
-        };
-        for (var i = 0; i < length; i++) {
-            let single = courselist[i];
-            let name = single.name;
-            $(`#course-list li:nth-child(${courselist[i]._id}) a span`).text(name);
+            $('#course-list').append(`<li><a href="/tutorial/${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
         };
     });
 }
@@ -153,7 +153,7 @@ function getUserName(callback) {
 
 function setUserName() {
     if (!username) {
-        username = "伍瀚缘testingtestingtesting";
+        username = "未获取数据";
     }
     var hello = "欢迎！" + username;
     $(".settings").text(hello);
@@ -191,8 +191,10 @@ function isIndex() {
 
 function getInfo(callback) {
     if (isIndex()) {
+        alert('1');
         $('.test-main').remove();
     } else {
+        alert('2');
         $('.notice_mess_bar').remove();
         $('#pim_content').css('width', '100%').css('margin', '0px');
     }
@@ -208,6 +210,7 @@ function getInfo(callback) {
                     alert('课程信息不存在');
                     //window.location.href = '../catalog';
                 }
+
                 if (isIndex()) {
                     setInfo();
                 } else {
@@ -231,89 +234,6 @@ function setVideo() {
 }
 
 function setInfo() {
-
-    // Testing
-    function foo(pass) {
-        /* info = {
-            type: "exam-info",
-            taskindex: "1",
-            content: [
-                {
-                    type: "text",
-                    text: "因主校区东边泵房升级改造施工，定于8月3日23:30——8月4日2:00停水，主校区大部分区域停水（喻园小区、西边高层小区、紫菘学生公寓与紫菘教师小区不受影响），请各单位和各住户做好储水备用，早完工，早送水，不便之处敬请谅解。",
-                    indents: 0,
-                },
-                {
-                    type: "text",
-                    text: "",
-                    indents: 0,
-                },
-                {
-                    type: "sc",
-                    text: "测试单选",
-                    indents: 0,
-                    options: [
-                        {
-                            src: "",
-                            text: "第一个答案测试",
-                            choice: "A"
-                        },
-                        {
-                            src: "",
-                            text: "第二个答案测试",
-                            choice: "B"
-                        }
-                    ]
-                },
-                {
-                    type: "text",
-                    text: "后勤集团建安总公司",
-                    indents: 15,
-                },
-                {
-                    type: "text",
-                    text: "2018年8月3日",
-                    indents: 15,
-                },
-                {
-                    type: "mc",
-                    text: "测试多选题如果很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长",
-                    indents: 0,
-                    options:[
-                        {
-                            text: "第一个多选项",
-                            choice: "A"
-                        },
-                        {
-                            text: "第二个",
-                            choice: "B"
-                        }
-                    ]
-                },
-                {
-                    type: "img",
-                    src: "",
-                },
-                {
-                    type: "fb",
-                    text: "这是一道_____题",
-                    indents: 0,
-                    options: [
-                        {
-                            src: "",
-                            text: "",
-                            choice: "1"
-                        }
-                    ]
-                }
-            ],
-            title: '主校区短时停水通知',
-            author: 'why',
-            category: '通知',
-            time: '2018-08-03 15:52',
-            hot: '111'
-        } */
-    }
     var title = info.title;
     var content = info.content;
     var author = '发布者：' + info.author;

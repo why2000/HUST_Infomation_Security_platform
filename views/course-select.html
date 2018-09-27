@@ -23,7 +23,7 @@
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
   <!-- http://kenwheeler.github.io/slick/ -->
   <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
-  <link rel="stylesheet" href="/public/stylesheets/fontawesome/css/fontawesome-all.min.css">
+  <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 
   <!-- https://fontawesome.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
@@ -63,8 +63,10 @@
             其他课程
           </span>
         </a>
-        <ul id="course-list" class="submenu" style="display: none">
-        </ul>
+        <div class="row pre-scrollable">
+          <ul id="course-list" class="submenu" style="display: none">
+          </ul>
+        </div>
       </li>
       <li>
         <a id='class-to-information'>
@@ -79,7 +81,7 @@
         </a>
       </li>
     </ul>
-    <ul class="back">
+    <ul id="sidebar-back" class="back">
       <li>
         <a href="javascript:history.go(-1);">
           <i class="fa fa-chevron-left fa-lg"></i>
