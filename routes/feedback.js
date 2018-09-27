@@ -19,17 +19,18 @@ router.get('/*userid', UserController.getUserId);
 
 router.get('/*username', UserController.getUserNameById);
 
-router.get('/:class_id/class/:student_id', feedback.getPageByUserType);
+router.get('/:course_id/class/:student_id', feedback.getPageByUserType);
 
 // 报告文件
-router.post('/:class_id/report', upload.single('upload'), feedback.saveStudentReport);
-router.delete('/:class_id/report', feedback.deleteStudentReport);
-router.get('/:class_id/:student_id/report', feedback.getStudentReport);
+router.post('/:course_id/report', upload.single('upload'), feedback.saveStudentReport);
+router.delete('/:course_id/:student/:file_id/report', feedback.deleteStudentReport);
+router.get('/:course_id/:student_id/report', feedback.getStudentReport);
 
 // 教师反馈
-router.get('/:class_id/:student_id/judgement', feedback.getTeacherJudgement);
-router.post('/:class_id/:student_id/judgement', feedback.saveTeacherJudgement);
-router.delete('/:class_id/:student_id/judgement', feedback.deleteTeacherJudgement);
+router.get('/:course_id/:student_id/judgement', feedback.getAllTeacherJudgement);
+router.get('/:course_id/:student_id/:file_id/judgement', feedback.getTeacherJudgement);
+router.post('/:course_id/:student_id/:file_id/judgement', feedback.saveTeacherJudgement);
+router.delete('/:course_id/:student_id/:file_id/judgement', feedback.deleteTeacherJudgement);
 
 
 module.exports = router;
