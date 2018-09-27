@@ -4,16 +4,15 @@ var UserController = require('../controllers/user_controller')
 var multer = require('multer');
 
 var tmp_path = require('../config/file.json').MULTER_TMP_FILE_PATH; // 问题很大
-var upload = multer({dest: tmp_path});
+var upload = multer({ dest: tmp_path });
 var router = express.Router();
 
 //Logout
 router.get('/*logout', UserController.getLogout);
 
-//router.get('/', feedback.getIndex);
+router.get('/:class_id/list', feedback.getStudentList);
 
-router.get('/studentlist', feedback.getStudentList);
-
+router.get('/', feedback.getTeacherIndexPage);
 
 router.get('/*userid', UserController.getUserId);
 

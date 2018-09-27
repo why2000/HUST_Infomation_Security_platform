@@ -6,7 +6,6 @@ let courselist;
 let info;
 let current_url_valid = window.location.protocol + window.location.pathname;
 
-
 /* General */
 
 function creatURL(URLarray) {
