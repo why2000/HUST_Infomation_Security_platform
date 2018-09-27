@@ -3,7 +3,7 @@ let userid;
 let username;
 let score;
 let judgetext;
-let classid;
+let courseid;
 let classname;
 let courseList;
 let fileid;
@@ -49,6 +49,13 @@ function RESTful(xmlhttp, method, url, queryString, async, fnc) { //获取JSON�
 
 
 $(document).ready(function () {
+  getCourseid();
+  getUserId();
+  getUserName();
+  getClassname();
+  sideBarInit();
+
+
   $('.my-upload-button').click(function () {
     var file = $('#upload')[0].files[0];
     if (!file) {
@@ -60,7 +67,7 @@ $(document).ready(function () {
         form.append('upload', file);
         $.ajax({
           type: 'post',
-          url: `/feedback/${classid}/report/`,
+          url: `/feedback/${courseid}/report/`,
           data: form,
           contentType: false,
           processData: false,
@@ -89,9 +96,6 @@ $(document).ready(function () {
     $form.submit();
   })
 
-
-
-
 function Logout(callback) {
   var xmlhttp = setXmlHttp();
   RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'logout']), null, true, function () {
@@ -109,6 +113,45 @@ function Logout(callback) {
   });
 }
 
+function sideBarInit() {
+  $('#class-to-exam').attr('href', `/exam/${courseid}`);
+  $('#class-to-feedback').attr('href', `/feedback/${courseid}/class/null`);
+  $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
+  $('#class-to-information').attr('href', `/information`);
+  $('#catalog').attr('href', `/tutorial/${courseid}`);
+
+
+  $(".has-submenu").hover(function () {
+    var height;
+    var current_list = $(this).find('.submenu').attr("id");
+    current_list = current_list.split('-').join('');
+    console.log(current_list);
+    if (current_list != null && current_list != undefined) {
+      console.log(eval(current_list))
+      height = eval(current_list).length * 41;
+    } else {
+      height = 0;
+    }
+    $(this).find('.submenu').stop().css("height", `${height}px`).slideDown(300);
+    $(this).find(".mlist-icon").addClass("fa-rotate-90").css("width", "30px").css("transform", "translateY(-12px) rotate(90deg)");
+  }, function () {
+    $(this).find(".submenu").stop().slideUp(300);
+    $(this).find(".mlist-icon").removeClass("fa-rotate-90").css("width", "55px").css("height", "36px").css("transform", "");
+  });
+  $(".main-menu").hover(function () {
+    $(".settings").stop().animate({
+      opacity: 1
+    }, 100);
+    // $(".settings").css("visibility", "");
+  }, function () {
+    $(".settings").stop().animate({
+      opacity: 0
+    }, 300);
+    // $(".settings").css("visibility", "hidden");
+  });
+  getCourseList();
+  getUserName();
+}
 
 function getUserId(callback) {
   $.get({
@@ -116,12 +159,12 @@ function getUserId(callback) {
   }).done(result => {
     userid = result.result.userid;
     $.get({
-      url: `/feedback/${classid}/${userid}/report`,
-      success: (data) => {
-        fileid = data.data.file_id;
-        $('#result-table tbody .uploaded').text('已上传');
-        $('#control-button-group').append('<button type="button" class="my-download-button btn btn-primary">下载</button>')
-      }
+      url: `/feedback/${courseid}/${userid}/report`,
+    }).done(data => {
+      fileid = data.data.file_id;
+      $('#result-table tbody .uploaded').text('已上传');
+      $('#control-button-group').append('<button type="button" class="my-download-button btn btn-primary">下载</button>');
+      getJudge();
     })
   })
 }
@@ -138,7 +181,6 @@ function getUserName(callback) {
         setUserName();
         if (callback) {
           callback();
-
         }
       } else {
         console.log("发生错误" + xmlhttp.status);
@@ -146,7 +188,6 @@ function getUserName(callback) {
     }
   });
 }
-
 
 function openJudge() {
   if ($('#judgement-text-form').hasClass('hidden')) {
@@ -165,56 +206,55 @@ function openJudge() {
 }
 
 function getClassname() {
-  console.log(classid);
   $.get({
     url: '/course',
   }).done(result => {
     courseList = result.data;
     let selectedCourse = courseList.filter(e => {
-      return e._id == classid;
-    })[0];
-    classname = selectedCourse.name;
+      return e._id == courseid;
+    });
+    classname = selectedCourse[0].name;
     setClassName();
   });
 }
 
-function getClassid() {
-  let localURLArgs = location.href.split('/');
-  classid = localURLArgs[localURLArgs.length - 2];
+function getCourseList(callback) {
+  $.get({
+    url: '/course',
+  }).done(result => {
+    courselist = result.data;
+    $('#course-list').empty();
+    var length = 0;
+    if (courselist) {
+      length = courselist.length;
+    }
+    console.log(courselist);
+    for (var i = 0; i < length; i++) {
+
+      $('#course-list').append(`<li><a href="/tutorial/${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
+    };
+  });
 }
 
-$(function parpare() {
-  getClassid();
-  getUserId();
-  getUserName();
-  getClassname();
-  getJudge();
-})
+function getCourseid() {
+  let localURLArgs = location.href.split('/');
+  courseid = localURLArgs[localURLArgs.length - 3];
+}
 
-function getJudge(callback) {
-  var xmlhttp = setXmlHttp();
-  //此处学号随意输入，后台处理
-  RESTful(xmlhttp, "GET", creatURL([current_url_valid, userid, 'judgement']), null, true, function () {
-    // alert(userid);
-    if (xmlhttp.readyState == 4) {
-      if (xmlhttp.status == 200) {
-        var info = JSON.parse(xmlhttp.responseText).result.info;
-        score = info.score;
-        judgetext = info.text;
-        setResult();
-        if (callback) {
-          callback();
-        }
-      } else {
-        console.log("发生错误" + xmlhttp.status);
-      }
-    }
-  });
+function getJudge() {
+  $.get({
+    url: `judgement/${courseid}/${userid}/${fileid}/judgement`
+  }).done(result => {
+    score = result.score;
+    judgetext = result.text;
+    console.log(judgetext);
+    setResult();
+  })
 }
 
 function setClassName() {
   if (classname) {
-    $('#big-title').text('上传报告 当前课程: '+ classname);
+    $('#big-title').text('上传报告 当前课程: ' + classname);
     $('#result-table tbody .classname').text(classname);
   }
 }
@@ -222,6 +262,8 @@ function setClassName() {
 function setUserName() {
   if (username) {
     $('#result-table tbody .username').text(username);
+    var hello = "欢迎！" + username;
+    $(".settings").text(hello);
   }
 }
 

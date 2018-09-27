@@ -70,9 +70,10 @@ function Logout(callback) {
 
 $(function sideBarInit() {
     classindex = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1, window.location.pathname.length);
-    $('#exam-to-class').attr('href', `/exam/${classindex}`);
+    $('#class-to-exam').attr('href', `/exam/${classindex}`);
+    $('#catalog').attr('href', `/tutorial/${classindex}`);
     $('#class-to-feedback').attr('href', `/feedback/${classindex}/class/null`);
-    $('#class-to-courseware').attr('href', `/courseware`);
+    $('#class-to-courseware').attr('href', `/courseware/course/${classindex}`);
 
     $(".has-submenu").hover(function () {
         var height;
@@ -167,163 +168,6 @@ function onFavorClicked() {
             } else {
                 deleteFavor();
             }
-    });
-}
-
-// TaskList
-function getTaskList(callback) {
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'tasklist']), null, true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                // alert(xmlhttp.responseText);
-                tasklist = JSON.parse(xmlhttp.responseText).result.tasklist;
-                // alert(tasklist);
-                // setTaskList(tasklist);
-                setTaskList();
-                if (callback) {
-                    callback();
-
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-            }
-        }
-    });
-}
-
-function setTaskList() {
-    // alert(tasklist);
-    $('#task-list').empty();
-    var length = 0;
-    if (tasklist) {
-        length = tasklist.length;
-    }
-    for (var i = 0; i < length; i++) {
-
-        $('#task-list').append(`<li><a href="/tutorial/${i + 1}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small"></span></a></li>`);
-    };
-    for (var i = 0; i < length; i++) {
-        var single = tasklist[i];
-        var singleindex = single.index;
-        var singlename = single.name;
-        $(`#task-list li:nth-child(${i + 1}) a span`).text(singlename);
-    };
-}
-
-// FavorList
-function getFavorList(callback) {
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'favorlist']), null, true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                // alert(xmlhttp.responseText);
-                favorlist = JSON.parse(xmlhttp.responseText).result.favorlist;
-                // alert(favorlist);
-                // setTaskList(tasklist);
-                setFavorList()
-                if (callback) {
-                    callback();
-
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-            }
-        }
-    });
-}
-
-function setFavorList() {
-    $('#favor-list').empty();
-    var length = 0;
-    if (favorlist) {
-        length = favorlist.length;
-    }
-    // alert(length);
-    // alert(favorlist);
-    for (var i = 0; i < length; i++) {
-        var single = favorlist[i];
-        var singleindex = single.index;
-        var singlename = single.name;
-        $('#favor-list').append(`<li><a href="/tutorial/${singleindex}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${singlename}</span></a></li>`);
-    };
-}
-
-// Favor
-function getFavor(callback) {
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'favor']), null, true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                favor = JSON.parse(xmlhttp.responseText).result.favor;
-                // alert(favorstatus);
-                if (favor) {
-                    $("#favor-icon").css("color", "#3E9AF2");
-                    $("#favor-icon").removeClass("fa-star-o");
-                    $("#favor-icon").addClass("fa-star");
-                } else {
-                    $("#favor-icon").css("color", "");
-                    $("#favor-icon").removeClass("fa-star");
-                    $("#favor-icon").addClass("fa-star-o");
-                }
-                if (callback) {
-                    callback();
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-            }
-        }
-    });
-}
-
-function postFavor(callback) {
-    var data = {
-        favor: favor
-    };
-    // alert(window.location.href)
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "POST", creatURL([current_url_valid, 'favor']), JSON.stringify(data), true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                // console.log("post success" + xmlhttp.status);
-                $("#favor-icon").css("color", "#3E9AF2");
-                $("#favor-icon").removeClass("fa-star-o");
-                $("#favor-icon").addClass("fa-star");
-                favor = true;
-                getFavorList();
-                if (callback) {
-                    callback();
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-                favor = false;
-            }
-        }
-    });
-}
-
-function deleteFavor(callback) {
-    var data = {
-        favor: favor
-    };
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "DELETE", creatURL([current_url_valid, 'favor']), JSON.stringify(data), true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                // console.log("delete success" + xmlhttp.status);
-                $("#favor-icon").css("color", "");
-                $("#favor-icon").removeClass("fa-star");
-                $("#favor-icon").addClass("fa-star-o");
-                favor = false;
-                getFavorList();
-                if (callback) {
-                    callback();
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-                favor = true;
-            }
-        }
     });
 }
 

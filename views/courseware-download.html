@@ -2,10 +2,14 @@
 <html lang="zh-cmn-Hans">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>华中科技大学信息安全实验平台 - 教师评价</title>
-  <!-- load JS-->
+  <meta charset="UTF-8" />
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="google" value="notranslate" />
+  <title>华中科技大学信息安全实验平台 - 课程选择</title>
+
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
@@ -14,12 +18,13 @@
   <!-- Google web font "Open Sans" -->
   <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
   <!-- https://getbootstrap.com/ -->
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
+  <!-- http://kenwheeler.github.io/slick/ -->
+  <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <link rel="stylesheet" href="/public/stylesheets/fontawesome/css/fontawesome-all.min.css">
   <!-- https://fontawesome.com/ -->
-  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
-  <!-- http://kenwheeler.github.io/slick/ -->
-  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
-  <link rel="stylesheet" type="text/css" href="/public/stylesheets/examsidebar.css">
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
 </head>
 
 <body>
@@ -36,27 +41,85 @@
     </div>
   </div>
   <br>
-  
-  <div style="width: 1200px ; margin: auto; margin-top: 80px;">
-    <div class="row">
-      <div class="col-4">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-12">
-                <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课程列表</h5>
-                <select id="course-select" class="form-control">
-                  <option>请选择课程</option>
-                </select>
-              </div>
-            </div>
+
+  <nav class="main-menu">
+    <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
+      <img src="/public/images/logo.gif" />
+    </div>
+    <div class="settings" , style="text-align: center; font-size: 18px;">
+    </div>
+    <ul class="parent-menu" , id="parent">
+      <li>
+        <a id="home-page" href="/catalog">
+          <i class="fa fa-home fa-lg"></i>
+          <span class="nav-text">首页</span>
+
+        </a>
+      </li>
+      <li>
+        <a id="catalog">
+          <i class="fa fa-home fa-lg"></i>
+          <span class="nav-text">课程首页</span>
+        </a>
+      </li>
+      <li class="has-submenu" id="course-list-parent">
+        <a>
+          <i class="fa fa-chevron-right fa-lg list-icon" id="course-list-icon"></i>
+          <span class="nav-text">
+            选择课程
+          </span>
+        </a>
+        <ul id="course-list" class="submenu" style="display: none">
+        </ul>
+      </li>
+      <li>
+        <a id='class-to-exam'>
+          <i class="fa fa-tasks fa-lg"></i>
+          <span class="nav-text">转到练习</span>
+
+        </a>
+      </li>
+      <li>
+        <a id='class-to-feedback'>
+          <i class="fa fa-folder-open fa-lg"></i>
+          <span class="nav-text">上传报告</span>
+
+        </a>
+      </li>
+      <li>
+        <a id='class-to-courseware'>
+          <i class="fa fa-folder-open fa-lg"></i>
+          <span class="nav-text">下载课件</span>
+
+        </a>
+      </li>
+      <li>
+        <a id='class-to-logout'>
+          <i class="fa fa-power-off fa-lg"></i>
+          <span class="nav-text">退出系统</span>
+        </a>
+      </li>
+    </ul>
+    <ul class="back">
+      <li>
+        <a href="javascript:history.go(-1);">
+          <i class="fa fa-chevron-left fa-lg"></i>
+          <span class="nav-text">
+            后退
+          </span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div style="margin-left: 55px;width: 100% ; margin: auto; margin-top: 80px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课件列表</h5>
+          <div id="courseware-list" class="list-group">
           </div>
-        </div>
-      </div>
-      <br>
-      <div class="col-8">
-        <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课件列表</h5>
-        <div id="course-list" class="list-group">
         </div>
       </div>
     </div>

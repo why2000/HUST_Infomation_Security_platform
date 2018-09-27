@@ -23,7 +23,8 @@
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
   <!-- http://kenwheeler.github.io/slick/ -->
   <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+  <link rel="stylesheet" href="/public/stylesheets/fontawesome/css/fontawesome-all.min.css">
+
   <!-- https://fontawesome.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
 
@@ -36,7 +37,6 @@
       <div class="headern">
         华中科技大学信息安全实验平台
       </div>
-
       <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
         <div class="logout-icon"></div>
         <span>退出</span>
@@ -51,11 +51,9 @@
     </div>
     <ul class="parent-menu" , id="parent">
       <li>
-
-        <a id="catalog" href="/catalog">
+        <a id="home-page" href="/catalog">
           <i class="fa fa-home fa-lg"></i>
           <span class="nav-text">首页</span>
-
         </a>
       </li>
       <li class="has-submenu" id="course-list-parent">
@@ -69,24 +67,15 @@
         </ul>
       </li>
       <li>
-        <a id='exam-to-class'>
-          <i class="fa fa-tasks fa-lg"></i>
-          <span class="nav-text">转到练习</span>
-
+        <a id='class-to-information'>
+          <i class="fa fa-id-card fa-lg"></i>
+          <span class="nav-text">修改信息</span>
         </a>
       </li>
       <li>
-        <a id='class-to-feedback'>
-          <i class="fa fa-folder-open fa-lg"></i>
-          <span class="nav-text">上传报告</span>
-
-        </a>
-      </li>
-      <li>
-        <a id='class-to-courseware'>
-          <i class="fa fa-folder-open fa-lg"></i>
-          <span class="nav-text">下载课件</span>
-
+        <a id='class-to-logout'>
+          <i class="fa fa-power-off fa-lg"></i>
+          <span class="nav-text">退出系统</span>
         </a>
       </li>
     </ul>

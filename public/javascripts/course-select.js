@@ -25,9 +25,10 @@ $(document).ready(function () {
 
 $(function sideBarInit() {
   classindex = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1, window.location.pathname.length);
-  $('#exam-to-class').attr('href', `/exam/${classindex}`);
+  $('#class-to-exam').attr('href', `/exam/${classindex}`);
   $('#class-to-feedback').attr('href', `/feedback/${classindex}/class/null`);
-  $('#class-to-courseware').attr('href', `/courseware`);
+  $('#class-to-courseware').attr('href', `/courseware/course/${classindex}`);
+  $('#class-to-information').attr('href', `/information`);
 
   $(".has-submenu").hover(function () {
     var height;
