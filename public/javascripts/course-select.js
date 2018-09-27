@@ -6,6 +6,22 @@ let courselist;
 
 let current_url_valid = window.location.protocol + window.location.pathname;
 
+$(document).ready(function () {
+  $.get({
+    url: '/course',
+  }).done(result => {
+    let courseList = result.data;
+    let html = "";
+    $('#course-lselectist').empty();
+    for (let n = 0, dLen = courseList.length; n < dLen; n++) {
+      html += '<a class="list-group-item" href="/tutorial/' + courseList[n]._id + '">'
+        + "  课程名称: " + courseList[n].name
+        + '</li >';
+    }
+    $('#course-select').append(html);
+  })
+
+})
 
 $(function sideBarInit() {
   classindex = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1, window.location.pathname.length);

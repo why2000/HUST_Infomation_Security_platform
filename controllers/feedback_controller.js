@@ -184,7 +184,7 @@ const deleteStudentReport = async (req, res) => {
     }
 }
 
-const getAllTeacherJudgement = async(req, res) => {
+const getAllTeacherJudgement = async (req, res) => {
     var mid = req.params.course_id;
     var sid = req.params.student_id;
 
@@ -192,7 +192,7 @@ const getAllTeacherJudgement = async(req, res) => {
         response(res, 401, 'Not Login.');
         return;
     }
-    
+
     if (await UserValidator.getUserTypeById(req.session.loginUser) == 'student' &&
         req.params.student_id != req.session.loginUser.toString()) { // 学生用户访问不是自己的
         response(res, 401, 'Permission denied.');
@@ -200,17 +200,17 @@ const getAllTeacherJudgement = async(req, res) => {
     }
 
     feedback.getAllJudgementByStudentIDAndModuleID(sid, mid)
-    .then(r => {
-        if(r) {
-            response(res, r);
-        } else {
-            response(res, 404, 'Not found.')
-        }
-    })
-    .catch(err => {
-        FeedbackLogger.error(`controller error => ${err.stack}`)
-        next(err);
-    })
+        .then(r => {
+            if (r) {
+                response(res, r);
+            } else {
+                response(res, 404, 'Not found.')
+            }
+        })
+        .catch(err => {
+            FeedbackLogger.error(`controller error => ${err.stack}`)
+            next(err);
+        })
 }
 
 
@@ -232,11 +232,13 @@ const getTeacherJudgement = async (req, res, next) => {
         var student_id = req.params.student_id;
         var file_id = req.params.file_id;
         feedback.getJudgementByStudentIDAndModuleID(student_id, course_id, file_id).then(result => {
-            res.json({
-                result: {
-                    info: {
-                        score: result.score,
-                        text: result.text
+            if (result) {
+                res.json({
+                    result: {
+                        info: {
+                            score: result.score,
+                            text: result.text
+                        }
                     }
                 })
             } else {
@@ -245,7 +247,7 @@ const getTeacherJudgement = async (req, res, next) => {
                         info: {
                             score: '',
                             text: ''
-                        }   
+                        }
                     }
                 })
             }
