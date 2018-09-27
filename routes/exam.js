@@ -24,7 +24,6 @@ router.get('/*tasklist', ExamController.getTaskList);
 
 router.get('/*favorlist', ExamController.getFavorList);
 
-
 // 收藏状态控制
 router.get('/:taskindex/favor', ExamController.getFavor);
 
@@ -32,15 +31,12 @@ router.post('/:taskindex/favor', ExamController.postFavor);
 
 router.delete('/:taskindex/favor', ExamController.deleteFavor);
 
-
 // 题目主体信息控制
 
 router.get('/:taskindex/info', ExamController.getInfo);
 
-
 router.post('/:taskindex/submit', ExamController.submitTask);
 
 router.get('/:taskindex/timelimit', ExamController.getTimeLimit);
-
 
 module.exports = router;

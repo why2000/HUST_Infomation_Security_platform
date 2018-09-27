@@ -22,7 +22,7 @@ router.get('/:class_id/class', feedback.getPageByUserType);
 
 // 报告文件
 router.post('/:class_id/report', upload.single('upload'), feedback.saveStudentReport);
-router.delete('/:class_id/report', feedback.deleteStudentReport);
+router.delete('/:class_id/:student_id/report', feedback.deleteStudentReport);
 router.get('/:class_id/:student_id/report', feedback.getStudentReport);
 
 // 教师反馈

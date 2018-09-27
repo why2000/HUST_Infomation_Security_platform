@@ -27,8 +27,6 @@ const getStudentList = async (req, res) => {
             if (result) {
                 for (let n = 0; n < result.length; n++) {
                     let stu = await user.findUserById(result[n]);
-                    console.log(result[n])
-                    console.log(course_id)
 
                     let report = await feedback.getReportByStudentIDAndModuleID(result[n], course_id)
                     let reportFileID;
