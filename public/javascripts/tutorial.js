@@ -8,7 +8,8 @@ let current_url_valid = window.location.protocol + window.location.pathname;
 
 /* General */
 
-function creatURL(URLarray) {
+function
+    creatURL(URLarray) {
     var length;
     if (URLarray) {
         length = URLarray.length
@@ -49,21 +50,13 @@ function RESTful(xmlhttp, method, url, queryString, async, fnc) { //获取JSON�
 
 /* TopBar*/
 
-function Logout(callback) {
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'logout']), null, true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                alert("退出成功！");
-                window.location.href = '/';
-                if (callback) {
-                    callback();
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-            }
-        }
-    });
+function Logout() {
+    $.get({
+        url: '/tutorial/logout'
+    }).done(function () {
+        alert("退出成功！");
+        window.location.href = '/';
+    })
 }
 
 /* SideBar */
@@ -130,25 +123,14 @@ function getCourseList(callback) {
     });
 }
 
-function getUserName(callback) {
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'username']), null, true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                // alert(xmlhttp.responseText);
-                username = JSON.parse(xmlhttp.responseText).result.username;
-                // alert(tasklist);
-                // setTaskList(tasklist);
-                setUserName();
-                if (callback) {
-                    callback();
+function getUserName() {
+    $.get({
+        url: '/tutorial/username'
+    }).done(result => {
+        username = result.username;
+        setUserName();
 
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-            }
-        }
-    });
+    })
 }
 
 function setUserName() {
@@ -157,18 +139,6 @@ function setUserName() {
     }
     var hello = "欢迎！" + username;
     $(".settings").text(hello);
-}
-
-function onFavorClicked() {
-    $("#favor").click(function () {
-        // alert(favor);
-        if (!isIndex())
-            if (!favor) {
-                postFavor();
-            } else {
-                deleteFavor();
-            }
-    });
 }
 
 /* MainPart */

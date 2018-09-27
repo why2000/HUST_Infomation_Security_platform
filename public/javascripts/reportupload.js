@@ -8,50 +8,9 @@ let classname;
 let courseList;
 let fileid;
 
-function creatURL(URLarray) {
-  var length;
-  if (URLarray) {
-    length = URLarray.length
-  } else {
-    return URLarray;
-  }
-  var newURLarray = URLarray.filter(function (currentValue) {
-    return currentValue && currentValue != null && currentValue != undefined;
-  });
-  var result = "";
-  result = result + newURLarray[0];
-  for (var i = 1; i < length; i++) {
-    if (result.endsWith('/')) {
-      result = result + newURLarray[i];
-    } else {
-      result = result + '/' + newURLarray[i];
-    }
-  }
-  return result;
-}
-
-function setXmlHttp() {
-  var xmlhttp;
-  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
-    xmlhttp = new XMLHttpRequest();
-  } else { // code for IE6, IE5
-    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  return xmlhttp;
-}
-
-function RESTful(xmlhttp, method, url, queryString, async, fnc) { //获取JSON数据
-  xmlhttp.open(method, url, async);
-  xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
-  xmlhttp.send(queryString);
-  xmlhttp.onreadystatechange = fnc;
-}
-
-
 $(document).ready(function () {
   getCourseid();
   getUserId();
-  getUserName();
   getClassname();
   sideBarInit();
 
@@ -96,21 +55,13 @@ $(document).ready(function () {
     $form.submit();
   })
 
-function Logout(callback) {
-  var xmlhttp = setXmlHttp();
-  RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'logout']), null, true, function () {
-    if (xmlhttp.readyState == 4) {
-      if (xmlhttp.status == 200) {
-        alert("退出成功！");
-        window.location.href = '/';
-        if (callback) {
-          callback();
-        }
-      } else {
-        console.log("发生错误" + xmlhttp.status);
-      }
-    }
-  });
+function Logout() {
+  $.get({
+    url:'/tutorial/logout'
+  }).done(function(){
+    alert("退出成功！");
+    window.location.href = '/';
+  })
 }
 
 function sideBarInit() {
@@ -155,7 +106,7 @@ function sideBarInit() {
   getUserName();
 }
 
-function getUserId(callback) {
+function getUserId() {
   $.get({
     url: 'userid'
   }).done(result => {
@@ -171,24 +122,13 @@ function getUserId(callback) {
   })
 }
 
-function getUserName(callback) {
-  var xmlhttp = setXmlHttp();
-  RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'username']), null, true, function () {
-    if (xmlhttp.readyState == 4) {
-      if (xmlhttp.status == 200) {
-        // alert(xmlhttp.responseText);
-        username = JSON.parse(xmlhttp.responseText).result.username;
-        // alert(tasklist);
-        // setTaskList(tasklist);
-        setUserName();
-        if (callback) {
-          callback();
-        }
-      } else {
-        console.log("发生错误" + xmlhttp.status);
-      }
-    }
-  });
+function getUserName() {
+  $.get({
+    url: '/tutorial/username'
+  }).done(result => {
+    username = result.username;
+    setUserName();
+  })
 }
 
 function openJudge() {
@@ -220,7 +160,7 @@ function getClassname() {
   });
 }
 
-function getCourseList(callback) {
+function getCourseList() {
   $.get({
     url: '/course',
   }).done(result => {
