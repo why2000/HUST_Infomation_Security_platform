@@ -96,7 +96,7 @@ const getReportsByModuleID = async (module_id) => {
  * @param {string} module_id 模块ID
  * @param {string} file_id 文件ID
  */
-const insertReport = async (student_id, module_id, file_id) => {
+const insertReport = async (student_id, module_id, file_id, file_name) => {
     let colReport = db.collection('report');
     let doc = {
         student_id: student_id,
@@ -114,7 +114,7 @@ const insertReport = async (student_id, module_id, file_id) => {
  * @param {string} module_id 模块ID
  * @param {string} file_id 文件ID
  */
-const upsertReport = async (student_id, module_id, file_id) => {
+const upsertReport = async (student_id, module_id, file_id, file_name) => {
     let colReport = db.collection('report');
     return colReport.updateOne({
         student_id: student_id,
@@ -133,7 +133,7 @@ const upsertReport = async (student_id, module_id, file_id) => {
  * @param {string} student_id 学生ID
  * @param {string} module_id 模块ID
  */
-const removeReport = async (student_id, module_id) => {
+const removeReport = async (student_id, module_id, file_id) => {
     let colReport = db.collection('report');
     return colReport.deleteOne({
         student_id: student_id,

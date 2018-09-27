@@ -44,15 +44,15 @@
 
 ## 报告部分
 
-### GET /report/:student_id/:module_id
+### GET /report/:student_id/:course_id
 
-**获取用户**
+**获取报告**
 
 参数：
 
 ​	student_id: 学生ID
 
-​	module_id: 模块ID
+​	course_id: 课程ID
 
 权限: 学生(student_id符合)，教师&管理员(所有)
 
@@ -65,9 +65,12 @@ None
 #### Response
 
 ```json
-{
-    "file_id": "somefileid"
-}
+[
+    {
+        "file_name": "文件名.txt"
+        "file_id": "somefileid"
+    }
+]
 ```
 
 
@@ -76,19 +79,17 @@ None
 
 
 
-### POST /report/:student_id/:module_id
+### POST /report/:student_id/:course_id
 
 ****
 
 **上传报告文件**
 
-支持重复上传，会替换掉以前的文件
-
 参数：
 
 ​	student_id: 学生ID
 
-​	module_id: 模块ID
+​	course_id: 课程ID
 
 权限: 学生(student_id符合)，管理员(所有)
 
@@ -110,7 +111,7 @@ Form表单，文件(id为upload)
 
 
 
-### DELETE /report/:student_id/:module_id
+### DELETE /report/:student_id/:course_id/:file_id
 
 **删除报告文件**
 
@@ -118,7 +119,9 @@ Form表单，文件(id为upload)
 
 ​	student_id: 学生ID
 
-​	module_id: 模块ID
+​	course_id: 课程ID
+
+​	file_id: 文件ID
 
 权限: 学生(student_id符合)，教师&管理员(所有)
 
@@ -142,7 +145,7 @@ None
 
 ## 评价反馈
 
-### GET /judgement/:student_id/:module_id
+### GET /judgement/:student_id/:course_id/:file_id
 
 **获得学生该模块的教师评价**
 
@@ -150,7 +153,9 @@ None
 
 ​	student_id: 学生ID
 
-​	module_id: 模块ID
+​	course_id: 课程ID
+
+​	file_id: 文件ID
 
 权限: 学生(student_id符合)，教师&管理员(所有)
 
@@ -173,7 +178,7 @@ None
 
 
 
-### POST /judgement/:student_id/:module_id
+### POST /judgement/:student_id/:course_id/:file_id
 
 **提交学生该模块的教师评价(已有情况下会被覆盖)**
 
@@ -181,7 +186,9 @@ None
 
 ​	student_id: 学生ID
 
-​	module_id: 模块ID
+​	course_id: 课程ID
+
+​	file_id: 文件ID
 
 权限: 教师(所有)
 
@@ -208,7 +215,7 @@ None
 
 
 
-### DELETE /judgement/:student_id/:module_id
+### DELETE /judgement/:student_id/:course_id/:file_id
 
 **删除学生该模块的教师评价**
 
@@ -216,7 +223,9 @@ None
 
 ​	student_id: 学生ID
 
-​	module_id: 模块ID
+​	course_id: 课程ID
+
+​	file_id: 文件ID
 
 权限: 教师&管理员(所有)
 
@@ -246,7 +255,13 @@ None
 {
     "student_id": "studentid",
     "module_id": "moduleid",
-    "file_id": "fileid"
+    "report": [
+        {
+            "file_name": "文件名",
+            "file_id": "fileid"
+        }
+    ]
+    
 }
 ```
 
@@ -256,6 +271,7 @@ None
 {
     "student_id": "studentid",
     "module_id": "moduleid",
+    "file_id": "file_id",
     "score": 59,
     "text": "Very good!!"
 }
