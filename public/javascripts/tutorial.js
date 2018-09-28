@@ -72,7 +72,6 @@ $(function sideBarInit() {
         var height;
         var current_list = $(this).find('.submenu').attr("id");
         current_list = current_list.split('-').join('');
-        console.log(current_list);
         if (current_list != null && current_list != undefined) {
             if (eval(current_list) <= 8) {
                 height = eval(current_list).length * 41;
@@ -115,7 +114,6 @@ function getCourseList(callback) {
         if (courselist) {
             length = courselist.length;
         }
-        console.log(courselist);
         for (var i = 0; i < length; i++) {
 
             $('#course-list').append(`<li><a href="/tutorial/${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);

@@ -1,6 +1,5 @@
 'use strict'
 
-let courseList;
 let studentList;
 let courseID;
 let studentID;
@@ -9,37 +8,20 @@ $(document)
   .ready(function () {
     $('#inputScore').val('');
     $('#inputText').val('');
+    getCourseID();
+
     $.get({
-      url: '/course',
+      url: `/feedback/${courseID}/list`,
     }).done(result => {
-      courseList = result.data;
-      for (let n = 0; n < courseList.length; n++) {
-        $('#course-select').append('<option nid="' + n + '">课程名称: ' + courseList[n].name + '</option>')
+      studentList = result;
+      for (let n = 0; n < studentList.length; n++) {
+        if (studentList[n].file_id != undefined && studentList[n].file_id == false) {
+          $('#student-select').append('<a class="list-group-item list-group-item-action student-select-item" nid="' + n + '">' + ' 学号: ' + studentList[n].id + ' 名称: ' + studentList[n].name + '<span style="float:right;" class="badge badge-danger badge-pill">[未上传]</span></a > ')
+        } else {
+          $('#student-select').append('<a class="list-group-item list-group-item-action student-select-item" nid="' + n + '">' + ' 学号: ' + studentList[n].id + ' 名称: ' + studentList[n].name + '<span style="float:right;" class="badge badge-success badge-pill">[已上传]</span></a > ')
+        }
       };
     });
-  })
-  .on("change", '#course-select', function () {
-    let $this = $(this);
-    $('#student-select').empty();
-    $('#inputScore').val('');
-    $('#inputText').val('');
-    if ($this.val() != '请选择课程') {
-      let nid = $this.find("option:selected").attr('nid');
-      let selectedCorse = courseList[nid];
-      courseID = selectedCorse._id;
-      $.get({
-        url: `/feedback/${courseID}/list`,
-      }).done(result => {
-        studentList = result;
-        for (let n = 0; n < studentList.length; n++) {
-          if (studentList[n].file_id) {
-            $('#student-select').append('<a class="list-group-item list-group-item-action student-select-item" nid="' + n + '">' + ' 学号: ' + studentList[n].id + ' 学生名称: ' + studentList[n].name + '<span style="float:right;" class="badge badge-success badge-pill">[已上传报告]</span></a > ')
-          } else {
-            $('#student-select').append('<a class="list-group-item list-group-item-action student-select-item" nid="' + n + '">' + ' 学号: ' + studentList[n].id + ' 学生名称: ' + studentList[n].name + '<span style="float:right;" class="badge badge-danger badge-pill">[未上传报告]</span></a > ')
-          }
-        };
-      });
-    }
   })
   .on('click', '#submit', function () {
     var score = $('#inputScore').val();
@@ -50,7 +32,7 @@ $(document)
     } else if (!/^0$|^[1-9][0-9]{0,1}$|^100$/.test(score)) { // 是否0-100
       alert('分数应为0-100间的整数！')
     } else {
-      let url = `/feedback/${courseID}/${studentID}/judgement`
+      let url = `/feedback/${courseID}/${studentID}/${$('.report-select-item.list-group-item-success').attr('fid')}/judgement`
       score = parseInt(score);
       $.ajax({
         type: "post",
@@ -69,9 +51,8 @@ $(document)
     }
   })
   .on('click', '.my-download-button', function () {
-    let nid = $('.list-group-item-success').attr('nid');
-    let selectedStudent = studentList[nid];
-    let url = 'http://' + window.location.host + '/file/' + selectedStudent.file_id;
+    let file_id = $('.report-select-item.list-group-item-success').attr('fid')
+    let url = 'http://' + window.location.host + '/file/' + file_id
 
     let $form = $('<form method="GET"></form>');
     $form.attr('action', url);
@@ -79,26 +60,49 @@ $(document)
     $form.submit();
   })
   .on("click", ".student-select-item", function () {
-    console.log('item');
-    $('.student-select-item').removeClass('list-group-item-success');
-    $(this).addClass('list-group-item-success');
-
-    let $this = $(this);
     $('#inputScore').val('');
     $('#inputText').val('');
+    $('.student-select-item').removeClass('list-group-item-success');
+    $(this).addClass('list-group-item-success');
+    $('#report-select').empty();
+    let $this = $(this);
     let nid = $this.attr('nid');
     studentID = studentList[nid].id;
     $.get({
-      url: `/feedback/${courseID}/${studentID}/judgement`,
-      success: (data) => {
-        $('#inputScore').val(data.result.info.score);
-        $('#inputText').val(data.result.info.text);
-      }
+      url: `/feedback/${courseID}/${studentID}/report`,
+    }).done((reportList) => {
+      $.get({
+        url: `/feedback/${courseID}/${studentID}/judgement`,
+      }).done(judgementList => {
+        for (let n = 0; n < reportList.data.length; n++) {
+          let reportInjudgementList = judgementList.data.find(e => {
+            return e.file_id == reportList.data[n].file_id;
+          })
+          if (reportInjudgementList) {
+            $('#report-select').append('<a class="list-group-item list-group-item-action report-select-item" fid="' + reportList.data[n].file_id + '">' + '报告名称' + reportList.data[n].file_name + '<span style="float:right;" class="badge badge-success badge-pill">[已评价]]</span></a > ');
+          } else {
+            $('#report-select').append('<a class="list-group-item list-group-item-action report-select-item" fid="' + reportList.data[n].file_id + '">' + '报告名称' + reportList.data[n].file_name + '<span style="float:right;" class="badge badge-danger badge-pill">[未评价]</span></a > ');
+          }
+        }
+      })
     })
-    if (studentList[nid].file_id) {
-      $('.my-download-button').removeAttr('disabled');
-    }
-    else {
-      $('.my-download-button').attr('disabled', 'disabled');
-    }
   })
+  .on('click', '.report-select-item', function () {
+    $('#inputScore').val('');
+    $('#inputText').val('');
+    $('.report-select-item').removeClass('list-group-item-success');
+    $(this).addClass('list-group-item-success');
+    $('.my-download-button').removeAttr('disabled');
+    let fileID = $(this).attr('fid');
+    $.get({
+      url: `/feedback/${courseID}/${studentID}/${fileID}/judgement`,
+    }).done(result => {
+      $('#inputScore').val(result.result.info.score);
+      $('#inputText').val(result.result.info.text);
+    })
+  })
+
+function getCourseID() {
+  let localURLArgs = location.href.split('/');
+  courseID = localURLArgs[localURLArgs.length - 3];
+}

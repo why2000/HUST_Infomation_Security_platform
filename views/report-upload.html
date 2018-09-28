@@ -150,30 +150,17 @@
               <table class="table" style="margin-top: 10px;" id="result-table">
                 <thead>
                   <tr>
-                    <th>姓名</th>
-                    <th>文件名</th>
-                    <th>得分</th>
+                    <th>课程名称</th>
+                    <th>报告名称</th>
+                    <th>报告得分</th>
                     <th style="text-align: right">教师评价</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr class="reportid">
-                    <td scope="row" class="username">未获取数据</td>
-                    <td class="filename">未获取数据</td>
-                    <td class="score">未评分</td>
-                    <td class="judge">
-                      <button id="show-judgement" type="button" class="btn btn-primary" style="cursor: pointer; float:right;"
-                        onclick="openJudge();">查看评价</button>
-                    </td>
-                  </tr>
+                <tbody id="report-tablet">
                 </tbody>
               </table>
-              <form role="form" id='judgement-text-form' class='hidden' style="display: none">
-                <div class="form-group">
-                  <label for="name"></label>
-                  <textarea class="form-control" id="judgement-text" rows="3" readonly="readonly">尚无评价</textarea>
-                </div>
-              </form>
+              <div id="judge-dialog" tittle="教师评价">
+              </div>
             </div>
           </div>
         </div>
