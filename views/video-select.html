@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans">
+<html>
 
 <head>
+
   <meta charset="UTF-8" />
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="google" value="notranslate" />
-  <title>华中科技大学信息安全实验平台 - 课程选择</title>
+  <title>华中科技大学信息安全实验平台 - 视频选择</title>
 
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/public/javascripts/courseware-download.js"></script>
+  <script type="text/javascript" src="/public/javascripts/video-select.js"></script>
   <!-- load CSS -->
   <!-- Google web font "Open Sans" -->
   <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
@@ -23,8 +24,10 @@
   <!-- http://kenwheeler.github.io/slick/ -->
   <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
   <!-- https://fontawesome.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
+
 </head>
 
 <body>
@@ -40,8 +43,6 @@
       </div>
     </div>
   </div>
-  <br>
-
   <nav class="main-menu">
     <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
       <img src="/public/images/logo.gif" />
@@ -53,20 +54,13 @@
         <a id="home-page" href="/catalog">
           <i class="fa fa-home fa-lg"></i>
           <span class="nav-text">首页</span>
-
-        </a>
-      </li>
-      <li>
-        <a id="catalog">
-          <i class="fa fa-book fa-lg"></i>
-          <span class="nav-text">课程首页</span>
         </a>
       </li>
       <li class="has-submenu" id="course-list-parent">
         <a>
-          <i class="fa fa-chevron-right fa-lg list-icon" id="course-list-icon"></i>
+          <i class="fa fa-chevron-right fa-lg mlist-icon" id="course-list-icon"></i>
           <span class="nav-text">
-            选择课程
+            其他课程
           </span>
         </a>
         <div class="row pre-scrollable">
@@ -75,24 +69,9 @@
         </div>
       </li>
       <li>
-        <a id='class-to-exam'>
-          <i class="fa fa-tasks fa-lg"></i>
-          <span class="nav-text">转到练习</span>
-
-        </a>
-      </li>
-      <li>
-        <a id='class-to-feedback'>
-          <i class="fa fa-cloud-upload fa-lg"></i>
-          <span class="nav-text">上传报告</span>
-
-        </a>
-      </li>
-      <li>
-        <a id='class-to-courseware'>
-          <i class="fa fa-folder-open fa-lg"></i>
-          <span class="nav-text">下载课件</span>
-
+        <a id='class-to-information'>
+          <i class="fa fa-id-card fa-lg"></i>
+          <span class="nav-text">修改信息</span>
         </a>
       </li>
       <li>
@@ -125,11 +104,18 @@
       <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-          <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课件列表</h5>
-          <div id="courseware-list" class="list-group">
+          <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择视频</h5>
+          <div class="row pre-scrollable" style="max-height: 80vh;overflow-y: scroll;">
+            <div class="col-12">
+              <div id="video-select" class="list-group">
+              </div>
+            </div>
           </div>
-        </div>
+        </div>a
       </div>
     </div>
   </div>
+
 </body>
+
+</html>

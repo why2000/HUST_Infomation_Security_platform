@@ -2,40 +2,13 @@
 
 let coursewareFileList;
 let courselist;
-let current_url_valid = window.location.protocol + window.location.pathname;
 let courseNum = new Set();
-let courseid
+let courseid;
+let classname;
 
 $(document).ready(function () {
   let localURLArgs = location.href.split('/');
   courseid = localURLArgs[localURLArgs.length - 1];
-  sideBarInit();
-  $.get({
-    url: '/courseware/list/' + courseid,
-    success: (data) => {
-      coursewareFileList = data.data;
-      let selectedCourse = coursewareFileList.filter(e => {
-        return e._id == courseid;
-      })
-      if (selectedCourse[0]) {
-        render(coursewareFileList, selectedCourse[0].name);
-      } else {
-        $('#courseware-list').empty().append('<li class="list-group-item" >暂无课件</li>');
-      }
-    }
-  })
-})
-  .on('click', '.my-download-button', async function () {
-    let nid = $(this).attr('nid');
-    let file_id = coursewareFileList[nid].file_id;
-    let url = 'http://' + window.location.host + '/file/' + file_id;
-    let $form = $('<form method="GET"></form>');
-    $form.attr('action', url);
-    $form.appendTo($('body'));
-    $form.submit();
-  })
-
-function sideBarInit() {
   $('#class-to-exam').attr('href', `/exam/${courseid}`);
   $('#class-to-feedback').attr('href', `/feedback/${courseid}/class/null`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
@@ -72,8 +45,32 @@ function sideBarInit() {
     // $(".settings").css("visibility", "hidden");
   });
   getCourseList();
-  //getUserName();
-}
+  getUserName();
+
+  $.get({
+    url: '/courseware/list/' + courseid,
+    success: (data) => {
+      coursewareFileList = data.data;
+      let selectedCourse = coursewareFileList.filter(e => {
+        return e._id == courseid;
+      })
+      if (selectedCourse[0]) {
+        render(coursewareFileList, selectedCourse[0].name);
+      } else {
+        $('#courseware-list').empty().append('<li class="list-group-item" >暂无课件</li>');
+      }
+    }
+  })
+})
+  .on('click', '.my-download-button', async function () {
+    let nid = $(this).attr('nid');
+    let file_id = coursewareFileList[nid].file_id;
+    let url = 'http://' + window.location.host + '/file/' + file_id;
+    let $form = $('<form method="GET"></form>');
+    $form.attr('action', url);
+    $form.appendTo($('body'));
+    $form.submit();
+  })
 
 async function render(coursewareFileList, courseName) {
   let html = "";
@@ -97,19 +94,18 @@ function Logout() {
   })
 }
 
-function getCourseList(callback) {
+function getCourseList() {
   $.get({
     url: '/course',
   }).done(result => {
     courselist = result.data;
-    $('#course-list').empty();
-    var length = 0;
-    if (courselist) {
-      length = courselist.length;
-    }
-    for (var i = 0; i < length; i++) {
-
-      $('#course-list').append(`<li><a href="/tutorial/${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
+    let selectedCourse = courselist.filter(e => {
+      return e._id == courseid;
+    });
+    classname = selectedCourse[0].name;
+    setClassName();
+    for (let n = 0; n < courselist.length; i++) {
+      $('#course-list').append(`<li><a href="/tutorial/${courselist[n]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[n].name}</span></a></li>`);
     };
   });
 }
@@ -121,4 +117,19 @@ function getUserName() {
     username = result.username;
     setUserName();
   })
+}
+
+function setClassName() {
+  if (classname) {
+    $('#big-title').text('上传报告 当前课程: ' + classname);
+    $('#result-table tbody .classname').text(classname);
+  }
+}
+
+function setUserName() {
+  if (username) {
+    $('#result-table tbody .username').text(username);
+    var hello = "欢迎！" + username;
+    $(".settings").text(hello);
+  }
 }

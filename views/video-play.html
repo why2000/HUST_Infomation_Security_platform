@@ -1,27 +1,37 @@
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans">
+<html>
 
 <head>
+
   <meta charset="UTF-8" />
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="google" value="notranslate" />
-  <title>华中科技大学信息安全实验平台 - 课程选择</title>
+  <title>华中科技大学信息安全实验平台 - 在线答题</title>
+
+
 
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/public/javascripts/courseware-download.js"></script>
+  <script type="text/javascript" src="/public/javascripts/video-play.js"></script>
+  <script src="/public/javascripts/jquery.easy-pie-chart.js"></script>
+  <script src="/public/javascripts/jquery.countdown.js"></script>
+  <script src="/public/javascripts/flowplayer.js"></script>
+  <script src="/public/javascripts/flowplayer.min.js"></script>
   <!-- load CSS -->
+  <link href="/public/stylesheets/examindex.css" rel="stylesheet" type="text/css" />
+  <link href="/public/stylesheets/examiconfont.css" rel="stylesheet" type="text/css" />
+  <link href="/public/stylesheets/examtest.css" rel="stylesheet" type="text/css" />
+  <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <!-- Google web font "Open Sans" -->
   <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
   <!-- https://getbootstrap.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
   <!-- http://kenwheeler.github.io/slick/ -->
-  <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
   <!-- https://fontawesome.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
@@ -34,14 +44,13 @@
       <div class="headern">
         华中科技大学信息安全实验平台
       </div>
+
       <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
         <div class="logout-icon"></div>
         <span>退出</span>
       </div>
     </div>
   </div>
-  <br>
-
   <nav class="main-menu">
     <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
       <img src="/public/images/logo.gif" />
@@ -60,6 +69,7 @@
         <a id="catalog">
           <i class="fa fa-book fa-lg"></i>
           <span class="nav-text">课程首页</span>
+
         </a>
       </li>
       <li class="has-submenu" id="course-list-parent">
@@ -114,22 +124,32 @@
     </ul>
   </nav>
 
-  <div style="margin-left: 55px;width: 100% ; margin: auto; margin-top: 80px;">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <h5 id="big-title" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">上传报告
-            当前课程:无数据</h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-1"></div>
-        <div class="col-10">
-          <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课件列表</h5>
-          <div id="courseware-list" class="list-group">
+  <div cid="main-viedo" lass="main" style="clear: both">
+    <div class="index-main">
+      <div layoutid="onecolumn" class="main_content" style="margin-left: 15% !important;">
+        <div class="foo">
+          <div id="pimShowWidget" widget_id="pimShowWidget" class="widget" style="visibility: visible;">
+            <div id="pimShowWidget-content" class="widget-content">
+              <div class="info" id="index-info" style="margin-left: 15% !important;">
+                <div class="depart_content_02">
+                  <div class="audit_notice_content">
+                    <span class="notice_title_01 audit_notice_span" style="padding-bottom: 16px;"></span>
+                    <div class="notice_content_01" id="pim_content">
+                      <form>
+                        <p style="text-indent: 2em;" dir="ltr">
+                        </p>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
 </body>
+
+</html>
