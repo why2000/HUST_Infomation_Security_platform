@@ -24,6 +24,7 @@ var tutorialRouter = require('./routes/tutorial')
 var informationRouter = require('./routes/information')
 var coursewareRouter = require('./routes/courseware');
 var courseRouter = require('./routes/course');
+var userRouter = require('./routes/user');
 
 var app = express();
 
@@ -64,6 +65,7 @@ app.use('/tutorial', tutorialRouter);
 app.use('/information', informationRouter)
 app.use('/courseware', coursewareRouter);
 app.use('/course', courseRouter);
+app.use('/user', userRouter); 
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

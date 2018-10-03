@@ -14,7 +14,7 @@ $(document).ready(function () {
     let html = "";
     $('#course-lselectist').empty();
     for (let n = 0, dLen = courseList.length; n < dLen; n++) {
-      html += '<a class="list-group-item" href="/tutorial/' + courseList[n]._id + '">'
+      html += '<a class="list-group-item" href="/tutorial/index#' + courseList[n]._id + '">'
         + "  课程名称: " + courseList[n].name
         + '</li >';
     }
@@ -77,7 +77,7 @@ function getCourseList() {
     console.log(courselist);
     for (var i = 0; i < length; i++) {
 
-      $('#course-list').append(`<li><a href="/tutorial/${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
+      $('#course-list').append(`<li><a href="/tutorial/index#${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
     };
   });
 }

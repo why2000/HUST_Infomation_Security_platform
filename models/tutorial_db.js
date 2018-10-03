@@ -8,7 +8,7 @@ let MongoDB = require('mongodb');
 let MongoClient = MongoDB.MongoClient;
 let IsEmpty = require('is-empty');
 
-let db = new MongoDB.Db;
+let db;
 
 MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
     if (err) {
@@ -16,15 +16,15 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
         throw err;
     } else {
         db = client.db(ConfigSet.DATABASE_NAME);
-        db.createCollection(ConfigSet.COLLECTION_NAME, function(err, res) {
+        db.createCollection(ConfigSet.COLLECTION_NAME, function (err, res) {
             if (err) {
-                TutorialLogger.error(`database error => ${err.stack}`);
+                TutorialLogger.error(`datWabase error => ${err.stack}`);
                 throw err;
             } else {
                 // Successfully creat col
                 ;
             }
-          });
+        });
     }
 });
 
@@ -39,12 +39,12 @@ const getTutorialListByCourseID = async (course_id) => {
     return colTutorial.find({
         course_id: cid
     })
-    .project({
-        course_id: 0,
-        video: 0,
-        description: 0
-    })
-    .toArray();
+        .project({
+            course_id: 0,
+            video: 0,
+            description: 0
+        })
+        .toArray();
 }
 
 /**
@@ -61,14 +61,14 @@ const getTutorialByIDs = async (course_id, tutorial_id) => {
         _id: tid,
         course_id: cid
     })
-    .then(r => {
-        if(!r) return null;
-        return {
-            title: r.title,
-            video: r.video,
-            description: r.description
-        }
-    });
+        .then(r => {
+            if (!r) return null;
+            return {
+                title: r.title,
+                video: r.video,
+                description: r.description
+            }
+        });
 }
 
 /**
@@ -79,13 +79,13 @@ const getTutorialByIDs = async (course_id, tutorial_id) => {
 const deleteTutorial = async (course_id, tutorial_id) => {
     let colTutorial = db.collection('tutorial');
     let cid = MongoDB.ObjectId(course_id),
-    tid = MongoDB.ObjectId(tutorial_id);
+        tid = MongoDB.ObjectId(tutorial_id);
 
     return colTutorial.deleteOne({
         _id: tid,
         course_id: cid
     })
-    .then(r => r.result.ok == 1);
+        .then(r => r.result.ok == 1);
 }
 
 
@@ -99,7 +99,7 @@ const saveTutorial = async (course_id, data) => {
     data.course_id = MongoDB.ObjectId(course_id);
 
     return colTutorial.insertOne(data)
-           .then(r => r.result.ok == 1);
+        .then(r => r.result.ok == 1);
 }
 
 module.exports = {

@@ -13,11 +13,10 @@ let Course = require('../models/course_db');
 
 exports.getIndexPage = async (req, res, next) => {
     var page = 'tutorial';
-
-    if(UserValidator.getUserTypeById(req.session.loginUser)) {
+    if(UserValidator.getUserTypeById(req.session.loginUser)=='teacher') {
         page += '_teacher';
     }
-
+    console.log(page);
     res.render(page);
 }
 

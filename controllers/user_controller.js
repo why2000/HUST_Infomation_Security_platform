@@ -46,6 +46,21 @@ exports.getLogout = async (req, res, next) => {
 
 // UserName
 exports.getUserNameById = async (req, res, next) => {
+    var userid = req.params.user_id;
+    try {
+        let username = await UserValidator.getUserNameById(userid);
+        res.json({
+            result: {
+                username: username
+            }
+        });
+    } catch (err) {
+        TutorialLogger.error(`get username error => ${err.stack}`);
+        next(err);
+    }
+}
+
+exports.getUserNowUserName = async (req, res, next) => {
     var userid = req.session.loginUser;
     try {
         let username = await UserValidator.getUserNameById(userid);
