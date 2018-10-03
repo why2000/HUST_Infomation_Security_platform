@@ -6,29 +6,23 @@ let ExamLogger = require('../logger').ExamLogger;
 let ExamValidator = require('../validators/exam_validator');
 let UserLogger = require('../logger').UserLogger;
 let UserValidator = require('../validators/user_validator');
+let response = require('../utils/response');
 
 
 
 exports.getIndexPage = async (req, res, next) => {
-    var page = "exam";
-    var session = req.session;
-    var userid = "U201714635";
-    var usertype = "student";
-    var info = {
-        userid: userid,
-        username: "",
-        usertype: usertype
-    };
-
-    if (!req.session.loginUser) {
+    if(!req.session.loginUser) {
         res.redirect('/');
-    } else {
-        if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
-            page += "_teacher"
-        } else if (await UserValidator.getUserTypeById(req.session.loginUser) == "student") {;
-        }
-        res.render(page);
+        return;
     }
+    
+    var page = "exam";
+
+    if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+        page += "_teacher"
+    }
+
+    res.render(page);
 }
 
 exports.getTimeLimit = async (req, res, next) => {
@@ -77,32 +71,27 @@ exports.getInfo = async (req, res, next) => {
 
 
 exports.getTaskPage = async (req, res, next) => {
-    var page = "exam";
-    var taskindex = req.params.taskindex.toString(); // String
-    var success;
-    var userid = "U201714635";
-    var usertype = "student";
-    var taskindex = req.params.taskindex;
-    var info = {
-        userid: userid,
-        username: "",
-        usertype: usertype
-    };
-    if (req.cookies.teacher) {
-        success = await UserValidator.createUser(info);
-        page += "_teacher"
-    } else if (req.cookies.student) {
-        success = await UserValidator.createUser(info);
-    } else {
-        //这里改成redirect: /
-        // res.redirect("/");
+    if(!req.session.loginUser) {
+        res.redirect('/');
+        return;
     }
-    res.render(page);
+
+    var page = "exam";
+
+    if(UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+        page += '_teacher';
+    }
+
+    res.render(page)
 }
 
 // TaskList
 exports.getTaskList = async (req, res, next) => {
-    var userid = "U201714635";
+    if(!req.session.loginUser) {
+        response(res, 401, 'Not Login.');
+        return;
+    }
+    var userid = req.session.loginUser;
     var params = {
         "userid": userid
     }
@@ -123,7 +112,11 @@ exports.getTaskList = async (req, res, next) => {
 
 // FavorList
 exports.getFavorList = async (req, res, next) => {
-    var userid = "U201714635";
+    if(!req.session.loginUser) {
+        response(res, 401, 'Not Login.');
+        return;
+    }
+    var userid = req.session.loginUser;
     var params = {
         "userid": userid
     }
@@ -143,8 +136,12 @@ exports.getFavorList = async (req, res, next) => {
 
 // Favor
 exports.getFavor = async (req, res, next) => {
+    if(!req.session.loginUser) {
+        response(res, 401, 'Not Login.');
+        return;
+    }
+    var userid = req.session.loginUser;
     var taskindex = req.params.taskindex;
-    var userid = "U201714635";
     var params = {
         "taskindex": taskindex,
         "userid": userid
@@ -164,8 +161,12 @@ exports.getFavor = async (req, res, next) => {
 }
 
 exports.postFavor = async (req, res, next) => {
+    if(!req.session.loginUser) {
+        response(res, 401, 'Not Login.');
+        return;
+    }
+    var userid = req.session.loginUser;
     var taskindex = req.params.taskindex;
-    var userid = "U201714635";
     var params = {
         "favor": req.body.favor,
         "taskindex": taskindex,
@@ -181,11 +182,15 @@ exports.postFavor = async (req, res, next) => {
         ExamLogger.error(`add favor error => ${err.stack}`);
         next(err);
     }
-}
+    }
 
 exports.deleteFavor = async (req, res, next) => {
+    if(!req.session.loginUser) {
+        response(res, 401, 'Not Login.');
+        return;
+    }
+    var userid = req.session.loginUser;
     var taskindex = req.params.taskindex;
-    var userid = "U201714635";
     var params = {
         "favor": req.body.favor,
         "taskindex": taskindex,
@@ -206,8 +211,12 @@ exports.deleteFavor = async (req, res, next) => {
 
 
 exports.submitTask = async (req, res, next) => {
+    if(!req.session.loginUser) {
+        response(res, 401, 'Not Login.');
+        return;
+    }
+    var userid = req.session.loginUser;
     var taskindex = req.params.taskindex;
-    var userid = "U201714635";
     var params = {
         "taskindex": taskindex,
         "userid": userid
@@ -216,7 +225,7 @@ exports.submitTask = async (req, res, next) => {
         var taskinfo = await ExamValidator.getTaskInfo(params);
         res.json({
             result: {
-                taskinfo: req.body
+                taskinfo: taskinfo
             }
         });
     } catch (err) {

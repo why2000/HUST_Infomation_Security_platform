@@ -10,37 +10,37 @@ router.get('/', async (req, res, next) => {
   res.redirect('/exam/index');
 });
 
-// Logout
-router.get('/*logout', UserController.getLogout);
+// // Logout
+// router.get('/*logout', UserController.getLogout);
 
-/* GET exam page. */
-router.get('/index', ExamController.getIndexPage);
+// /* GET exam page. */
+// router.get('/index', ExamController.getIndexPage);
 
-router.get('/*username', UserController.getUserNameById);
+// router.get('/*username', UserController.getUserNameById);
 
-router.get('/:taskindex', ExamController.getTaskPage);
+// router.get('/:taskindex', ExamController.getTaskPage);
 
-router.get('/*tasklist', ExamController.getTaskList);
+// router.get('/*tasklist', ExamController.getTaskList);
 
-router.get('/*favorlist', ExamController.getFavorList);
-
-
-// 收藏状态控制
-router.get('/:taskindex/favor', ExamController.getFavor);
-
-router.post('/:taskindex/favor', ExamController.postFavor);
-
-router.delete('/:taskindex/favor', ExamController.deleteFavor);
+// router.get('/*favorlist', ExamController.getFavorList);
 
 
-// 题目主体信息控制
+// // 收藏状态控制
+// router.get('/:taskindex/favor', ExamController.getFavor);
 
-router.get('/:taskindex/info', ExamController.getInfo);
+// router.post('/:taskindex/favor', ExamController.postFavor);
+
+// router.delete('/:taskindex/favor', ExamController.deleteFavor);
 
 
-router.post('/:taskindex/submit', ExamController.submitTask);
+// // 题目主体信息控制
 
-router.get('/:taskindex/timelimit', ExamController.getTimeLimit);
+// router.get('/:taskindex/info', ExamController.getInfo);
+
+
+// router.post('/:taskindex/submit', ExamController.submitTask);
+
+// router.get('/:taskindex/timelimit', ExamController.getTimeLimit);
 
 
 module.exports = router;

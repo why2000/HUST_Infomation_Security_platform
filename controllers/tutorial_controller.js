@@ -6,225 +6,108 @@ let TutorialLogger = require('../logger').TutorialLogger;
 let TutorialValidator = require('../validators/tutorial_validator');
 let UserLogger = require('../logger').UserLogger;
 let UserValidator = require('../validators/user_validator');
-
+let response = require('../utils/response');
+let Tutorial = require('../models/tutorial_db');
+let Course = require('../models/course_db');
 
 
 exports.getIndexPage = async (req, res, next) => {
-  var page = "tutorial";
-  var session = req.session;
-  var userid = "U201714635";
-  var usertype = "student";
-  var info = {
-    userid: userid,
-    username: "",
-    usertype: usertype
-  };
+    var page = 'tutorial';
 
-  if (!req.session.loginUser) {
-    res.redirect('/');
-  } else {
-    if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
-      page += "_teacher"
-    } else if (await UserValidator.getUserTypeById(req.session.loginUser) == "student") {
-      ;
+    if(UserValidator.getUserTypeById(req.session.loginUser)) {
+        page += '_teacher';
     }
+
     res.render(page);
-  }
 }
 
-exports.getTimeLimit = async (req, res, next) => {
-  var taskindex = req.params.taskindex;
-  if (taskindex == "index") {
-    res.json({
-      result: {
-        timelimit: null
-      }
-    });
-  }
-  var params = {
-    taskindex: taskindex
-  }
-  try {
-    var timelimit = await TutorialValidator.getTimeLimit(params);
-    res.json({
-      result: {
-        timelimit: timelimit
-      }
-    });
-  } catch (err) {
-    TutorialLogger.error(`get time limit error => ${err.stack}`);
-    next(err);
-  }
-
+exports.getTutorialList = async (req, res) => {
+    let cid = req.params.course_id;
+    Tutorial.getTutorialListByCourseID(cid)
+    .then(r => {
+        response(res, r);
+    })
+    .catch(err => {
+        TutorialLogger.error(`getTutorialList error => ${err.stack}`);
+        response(res, 500, 'Server error.');
+    })
 }
 
-exports.getInfo = async (req, res, next) => {
-  var taskindex = req.params.taskindex;
-  var params = {
-    taskindex: taskindex
-  }
-  try {
-    var info = await TutorialValidator.getInfo(params);
-    res.json({
-      result: {
-        info: info
-      }
-    });
-  } catch (err) {
-    TutorialLogger.error(`get info error => ${err.stack}`);
-    next(err);
-  }
-
+exports.getTutorial = async (req, res) => {
+    let cid = req.params.course_id,
+        tid = req.params.tutorial_id;
+    
+    Tutorial.getTutorialByIDs(cid, tid)
+    .then(r => {
+        if(r) {
+            response(res, r);
+        } else {
+            response(res, 404,'Not found.');
+        }
+    })
+    .catch(err => {
+        TutorialLogger.error(`getTutorial error => ${err.stack}`);
+        response(res, 500, 'Server error.');
+    })
 }
 
+exports.saveTutorial = async (req, res) => {
+    if(UserValidator.getUserNameById(req.session.loginUser) == "student") {
+        response(res, 401, 'Permission denied.');
+        return;
+    }
 
+    let cid = req.params.course_id;
+    let title = req.body.title,
+        video = req.body.video,
+        description = req.body.description;
 
-exports.getTaskPage = async (req, res, next) => {
-  var page = "tutorial";
-  var taskindex = req.params.taskindex.toString(); // String
-  var success;
-  var userid = "U201714635";
-  var usertype = "student";
-  var taskindex = req.params.taskindex;
-  var info = {
-    userid: userid,
-    username: "",
-    usertype: usertype
-  };
-  if (req.cookies.teacher) {
-    success = await UserValidator.createUser(info);
-    page += "_teacher"
-  } else if (req.cookies.student) {
-    success = await UserValidator.createUser(info);
-  } else {
-    //这里改成redirect: /
-    // res.redirect("/");
-  }
-  res.render(page);
+    if(!title || !video || !description) {
+        response(res, 400, 'Bad request.');
+        return;
+    }
+    
+    Tutorial.saveTutorial(cid, {
+        'title': title,
+        'video': video,
+        'description': description
+    })
+    .then(r => {
+        if(r) {
+            response(res, {});
+        } else {
+            response(res, 404, 'Not found.');
+        }
+    }
+    )
+    .catch(err => {
+        TutorialLogger.error(`saveTutorial error => ${err.stack}`);
+        response(res, 500, 'Server error.');
+    })
 }
 
-// TaskList
-exports.getTaskList = async (req, res, next) => {
-  var userid = "U201714635";
-  var params = {
-    "userid": userid
-  }
-  try {
-    var tasklist = await TutorialValidator.getTaskList(params);
-    res.json({
-      result: {
-        tasklist: tasklist
-      }
-    });
-  } catch (err) {
-    TutorialLogger.error(`get task list error => ${err.stack}`);
-    next(err);
-  }
+exports.deleteTutorial = async (req, res) => {
+    if(UserValidator.getUserTypeById(req.session.loginUser) == 'student') {
+        response(res, 401, 'Permission denied.');
+        return;
+    }
 
-}
+    let cid = req.params.course_id,
+        tid = req.params.tutorial_id;
 
-
-// FavorList
-exports.getFavorList = async (req, res, next) => {
-  var userid = "U201714635";
-  var params = {
-    "userid": userid
-  }
-  try {
-    var favorlist = await TutorialValidator.getFavorList(params);
-    res.json({
-      result: {
-        favorlist: favorlist
-      }
-    });
-  } catch (err) {
-    TutorialLogger.error(`get favor list error => ${err.stack}`);
-    next(err);
-  }
-}
-
-
-// Favor
-exports.getFavor = async (req, res, next) => {
-  var taskindex = req.params.taskindex;
-  var userid = "U201714635";
-  var params = {
-    "taskindex": taskindex,
-    "userid": userid
-  }
-  try {
-    let favor = await TutorialValidator.getFavor(params);
-    res.json({
-      result: {
-        favor: favor
-      }
-    });
-  } catch (err) {
-    TutorialLogger.error(`get favor error => ${err.stack}`);
-    next(err);
-  }
-
-}
-
-exports.postFavor = async (req, res, next) => {
-  var taskindex = req.params.taskindex;
-  var userid = "U201714635";
-  var params = {
-    "favor": req.body.favor,
-    "taskindex": taskindex,
-    "userid": userid
-  }
-  try {
-    let result = await TutorialValidator.postFavor(params);
-    TutorialLogger.info(`add favor result => ${JSON.stringify(result, null, 2)}`);
-    res.json({
-      "result": result
-    });
-  } catch (err) {
-    TutorialLogger.error(`add favor error => ${err.stack}`);
-    next(err);
-  }
-}
-
-exports.deleteFavor = async (req, res, next) => {
-  var taskindex = req.params.taskindex;
-  var userid = "U201714635";
-  var params = {
-    "favor": req.body.favor,
-    "taskindex": taskindex,
-    "userid": userid
-  }
-  try {
-    let result = await TutorialValidator.deleteFavor(params);
-    TutorialLogger.info(`delete favor result => ${JSON.stringify(result, null, 2)}`);
-    res.json({
-      "result": result
-    });
-  } catch (err) {
-    TutorialLogger.error(`delete favor error => ${err.stack}`);
-    next(err);
-  }
+    Tutorial.deleteTutorial(cid, tid)
+    .then(r => {
+        if(r) {
+            response(res, {});
+        } else {
+            response(res, 404, 'Not found.');
+        }
+    })
+    .catch(err => {
+        TutorialLogger.error(`deleteTutorial error => ${err.stack}`);
+        response(res, 500, 'Server error.');
+    })
 }
 
 
 
-exports.submitTask = async (req, res, next) => {
-  var taskindex = req.params.taskindex;
-  var userid = "U201714635";
-  var params = {
-    "taskindex": taskindex,
-    "userid": userid
-  }
-  try {
-    var taskinfo = await TutorialValidator.getTaskInfo(params);
-    res.json({
-      result: {
-        taskinfo: req.body
-      }
-    });
-  } catch (err) {
-    TutorialLogger.error(`submit task error => ${err.stack}`);
-    next(err);
-  }
-
-}
