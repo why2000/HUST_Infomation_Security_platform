@@ -11,7 +11,7 @@ router.use(middleware.checkLogin);
 
 // root not supported -- redirected
 router.get('/', async (req, res, next) => {
-  res.redirect('/tutorial/index');
+  res.render("course-select");
 });
 
 router.get('/index', TutorialController.getIndexPage);

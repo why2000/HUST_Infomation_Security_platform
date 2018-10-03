@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans">
+<html>
 
 <head>
+
   <meta charset="UTF-8" />
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,7 +14,7 @@
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/public/javascripts/reportupload.js"></script>
+  <script type="text/javascript" src="/public/javascripts/course-select.js"></script>
   <!-- load CSS -->
   <!-- Google web font "Open Sans" -->
   <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
@@ -23,6 +24,7 @@
   <!-- http://kenwheeler.github.io/slick/ -->
   <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
   <!-- https://fontawesome.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
 
@@ -35,15 +37,12 @@
       <div class="headern">
         华中科技大学信息安全实验平台
       </div>
-
       <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
         <div class="logout-icon"></div>
         <span>退出</span>
       </div>
     </div>
   </div>
-
-
   <nav class="main-menu">
     <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
       <img src="/public/images/logo.gif" />
@@ -55,20 +54,13 @@
         <a id="home-page" href="/catalog">
           <i class="fa fa-home fa-lg"></i>
           <span class="nav-text">首页</span>
-
-        </a>
-      </li>
-      <li>
-        <a id="catalog">
-          <i class="fa fa-book fa-lg"></i>
-          <span class="nav-text">课程首页</span>
         </a>
       </li>
       <li class="has-submenu" id="course-list-parent">
         <a>
-          <i class="fa fa-chevron-right fa-lg list-icon" id="course-list-icon"></i>
+          <i class="fa fa-chevron-right fa-lg mlist-icon" id="course-list-icon"></i>
           <span class="nav-text">
-            选择课程
+            其他课程
           </span>
         </a>
         <div class="row pre-scrollable">
@@ -77,24 +69,9 @@
         </div>
       </li>
       <li>
-        <a id='class-to-exam'>
-          <i class="fa fa-tasks fa-lg"></i>
-          <span class="nav-text">转到练习</span>
-
-        </a>
-      </li>
-      <li>
-        <a id='class-to-feedback'>
-          <i class="fa fa-cloud-upload fa-lg"></i>
-          <span class="nav-text">上传报告</span>
-
-        </a>
-      </li>
-      <li>
-        <a id='class-to-courseware'>
-          <i class="fa fa-folder-open fa-lg"></i>
-          <span class="nav-text">下载课件</span>
-
+        <a id='class-to-information'>
+          <i class="fa fa-id-card fa-lg"></i>
+          <span class="nav-text">修改信息</span>
         </a>
       </li>
       <li>
@@ -119,47 +96,12 @@
   <div style="margin-left: 55px;width: 100% ; margin: auto; margin-top: 80px;">
     <div class="container">
       <div class="row">
-        <div class="col-12">
-          <h5 id="big-title" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">上传报告
-            当前课程:无数据</h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4">
-          <div class="card">
-            <div class="card-body">
-              <form id="uploadForm">
-                <small class="form-text text-muted">选择要上传的文件，并点击“上传”按钮。支持上传的文件格式： doc、docx、pdf、txt</small>
-                <br>
-                <input type="file" class="form-control-file" id="upload" placeholder="" aria-describedby="fileHelpId"
-                  style="font-size: 14px" accept=".txt,.doc,.docx,.pdf">
-                <br>
-                <button id="text" type="button" class="btn btn-primary" style="cursor: pointer; float:right;" onclick="javascript:history.back();">返回</button>
-                <div class="btn-group pull-left" id="control-button-group">
-                  <button type="button" class="my-upload-button btn btn-primary">上传</button>
-                </div>
-                </center>
-              </form>
-            </div>
-          </div>
-        </div>
-        <br>
-        <div class="col-8">
-          <div class="card">
-            <div class="card-body">
-              <table class="table" style="margin-top: 10px;" id="result-table">
-                <thead>
-                  <tr>
-                    <th>课程名称</th>
-                    <th>报告名称</th>
-                    <th>报告得分</th>
-                    <th style="text-align: right">教师评价</th>
-                  </tr>
-                </thead>
-                <tbody id="report-tablet">
-                </tbody>
-              </table>
-              <div id="judge-dialog" tittle="教师评价">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择课程</h5>
+          <div class="row pre-scrollable" style="max-height: 80vh;overflow-y: scroll;">
+            <div class="col-12">
+              <div id="course-select" class="list-group">
               </div>
             </div>
           </div>
@@ -167,4 +109,7 @@
       </div>
     </div>
   </div>
+
 </body>
+
+</html>

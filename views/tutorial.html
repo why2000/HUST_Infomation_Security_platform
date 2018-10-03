@@ -10,20 +10,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="google" value="notranslate" />
     <title>华中科技大学信息安全实验平台 - 在线答题</title>
-    <link href="/public/stylesheets/examindex.css" rel="stylesheet" type="text/css" />
-    <link href="/public/stylesheets/examiconfont.css" rel="stylesheet" type="text/css" />
-    <link href="/public/stylesheets/examtest.css" rel="stylesheet" type="text/css" />
-    <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"
-        rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
-    <script src="/public/javascripts/jquery-3.3.1.min.js"></script>
-    <script src="/public/javascripts/tutorial.js"></script>
+
+
+
+    <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
+    <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/public/javascripts/tutorial.js"></script>
     <script src="/public/javascripts/jquery.easy-pie-chart.js"></script>
     <script src="/public/javascripts/jquery.countdown.js"></script>
     <script src="/public/javascripts/flowplayer.js"></script>
     <script src="/public/javascripts/flowplayer.min.js"></script>
-
+    <!-- load CSS -->
+    <link href="/public/stylesheets/examindex.css" rel="stylesheet" type="text/css" />
+    <link href="/public/stylesheets/examiconfont.css" rel="stylesheet" type="text/css" />
+    <link href="/public/stylesheets/examtest.css" rel="stylesheet" type="text/css" />
+    <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
+    <!-- Google web font "Open Sans" -->
+    <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
+    <!-- http://kenwheeler.github.io/slick/ -->
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
 </head>
 
 <body>
@@ -48,10 +59,16 @@
         </div>
         <ul class="parent-menu" , id="parent">
             <li>
-
-                <a id="catalog" href="/catalog">
+                <a id="home-page" href="/catalog">
                     <i class="fa fa-home fa-lg"></i>
                     <span class="nav-text">首页</span>
+
+                </a>
+            </li>
+            <li>
+                <a id="catalog">
+                    <i class="fa fa-book fa-lg"></i>
+                    <span class="nav-text">课程首页</span>
 
                 </a>
             </li>
@@ -59,14 +76,16 @@
                 <a>
                     <i class="fa fa-chevron-right fa-lg list-icon" id="course-list-icon"></i>
                     <span class="nav-text">
-                        其他课程
+                        选择课程
                     </span>
                 </a>
-                <ul id="course-list" class="submenu" style="display: none">
-                </ul>
+                <div class="row pre-scrollable">
+                    <ul id="course-list" class="submenu" style="display: none">
+                    </ul>
+                </div>
             </li>
             <li>
-                <a id='exam-to-class'>
+                <a id='class-to-exam'>
                     <i class="fa fa-tasks fa-lg"></i>
                     <span class="nav-text">转到练习</span>
 
@@ -74,7 +93,7 @@
             </li>
             <li>
                 <a id='class-to-feedback'>
-                    <i class="fa fa-folder-open fa-lg"></i>
+                    <i class="fa fa-cloud-upload fa-lg"></i>
                     <span class="nav-text">上传报告</span>
 
                 </a>
@@ -86,36 +105,14 @@
 
                 </a>
             </li>
-            <li class="has-submenu" id="favor-list-parent">
-                <a>
-                    <i class="fa fa-chevron-right fa-lg list-icon" id="favor-list-icon"></i>
-                    <span class="nav-text">
-                        我的收藏
-                    </span>
-                </a>
-                <ul id="favor-list" class="submenu" style="display: none">
-                </ul>
-            </li>
             <li>
-                <a href="###" class="favor" , id="favor">
-                    <i class="fa fa-star-o fa-lg" id="favor-icon"></i>
-                    <span class="nav-text">
-                        收藏本节
-                    </span>
+                <a id='class-to-logout'>
+                    <i class="fa fa-power-off fa-lg"></i>
+                    <span class="nav-text">退出系统</span>
                 </a>
-            </li>
-            <li class="has-submenu" id="task-list-parent">
-                <a>
-                    <i class="fa fa-chevron-right fa-lg list-icon" id="task-list-icon"></i>
-                    <span class="nav-text">
-                        练习列表
-                    </span>
-                </a>
-                <ul id="task-list" class="submenu" style="display: none">
-                </ul>
             </li>
         </ul>
-        <ul class="back">
+        <ul id="sidebar-back" class="back">
             <li>
                 <a href="javascript:history.go(-1);">
                     <i class="fa fa-chevron-left fa-lg"></i>
@@ -127,28 +124,7 @@
         </ul>
     </nav>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="main" style="clear: both">
+    <div cid="main-viedo" lass="main" style="clear: both">
         <div class="index-main">
             <div layoutid="onecolumn" class="main_content" style="margin-left: 15% !important;">
                 <div class="foo">

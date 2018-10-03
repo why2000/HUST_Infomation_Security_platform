@@ -36,44 +36,85 @@
 </head>
 
 <body>
-    <div class="header">
-        <div class="headerb">
-          <div class="top-logo" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
-          <div class="headern">
-            华中科技大学信息安全实验平台
-          </div>
-    
-          <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
-            <div class="logout-icon"></div>
-            <span>退出</span>
-          </div>
-        </div>
+  <div class="header">
+    <div class="headerb">
+      <div class="top-logo" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
+      <div class="headern">
+        华中科技大学信息安全实验平台
       </div>
+
+      <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
+        <div class="logout-icon"></div>
+        <span>退出</span>
+      </div>
+    </div>
+  </div>
   <br>
 
-  <div style="width: 1200px ; margin: auto; margin-top: 80px;">
+  <div class="container" style="margin-top:80px">
     <div class="row">
       <div class="col-12">
-        <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">教师评分 - 学生</h5>
+        <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">教师评分</h5>
+        <p>先选择课程，然后选择对应的学生，点击下载按钮可以下载该名学生的报告</p>
       </div>
     </div>
     <div class="row">
-      <div class="col-12">
+      <div class="col-4">
+
         <div class="card">
           <div class="card-body">
-            <small id="student" class="form-text text-muted" style="color: black!important;">当前评价学生:</small>
-            <br />
-            <form>
-              <div class="form-group">
-                <label style="color:black; font-size:14px;">分数</label>
-                <input class="form-control" type="number" style="background-color: white; border:#ced4da solid 1px; color:black" id="inputScore" placeholder="请输入0-100的数字" value=''>
+            <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择学生</h5>
+            <div>
+              <div class="row pre-scrollable">
+                <div class="col-12">
+                  <div id="student-select" class="list-group list-group-flush" style="font-size:12px">
+                  </div>
+                </div>
               </div>
-              <div class="form-group">
-                <label style="color:black; font-size:14px;">评价</label>
-                <textarea  class="form-control" rows="10" style="background-color: white; border:#ced4da solid 1px; color:black;" id="inputText"></textarea>
-              </div>
-              <button type="button" class="btn btn-primary" id='back' onclick="javascript:history.back()" style="float: left">返回</button><button type="button" class="btn btn-primary" id='submit' style="float: right">提交</button>
-              </form>
             </div>
+          </div>
         </div>
+        <br>
+        <div class="card">
+          <div class="card-body">
+            <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择报告</h5>
+            <div class="row pre-scrollable">
+              <div class="col-12">
+                <div id="report-select" class="list-group list-group-flush" style="font-size:12px">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="card">
+          <div class="card-body">
+            <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">评价内容</h5>
+            <div class="card">
+              <div class="card-body">
+                <form>
+                  <div class="form-group">
+                    <label style="color:black; font-size:14px;">分数</label>
+                    <input class="form-control" type="number" style="background-color: white; border:#ced4da solid 1px; color:black"
+                      id="inputScore" placeholder="请输入0-100的数字" value=''>
+                  </div>
+                  <div class="form-group">
+                    <label style="color:black; font-size:14px;">评价</label>
+                    <textarea class="form-control" rows="10 " style="background-color: white; border:#ced4da solid 1px; color:black;"
+                      id="inputText"></textarea>
+                  </div>
+                  <button type="button" class="btn btn-primary" id='back' onclick="javascript:history.back()" style="float: left">返回</button>
+                  <div class="btn-group pull-right">
+                    <button type="button" class="my-download-button btn btn-primary" disabled="">下载报告</button>
+                    <button type="button" class="my-upload-button btn btn-primary" id='submit'>提交</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>

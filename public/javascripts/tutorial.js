@@ -1,21 +1,15 @@
 'use strict';
 
 let classindex;
-let favor;
 let username;
-let tasklist;
-let favorlist;
 let courselist;
-// let timelimit = '0:00:05';
-let timelimit;
 let info;
-let taskinfo;
 let current_url_valid = window.location.protocol + window.location.pathname;
-
 
 /* General */
 
-function creatURL(URLarray) {
+function
+    creatURL(URLarray) {
     var length;
     if (URLarray) {
         length = URLarray.length
@@ -56,47 +50,44 @@ function RESTful(xmlhttp, method, url, queryString, async, fnc) { //获取JSON�
 
 /* TopBar*/
 
-function Logout(callback) {
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'logout']), null, true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                alert("退出成功！");
-                window.location.href = '/';
-                if (callback) {
-                    callback();
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-            }
-        }
-    });
+function Logout() {
+    $.get({
+        url: '/tutorial/logout'
+    }).done(function () {
+        alert("退出成功！");
+        window.location.href = '/';
+    })
 }
 
 /* SideBar */
 
 $(function sideBarInit() {
     classindex = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1, window.location.pathname.length);
-    $('#exam-to-class').attr('href', `/exam/${classindex}`);
+    $('#class-to-exam').attr('href', `/exam/${classindex}`);
+    $('#catalog').attr('href', `/tutorial/${classindex}`);
     $('#class-to-feedback').attr('href', `/feedback/${classindex}/class/null`);
-    $('#class-to-courseware').attr('href', `/courseware`);
+    $('#class-to-courseware').attr('href', `/courseware/course/${classindex}`);
 
     $(".has-submenu").hover(function () {
         var height;
         var current_list = $(this).find('.submenu').attr("id");
         current_list = current_list.split('-').join('');
-        console.log(current_list);
         if (current_list != null && current_list != undefined) {
-            console.log(eval(current_list))
-            height = eval(current_list).length * 41;
+            if (eval(current_list) <= 8) {
+                height = eval(current_list).length * 41;
+            } else {
+                height = 328;
+            }
         } else {
             height = 0;
         }
+        $('#sidebar-back').css('display', 'none');
         $(this).find('.submenu').stop().css("height", `${height}px`).slideDown(300);
         $(this).find(".list-icon").addClass("fa-rotate-90").css("width", "30px").css("transform", "translateY(-12px) rotate(90deg)");
     }, function () {
         $(this).find(".submenu").stop().slideUp(300);
         $(this).find(".list-icon").removeClass("fa-rotate-90").css("width", "55px").css("height", "36px").css("transform", "");
+        $('#sidebar-back').css('display', '');
     });
     $(".main-menu").hover(function () {
         $(".settings").stop().animate({
@@ -111,10 +102,6 @@ $(function sideBarInit() {
     });
     getCourseList();
     getUserName();
-    getFavor();
-    getTaskList();
-    getFavorList();
-    onFavorClicked();
 });
 
 function getCourseList(callback) {
@@ -127,215 +114,29 @@ function getCourseList(callback) {
         if (courselist) {
             length = courselist.length;
         }
-        console.log(courselist);
         for (var i = 0; i < length; i++) {
 
-            $('#course-list').append(`<li><a href="/tutorial/${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small"></span></a></li>`);
-        };
-        for (var i = 0; i < length; i++) {
-            let single = courselist[i];
-            let name = single.name;
-            $(`#course-list li:nth-child(${courselist[i]._id}) a span`).text(name);
+            $('#course-list').append(`<li><a href="/tutorial/${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
         };
     });
 }
 
-function getUserName(callback) {
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'username']), null, true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                // alert(xmlhttp.responseText);
-                username = JSON.parse(xmlhttp.responseText).result.username;
-                // alert(tasklist);
-                // setTaskList(tasklist);
-                setUserName();
-                if (callback) {
-                    callback();
+function getUserName() {
+    $.get({
+        url: '/tutorial/username'
+    }).done(result => {
+        username = result.username;
+        setUserName();
 
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-            }
-        }
-    });
+    })
 }
 
 function setUserName() {
     if (!username) {
-        username = "伍瀚缘testingtestingtesting";
+        username = "未获取数据";
     }
     var hello = "欢迎！" + username;
     $(".settings").text(hello);
-}
-
-function onFavorClicked() {
-    $("#favor").click(function () {
-        // alert(favor);
-        if (!isIndex())
-            if (!favor) {
-                postFavor();
-            } else {
-                deleteFavor();
-            }
-    });
-}
-
-// TaskList
-function getTaskList(callback) {
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'tasklist']), null, true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                // alert(xmlhttp.responseText);
-                tasklist = JSON.parse(xmlhttp.responseText).result.tasklist;
-                // alert(tasklist);
-                // setTaskList(tasklist);
-                setTaskList();
-                if (callback) {
-                    callback();
-
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-            }
-        }
-    });
-}
-
-function setTaskList() {
-    // alert(tasklist);
-    $('#task-list').empty();
-    var length = 0;
-    if (tasklist) {
-        length = tasklist.length;
-    }
-    for (var i = 0; i < length; i++) {
-
-        $('#task-list').append(`<li><a href="/tutorial/${i + 1}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small"></span></a></li>`);
-    };
-    for (var i = 0; i < length; i++) {
-        var single = tasklist[i];
-        var singleindex = single.index;
-        var singlename = single.name;
-        $(`#task-list li:nth-child(${i + 1}) a span`).text(singlename);
-    };
-}
-
-// FavorList
-function getFavorList(callback) {
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'favorlist']), null, true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                // alert(xmlhttp.responseText);
-                favorlist = JSON.parse(xmlhttp.responseText).result.favorlist;
-                // alert(favorlist);
-                // setTaskList(tasklist);
-                setFavorList()
-                if (callback) {
-                    callback();
-
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-            }
-        }
-    });
-}
-
-function setFavorList() {
-    $('#favor-list').empty();
-    var length = 0;
-    if (favorlist) {
-        length = favorlist.length;
-    }
-    // alert(length);
-    // alert(favorlist);
-    for (var i = 0; i < length; i++) {
-        var single = favorlist[i];
-        var singleindex = single.index;
-        var singlename = single.name;
-        $('#favor-list').append(`<li><a href="/tutorial/${singleindex}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${singlename}</span></a></li>`);
-    };
-}
-
-// Favor
-function getFavor(callback) {
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'favor']), null, true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                favor = JSON.parse(xmlhttp.responseText).result.favor;
-                // alert(favorstatus);
-                if (favor) {
-                    $("#favor-icon").css("color", "#3E9AF2");
-                    $("#favor-icon").removeClass("fa-star-o");
-                    $("#favor-icon").addClass("fa-star");
-                } else {
-                    $("#favor-icon").css("color", "");
-                    $("#favor-icon").removeClass("fa-star");
-                    $("#favor-icon").addClass("fa-star-o");
-                }
-                if (callback) {
-                    callback();
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-            }
-        }
-    });
-}
-
-function postFavor(callback) {
-    var data = {
-        favor: favor
-    };
-    // alert(window.location.href)
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "POST", creatURL([current_url_valid, 'favor']), JSON.stringify(data), true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                // console.log("post success" + xmlhttp.status);
-                $("#favor-icon").css("color", "#3E9AF2");
-                $("#favor-icon").removeClass("fa-star-o");
-                $("#favor-icon").addClass("fa-star");
-                favor = true;
-                getFavorList();
-                if (callback) {
-                    callback();
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-                favor = false;
-            }
-        }
-    });
-}
-
-function deleteFavor(callback) {
-    var data = {
-        favor: favor
-    };
-    var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "DELETE", creatURL([current_url_valid, 'favor']), JSON.stringify(data), true, function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                // console.log("delete success" + xmlhttp.status);
-                $("#favor-icon").css("color", "");
-                $("#favor-icon").removeClass("fa-star");
-                $("#favor-icon").addClass("fa-star-o");
-                favor = false;
-                getFavorList();
-                if (callback) {
-                    callback();
-                }
-            } else {
-                console.log("发生错误" + xmlhttp.status);
-                favor = true;
-            }
-        }
-    });
 }
 
 /* MainPart */
@@ -358,8 +159,10 @@ function isIndex() {
 
 function getInfo(callback) {
     if (isIndex()) {
+        alert('1');
         $('.test-main').remove();
     } else {
+        alert('2');
         $('.notice_mess_bar').remove();
         $('#pim_content').css('width', '100%').css('margin', '0px');
     }
@@ -375,6 +178,7 @@ function getInfo(callback) {
                     alert('课程信息不存在');
                     //window.location.href = '../catalog';
                 }
+
                 if (isIndex()) {
                     setInfo();
                 } else {
@@ -398,89 +202,6 @@ function setVideo() {
 }
 
 function setInfo() {
-
-    // Testing
-    function foo(pass) {
-        /* info = {
-            type: "exam-info",
-            taskindex: "1",
-            content: [
-                {
-                    type: "text",
-                    text: "因主校区东边泵房升级改造施工，定于8月3日23:30——8月4日2:00停水，主校区大部分区域停水（喻园小区、西边高层小区、紫菘学生公寓与紫菘教师小区不受影响），请各单位和各住户做好储水备用，早完工，早送水，不便之处敬请谅解。",
-                    indents: 0,
-                },
-                {
-                    type: "text",
-                    text: "",
-                    indents: 0,
-                },
-                {
-                    type: "sc",
-                    text: "测试单选",
-                    indents: 0,
-                    options: [
-                        {
-                            src: "",
-                            text: "第一个答案测试",
-                            choice: "A"
-                        },
-                        {
-                            src: "",
-                            text: "第二个答案测试",
-                            choice: "B"
-                        }
-                    ]
-                },
-                {
-                    type: "text",
-                    text: "后勤集团建安总公司",
-                    indents: 15,
-                },
-                {
-                    type: "text",
-                    text: "2018年8月3日",
-                    indents: 15,
-                },
-                {
-                    type: "mc",
-                    text: "测试多选题如果很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长",
-                    indents: 0,
-                    options:[
-                        {
-                            text: "第一个多选项",
-                            choice: "A"
-                        },
-                        {
-                            text: "第二个",
-                            choice: "B"
-                        }
-                    ]
-                },
-                {
-                    type: "img",
-                    src: "",
-                },
-                {
-                    type: "fb",
-                    text: "这是一道_____题",
-                    indents: 0,
-                    options: [
-                        {
-                            src: "",
-                            text: "",
-                            choice: "1"
-                        }
-                    ]
-                }
-            ],
-            title: '主校区短时停水通知',
-            author: 'why',
-            category: '通知',
-            time: '2018-08-03 15:52',
-            hot: '111'
-        } */
-    }
     var title = info.title;
     var content = info.content;
     var author = '发布者：' + info.author;

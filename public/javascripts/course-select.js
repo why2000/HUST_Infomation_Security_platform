@@ -1,51 +1,40 @@
 'use strict'
 
-let coursewareFileList;
+let classindex;
+let username;
 let courselist;
+
 let current_url_valid = window.location.protocol + window.location.pathname;
-let courseNum = new Set();
-let courseid
 
 $(document).ready(function () {
-  let localURLArgs = location.href.split('/');
-  courseid = localURLArgs[localURLArgs.length - 1];
-  sideBarInit();
   $.get({
-    url: '/courseware/list/' + courseid,
-    success: (data) => {
-      coursewareFileList = data.data;
-      let selectedCourse = coursewareFileList.filter(e => {
-        return e._id == courseid;
-      })
-      if (selectedCourse[0]) {
-        render(coursewareFileList, selectedCourse[0].name);
-      } else {
-        $('#courseware-list').empty().append('<li class="list-group-item" >暂无课件</li>');
-      }
+    url: '/course',
+  }).done(result => {
+    let courseList = result.data;
+    let html = "";
+    $('#course-lselectist').empty();
+    for (let n = 0, dLen = courseList.length; n < dLen; n++) {
+      html += '<a class="list-group-item" href="/tutorial/' + courseList[n]._id + '">'
+        + "  课程名称: " + courseList[n].name
+        + '</li >';
     }
-  })
-})
-  .on('click', '.my-download-button', async function () {
-    let nid = $(this).attr('nid');
-    let file_id = coursewareFileList[nid].file_id;
-    let url = 'http://' + window.location.host + '/file/' + file_id;
-    let $form = $('<form method="GET"></form>');
-    $form.attr('action', url);
-    $form.appendTo($('body'));
-    $form.submit();
+    $('#course-select').append(html);
   })
 
-function sideBarInit() {
-  $('#class-to-exam').attr('href', `/exam/${courseid}`);
-  $('#class-to-feedback').attr('href', `/feedback/${courseid}/class/null`);
-  $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
+})
+
+$(function sideBarInit() {
+  classindex = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1, window.location.pathname.length);
+  $('#class-to-exam').attr('href', `/exam/${classindex}`);
+  $('#class-to-feedback').attr('href', `/feedback/${classindex}/class/null`);
+  $('#class-to-courseware').attr('href', `/courseware/course/${classindex}`);
   $('#class-to-information').attr('href', `/information`);
-  $('#catalog').attr('href', `/tutorial/${courseid}`);
 
   $(".has-submenu").hover(function () {
     var height;
     var current_list = $(this).find('.submenu').attr("id");
     current_list = current_list.split('-').join('');
+    console.log(current_list);
     if (current_list != null && current_list != undefined) {
       console.log(eval(current_list))
       height = eval(current_list).length * 41;
@@ -72,32 +61,10 @@ function sideBarInit() {
     // $(".settings").css("visibility", "hidden");
   });
   getCourseList();
-  //getUserName();
-}
+  getUserName();
+});
 
-async function render(coursewareFileList, courseName) {
-  let html = "";
-  for (let n = 0, dLen = coursewareFileList.length; n < dLen; n++) {
-    html += '<li class="list-group-item" >'
-      + "  课程名称: " + courseName + "  课件名称: " + coursewareFileList[n].file_name
-    html += `<button type="button" class="my-download-button btn btn-primary pull-right" nid='${n}'>下载</button>`
-      + '</li >';
-  }
-  $('#courseware-list').empty().append(html);
-}
-
-/* TopBar*/
-
-function Logout() {
-  $.get({
-    url: '/tutorial/logout'
-  }).done(function () {
-    alert("退出成功！");
-    window.location.href = '/';
-  })
-}
-
-function getCourseList(callback) {
+function getCourseList() {
   $.get({
     url: '/course',
   }).done(result => {
@@ -107,11 +74,21 @@ function getCourseList(callback) {
     if (courselist) {
       length = courselist.length;
     }
+    console.log(courselist);
     for (var i = 0; i < length; i++) {
 
       $('#course-list').append(`<li><a href="/tutorial/${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
     };
   });
+}
+
+function logout() {
+  $.get({
+    url: '/tutorial/logout'
+  }).done(function () {
+    alert("退出成功！");
+    window.location.href = '/';
+  })
 }
 
 function getUserName() {
@@ -121,4 +98,12 @@ function getUserName() {
     username = result.username;
     setUserName();
   })
+}
+
+function setUserName() {
+  if (!username) {
+    username = "数据获取失败";
+  }
+  var hello = "欢迎！" + username;
+  $(".settings").text(hello);
 }
