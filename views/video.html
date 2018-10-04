@@ -16,15 +16,12 @@
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/public/javascripts/video-play.js"></script>
+  <script type="text/javascript" src="/public/javascripts/video.js"></script>
   <script src="/public/javascripts/jquery.easy-pie-chart.js"></script>
   <script src="/public/javascripts/jquery.countdown.js"></script>
   <script src="/public/javascripts/flowplayer.js"></script>
   <script src="/public/javascripts/flowplayer.min.js"></script>
   <!-- load CSS -->
-  <link href="/public/stylesheets/examindex.css" rel="stylesheet" type="text/css" />
-  <link href="/public/stylesheets/examiconfont.css" rel="stylesheet" type="text/css" />
-  <link href="/public/stylesheets/examtest.css" rel="stylesheet" type="text/css" />
   <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <!-- Google web font "Open Sans" -->
   <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
@@ -32,7 +29,7 @@
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
   <!-- http://kenwheeler.github.io/slick/ -->
-  <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+  <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
   <!-- https://fontawesome.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
 </head>
@@ -51,6 +48,7 @@
       </div>
     </div>
   </div>
+
   <nav class="main-menu">
     <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
       <img src="/public/images/logo.gif" />
@@ -62,14 +60,12 @@
         <a id="home-page" href="/catalog">
           <i class="fa fa-home fa-lg"></i>
           <span class="nav-text">首页</span>
-
         </a>
       </li>
       <li>
         <a id="catalog">
           <i class="fa fa-book fa-lg"></i>
           <span class="nav-text">课程首页</span>
-
         </a>
       </li>
       <li class="has-submenu" id="course-list-parent">
@@ -85,24 +81,27 @@
         </div>
       </li>
       <li>
+        <a id='class-to-video'>
+          <i class="fa fa-film fa-lg"></i>
+          <span class="nav-text">观看视频</span>
+        </a>
+      </li>
+      <li>
         <a id='class-to-exam'>
           <i class="fa fa-tasks fa-lg"></i>
           <span class="nav-text">转到练习</span>
-
         </a>
       </li>
       <li>
         <a id='class-to-feedback'>
-          <i class="fa fa-cloud-upload fa-lg"></i>
+          <i class="fa fa-cloud-upload-alt fa-lg"></i>
           <span class="nav-text">上传报告</span>
-
         </a>
       </li>
       <li>
         <a id='class-to-courseware'>
           <i class="fa fa-folder-open fa-lg"></i>
           <span class="nav-text">下载课件</span>
-
         </a>
       </li>
       <li>
@@ -124,21 +123,54 @@
     </ul>
   </nav>
 
-  <div cid="main-viedo" lass="main" style="clear: both">
-    <div class="index-main">
-      <div layoutid="onecolumn" class="main_content" style="margin-left: 15% !important;">
-        <div class="foo">
-          <div id="pimShowWidget" widget_id="pimShowWidget" class="widget" style="visibility: visible;">
-            <div id="pimShowWidget-content" class="widget-content">
-              <div class="info" id="index-info" style="margin-left: 15% !important;">
-                <div class="depart_content_02">
-                  <div class="audit_notice_content">
-                    <span class="notice_title_01 audit_notice_span" style="padding-bottom: 16px;"></span>
-                    <div class="notice_content_01" id="pim_content">
-                      <form>
-                        <p style="text-indent: 2em;" dir="ltr">
-                        </p>
-                      </form>
+  <div style="width: 100% ; margin: auto; margin-top: 80px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h5 id="big-title" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">观看视频
+            当前课程:无数据</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择视频</h5>
+              <div>
+                <div class="row pre-scrollable">
+                  <div class="col-12">
+                    <div id="video-select" class="list-group list-group-flush" style="font-size:12px">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-9">
+          <div class="card">
+            <div class="card-body">
+              <div class="main" style="clear: both">
+                <div class="index-main">
+                  <div layoutid="onecolumn" class="main_content" style="margin-left: 15% !important;">
+                    <div class="foo">
+                      <div id="pimShowWidget" widget_id="pimShowWidget" class="widget" style="visibility: visible;">
+                        <div id="pimShowWidget-content" class="widget-content">
+                          <div class="info" id="index-info" style="margin-left: 15% !important;">
+                            <div class="depart_content_02">
+                              <div class="audit_notice_content">
+                                <span class="notice_title_01 audit_notice_span" style="padding-bottom: 16px;"></span>
+                                <div class="notice_content_01" id="pim_content">
+                                  <form>
+                                    <p style="text-indent: 2em;" dir="ltr">
+                                    </p>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -149,7 +181,6 @@
       </div>
     </div>
   </div>
-
 </body>
 
 </html>

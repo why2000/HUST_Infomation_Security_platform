@@ -15,6 +15,7 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/index', TutorialController.getIndexPage);
+router.get('/video', TutorialController.getVideoPage);
 
 router.get('/:course_id', TutorialController.getTutorialList)
 router.post('/:course_id', )

@@ -13,7 +13,7 @@ $(document).ready(function () {
   $('#class-to-feedback').attr('href', `/feedback/${courseid}/class/null`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
   $('#class-to-information').attr('href', `/information`);
-  $('#catalog').attr('href', `/tutorial/${courseid}`);
+  $('#catalog').attr('href', `/tutorial/index#${courseid}`);
 
   $(".has-submenu").hover(function () {
     var height;
@@ -104,8 +104,8 @@ function getCourseList() {
     });
     classname = selectedCourse[0].name;
     setClassName();
-    for (let n = 0; n < courselist.length; i++) {
-      $('#course-list').append(`<li><a href="/tutorial/${courselist[n]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[n].name}</span></a></li>`);
+    for (let n = 0; n < courselist.length; n++) {
+      $('#course-list').append(`<li><a href="/tutorial/index#${courselist[n]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[n].name}</span></a></li>`);
     };
   });
 }

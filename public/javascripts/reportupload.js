@@ -107,7 +107,7 @@ function sideBarInit() {
   $('#class-to-feedback').attr('href', `/feedback/${courseid}/class/null`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
   $('#class-to-information').attr('href', `/information`);
-  $('#catalog').attr('href', `/tutorial/${courseid}`);
+  $('#catalog').attr('href', `/tutorial/index#${courseid}`);
 
   $(".has-submenu").hover(function () {
     var height;
@@ -239,7 +239,7 @@ function getCourseList() {
     console.log(courselist);
     for (var i = 0; i < length; i++) {
 
-      $('#course-list').append(`<li><a href="/tutorial/${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
+      $('#course-list').append(`<li><a href="/tutorial/index#${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
     };
   });
 }
