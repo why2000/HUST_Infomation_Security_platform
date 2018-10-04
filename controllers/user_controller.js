@@ -32,7 +32,6 @@ exports.postLoginInfo = async (req, res, next) => {
                     ret_code: 0,
                     ret_msg: '登录成功'
                 });
-                // res.redirect('/catalog');
             }
         });
     }
@@ -55,7 +54,7 @@ exports.getUserNameById = async (req, res, next) => {
             }
         });
     } catch (err) {
-        TutorialLogger.error(`get username error => ${err.stack}`);
+        UserLogger.error(`get username error => ${err.stack}`);
         next(err);
     }
 }
@@ -70,7 +69,7 @@ exports.getUserNowUserName = async (req, res, next) => {
             }
         });
     } catch (err) {
-        TutorialLogger.error(`get username error => ${err.stack}`);
+        UserLogger.error(`get username error => ${err.stack}`);
         next(err);
     }
 }
@@ -85,7 +84,7 @@ exports.getUserTypeById = async (req, res, next) => {
             }
         });
     } catch (err) {
-        TutorialLogger.error(`get usertype error => ${err.stack}`);
+        UserLogger.error(`get usertype error => ${err.stack}`);
         next(err);
     }
 }
