@@ -12,7 +12,6 @@
   <title>华中科技大学信息安全实验平台 - 在线答题</title>
 
 
-
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
@@ -29,7 +28,7 @@
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
   <!-- http://kenwheeler.github.io/slick/ -->
-  <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+  <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
   <!-- https://fontawesome.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
 </head>
@@ -81,6 +80,12 @@
         </div>
       </li>
       <li>
+        <a id='class-to-video'>
+          <i class="fa fa-film fa-lg"></i>
+          <span class="nav-text">观看视频</span>
+        </a>
+      </li>
+      <li>
         <a id='class-to-exam'>
           <i class="fa fa-tasks fa-lg"></i>
           <span class="nav-text">转到练习</span>
@@ -88,7 +93,7 @@
       </li>
       <li>
         <a id='class-to-feedback'>
-          <i class="fa fa-cloud-upload fa-lg"></i>
+          <i class="fa fa-cloud-upload-alt fa-lg"></i>
           <span class="nav-text">上传报告</span>
         </a>
       </li>
@@ -128,6 +133,36 @@
               <br>
               <p id="class-description" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课程描述：暂无数据</p>
               <div id="teacher-list">
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <a id="video-a">
+                    <button type="button" id="video-button" class="btn btn-outline-primary btn-block btn-lg">观看视频</button>
+                  </a>
+                </div>
+                <div class="col-6">
+                  <a id="courseware-a">
+                    <button type="button" id="courseware-button" class="btn btn-outline-success btn-block btn-lg">下载课件</button>
+                  </a>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-6">
+                  <a id="report-a">
+                    <button type="button" id="report-button" class="btn btn-outline-info btn-block btn-lg">上传报告</button>
+                  </a>
+                </div>
+                <div class="col-6">
+                  <a id="exam-a">
+                    <button type="button" id="exam-button" class="btn btn-outline-warning btn-block btn-lg">进行练习</button>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

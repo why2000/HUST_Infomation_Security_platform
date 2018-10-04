@@ -24,7 +24,7 @@ $(document).ready(function () {
   videofile = localURLArgs[localURLArgs.length - 1];
   courseID = localURLArgs[localURLArgs.length - 2];
   $('#class-to-exam').attr('href', `/exam/${courseID}`);
-  $('#catalog').attr('href', `/tutorial/${courseID}`);
+  $('#catalog').attr('href', `/tutorial/index#${courseID}`);
   $('#class-to-feedback').attr('href', `/feedback/${courseID}/class/null`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseID}`);
 
@@ -76,7 +76,7 @@ function getCourseList() {
       length = courselist.length;
     }
     for (var i = 0; i < length; i++) {
-      $('#course-list').append(`<li><a href="/tutorial/${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
+      $('#course-list').append(`<li><a href="/tutorial/index#${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
     };
   });
 }

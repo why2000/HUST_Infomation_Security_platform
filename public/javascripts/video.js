@@ -3,24 +3,22 @@
 let courseID;
 let username;
 let courselist;
-let Videolist;
+let videolist;
 let courseName;
 
 $(document).ready(function () {
-  courseID = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1, window.location.pathname.length);
+  courseID = window.location.href.substring(window.location.href.lastIndexOf('#') + 1, window.location.href.length);
   $('#class-to-exam').attr('href', `/exam/${courseID}`);
   $('#class-to-feedback').attr('href', `/feedback/${courseID}/class/null`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseID}`);
-  $('#class-to-information').attr('href', `/information`);
-
+  $('#catalog').attr('href', `/tutorial/index#${courseID}`);
+  $('#class-to-video').attr('href', `/tutorial/video#${courseID}`);
 
   $(".has-submenu").hover(function () {
     var height;
     var current_list = $(this).find('.submenu').attr("id");
     current_list = current_list.split('-').join('');
-    console.log(current_list);
     if (current_list != null && current_list != undefined) {
-      console.log(eval(current_list))
       height = eval(current_list).length * 41;
     } else {
       height = 0;
@@ -47,20 +45,26 @@ $(document).ready(function () {
   getCourseList();
   getVideoList();
   getUserName();
+}).on('click', '.video-select-item', function () {
+  $('.video-select-item').removeClass('list-group-item-success');
+  $(this).addClass('list-group-item-success');
+
+  let vid = $(this).attr('vid');
+  setVideo(vid);
 })
 
 function getVideoList() {
   $.get({
     // todo
-    url: '/course/video' + courseID
+    url: `/tutorial/` + courseID
   }).done(result => {
     videolist = result.data;
     let html = '';
     for (let n = 0; n < videolist.length; n++) {
       // todo
-      html += '<a class="list-group-item" href="/video/' + courseID + videolist[n]._id + '">'
-        + "  视频名称: " + videolist[n].name
-        + '</li >';
+      html += '<a class="list-group-item list-group-item-action video-select-item" vid="' + videolist[n]._id + '">'
+        + "  视频名称: " + videolist[n].title
+        + '</a>';
     }
     $('#video-select').empty().append(html);
   })
@@ -71,8 +75,9 @@ function getCourseList() {
     url: '/course',
   }).done(result => {
     courselist = result.data;
+    $('#course-list').empty();
     for (let i = 0; i < courselist.length; i++) {
-      $('#course-list').empty().append(`<li><a href="/tutorial/${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
+      $('#course-list').append(`<li><a href="/tutorial/index#${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
     };
     let selectedCourse = courselist.filter(e => {
       return e._id == courseID;
@@ -93,14 +98,15 @@ function logout() {
 
 function getUserName() {
   $.get({
-    url: '/tutorial/username'
+    url: '/user/username'
   }).done(result => {
-    username = result.username;
+    username = result.result.username;
     setUserName();
   })
 }
 
 function setUserName() {
+
   if (!username) {
     username = "数据获取失败";
   }
@@ -112,4 +118,11 @@ function setCourseName() {
   if (courseName) {
     $('#big-title').text('上传报告 当前课程: ' + courseName);
   }
+}
+
+function setVideo(videofile) {
+  $('#pim_content').css('width', '100%').css('margin', '0px');
+  $('.main_content .notice_title_01').empty().text('正在播放');
+  // todo
+  $('.main_content .notice_content_01').empty().append(`<div class="flowplayer"><video controls="controls" width="100%"><source type="video/mp4" src='/public/videos/${videofile}'></video></div>`)
 }
