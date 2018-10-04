@@ -11,8 +11,10 @@ $(document).ready(function () {
   $('#class-to-exam').attr('href', `/exam/${courseID}`);
   $('#class-to-feedback').attr('href', `/feedback/${courseID}/class/null`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseID}`);
-  $('#catalog').attr('href', `/tutorial/index#${courseID}`);
+  $('#class-home-page').attr('href', `/tutorial/index#${courseID}`);
   $('#class-to-video').attr('href', `/tutorial/video#${courseID}`);
+  $('#class-to-logout').attr('href',`/login/logout`);
+
 
   $(".has-submenu").hover(function () {
     var height;
@@ -50,18 +52,21 @@ $(document).ready(function () {
   $(this).addClass('list-group-item-success');
 
   let vid = $(this).attr('vid');
+  $.get({
+    url: `/tutorial/${courseID}/${vid}`
+  }).done(result => {
+    $('#video-description').text(result.data.description);
+  })
   setVideo(vid);
 })
 
 function getVideoList() {
   $.get({
-    // todo
     url: `/tutorial/` + courseID
   }).done(result => {
     videolist = result.data;
     let html = '';
     for (let n = 0; n < videolist.length; n++) {
-      // todo
       html += '<a class="list-group-item list-group-item-action video-select-item" vid="' + videolist[n]._id + '">'
         + "  视频名称: " + videolist[n].title
         + '</a>';
@@ -116,13 +121,10 @@ function setUserName() {
 
 function setCourseName() {
   if (courseName) {
-    $('#big-title').text('上传报告 当前课程: ' + courseName);
+    $('#big-title').text('观看视频 当前课程: ' + courseName);
   }
 }
 
 function setVideo(videofile) {
-  $('#pim_content').css('width', '100%').css('margin', '0px');
-  $('.main_content .notice_title_01').empty().text('正在播放');
-  // todo
-  $('.main_content .notice_content_01').empty().append(`<div class="flowplayer"><video controls="controls" width="100%"><source type="video/mp4" src='/public/videos/${videofile}'></video></div>`)
+  $('.video-body').empty().append(`<div class="flowplayer"><video controls="controls" width="100%"><source type="video/mp4" src='/public/videos/${videofile}'></video></div>`)
 }

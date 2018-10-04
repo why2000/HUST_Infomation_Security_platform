@@ -21,9 +21,10 @@ $(function sideBarInit() {
   courseid = window.location.href.substring(window.location.href.lastIndexOf('#') + 1, window.location.href.length);
   $('#class-to-exam').attr('href', `/exam/${courseid}`);
   $('#class-to-video').attr('href', `/tutorial/video#${courseid}`);
-  $('#catalog').attr('href', `/tutorial/index#${courseid}`);
+  $('#class-home-page').attr('href', `/tutorial/index#${courseid}`);
   $('#class-to-feedback').attr('href', `/feedback/${courseid}/class/null`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
+  $('#class-to-logout').attr('href',`/login/logout`);
 
   $(".has-submenu").hover(function () {
     var height;

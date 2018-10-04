@@ -106,8 +106,10 @@ function sideBarInit() {
   $('#class-to-exam').attr('href', `/exam/${courseid}`);
   $('#class-to-feedback').attr('href', `/feedback/${courseid}/class/null`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
-  $('#class-to-information').attr('href', `/information`);
-  $('#catalog').attr('href', `/tutorial/index#${courseid}`);
+  $('#class-to-video').attr('href', `/tutorial/video#${courseid}`);
+  $('#class-home-page').attr('href', `/tutorial/index#${courseid}`);
+  $('#class-to-logout').attr('href',`/login/logout`);
+
 
   $(".has-submenu").hover(function () {
     var height;
