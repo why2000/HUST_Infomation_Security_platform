@@ -8,21 +8,18 @@ var upload = multer({ dest: tmp_path });
 var router = express.Router();
 
 //Logout
-router.get('/*logout', UserController.getLogout);
+
+router.get('/', async (req, res, next) => {
+  res.render("/feedback/index");
+});
+
+router.get('/index', feedback.getPageByUserType);
 
 router.get('/:class_id/list', feedback.getStudentList);
 
-router.get('/', feedback.getTeacherIndexPage);
-
-router.get('/*userid', UserController.getUserId);
-
-router.get('/*username', UserController.getUserNameById);
-
-router.get('/:course_id/class/:student_id', feedback.getPageByUserType);
-
 // 报告文件
 router.post('/:course_id/report', upload.single('upload'), feedback.saveStudentReport);
-router.delete('/:course_id/:student/:file_id/report', feedback.deleteStudentReport);
+router.delete('/:course_id/:student_id/:file_id/report', feedback.deleteStudentReport);
 router.get('/:course_id/:student_id/report', feedback.getStudentReport);
 
 // 教师反馈

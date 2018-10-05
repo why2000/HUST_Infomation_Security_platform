@@ -84,7 +84,7 @@ function getCourseList() {
 
 function logout() {
   $.get({
-    url: '/tutorial/logout'
+    url: '/login/logout'
   }).done(function () {
     alert("退出成功！");
     window.location.href = '/';
@@ -93,7 +93,7 @@ function logout() {
 
 function getUserName() {
   $.get({
-    url: '/tutorial/username'
+    url: '/user/username'
   }).done(result => {
     username = result.username;
     setUserName();

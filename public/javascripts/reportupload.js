@@ -95,7 +95,7 @@ $(document).ready(async function () {
 
 function Logout() {
   $.get({
-    url: '/tutorial/logout'
+    url: '/login/logout'
   }).done(function () {
     alert("退出成功！");
     window.location.href = '/';
@@ -104,12 +104,11 @@ function Logout() {
 
 function sideBarInit() {
   $('#class-to-exam').attr('href', `/exam/${courseid}`);
-  $('#class-to-feedback').attr('href', `/feedback/${courseid}/class/null`);
+  $('#class-to-feedback').attr('href', `/feedback/index#${courseid}`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
   $('#class-to-video').attr('href', `/tutorial/video#${courseid}`);
   $('#class-home-page').attr('href', `/tutorial/index#${courseid}`);
-  $('#class-to-logout').attr('href',`/login/logout`);
-
+  $('#class-to-logout').attr('href', `/login/logout`);
 
   $(".has-submenu").hover(function () {
     var height;
@@ -145,7 +144,7 @@ function sideBarInit() {
 
 function getUserId() {
   $.get({
-    url: 'userid'
+    url: '/user/userid'
   }).done(result => {
     userid = result.result.userid;
     getReportList();
@@ -192,7 +191,7 @@ function getReportList() {
 
 function getUserName() {
   $.get({
-    url: '/tutorial/username'
+    url: '/user/username'
   }).done(result => {
     username = result.username;
     setUserName();
@@ -247,8 +246,7 @@ function getCourseList() {
 }
 
 function getCourseid() {
-  let localURLArgs = location.href.split('/');
-  courseid = localURLArgs[localURLArgs.length - 3];
+  courseid = window.location.href.substring(window.location.href.lastIndexOf('#') + 1, window.location.href.length);
 }
 
 function setClassName() {

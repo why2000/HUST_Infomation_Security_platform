@@ -1,21 +1,19 @@
 'use strict'
 
-let courseID;
+let courseid;
 let username;
 let courselist;
 let videolist;
 let courseName;
 
 $(document).ready(function () {
-  courseID = window.location.href.substring(window.location.href.lastIndexOf('#') + 1, window.location.href.length);
-  $('#class-to-exam').attr('href', `/exam/${courseID}`);
-  $('#class-to-feedback').attr('href', `/feedback/${courseID}/class/null`);
-  $('#class-to-courseware').attr('href', `/courseware/course/${courseID}`);
-  $('#class-home-page').attr('href', `/tutorial/index#${courseID}`);
-  $('#class-to-video').attr('href', `/tutorial/video#${courseID}`);
-  $('#class-to-logout').attr('href',`/login/logout`);
-
-
+  courseid = window.location.href.substring(window.location.href.lastIndexOf('#') + 1, window.location.href.length);
+  $('#class-to-exam').attr('href', `/exam/${courseid}`);
+  $('#class-to-feedback').attr('href', `/feedback/index#${courseid}`);
+  $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
+  $('#class-home-page').attr('href', `/tutorial/index#${courseid}`);
+  $('#class-to-video').attr('href', `/tutorial/video#${courseid}`);
+  $('#class-to-logout').attr('href', `/login/logout`);
   $(".has-submenu").hover(function () {
     var height;
     var current_list = $(this).find('.submenu').attr("id");
@@ -53,7 +51,7 @@ $(document).ready(function () {
 
   let vid = $(this).attr('vid');
   $.get({
-    url: `/tutorial/${courseID}/${vid}`
+    url: `/tutorial/${courseid}/${vid}`
   }).done(result => {
     $('#video-description').text(result.data.description);
   })
@@ -62,7 +60,7 @@ $(document).ready(function () {
 
 function getVideoList() {
   $.get({
-    url: `/tutorial/` + courseID
+    url: `/tutorial/` + courseid
   }).done(result => {
     videolist = result.data;
     let html = '';
@@ -94,7 +92,7 @@ function getCourseList() {
 
 function logout() {
   $.get({
-    url: '/tutorial/logout'
+    url: '/login/logout'
   }).done(function () {
     alert("退出成功！");
     window.location.href = '/';

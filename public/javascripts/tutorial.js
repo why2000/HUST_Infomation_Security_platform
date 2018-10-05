@@ -8,7 +8,7 @@ let courselist;
 
 function Logout() {
   $.get({
-    url: '/tutorial/logout'
+    url: '/login/logout'
   }).done(function () {
     alert("退出成功！");
     window.location.href = '/';
@@ -22,7 +22,7 @@ $(function sideBarInit() {
   $('#class-to-exam').attr('href', `/exam/${courseid}`);
   $('#class-to-video').attr('href', `/tutorial/video#${courseid}`);
   $('#class-home-page').attr('href', `/tutorial/index#${courseid}`);
-  $('#class-to-feedback').attr('href', `/feedback/${courseid}/class/null`);
+  $('#class-to-feedback').attr('href', `/feedback/index#${courseid}`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
   $('#class-to-logout').attr('href',`/login/logout`);
 
@@ -67,7 +67,7 @@ $(function sideBarInit() {
 function setButton(){
   $('#exam-a').attr('href', `/exam/${courseid}`);
   $('#video-a').attr('href', `/tutorial/video#${courseid}`);
-  $('#report-a').attr('href', `/feedback/${courseid}/class/null`);
+  $('#report-a').attr('href', `/feedback/index#${courseid}`);
   $('#courseware-a').attr('href', `/courseware/course/${courseid}`); 
 }
 
