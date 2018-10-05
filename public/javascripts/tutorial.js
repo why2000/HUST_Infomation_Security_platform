@@ -24,7 +24,7 @@ $(function sideBarInit() {
   $('#class-home-page').attr('href', `/tutorial/index#${courseid}`);
   $('#class-to-feedback').attr('href', `/feedback/index#${courseid}`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
-  $('#class-to-logout').attr('href',`/login/logout`);
+  $('#class-to-logout').attr('href', `/login/logout`);
 
   $(".has-submenu").hover(function () {
     var height;
@@ -62,13 +62,19 @@ $(function sideBarInit() {
   getUserName();
   getCourseInfo();
   setButton();
-});
+})
+  .on('click', '.course-list-item', function () {
+    let href=$(this).find('.course-link').attr('href');
+    courseid = href.substring(href.lastIndexOf('#') + 1, href.length);
+    getCourseInfo();
+    setButton();
+  })
 
-function setButton(){
+function setButton() {
   $('#exam-a').attr('href', `/exam/${courseid}`);
   $('#video-a').attr('href', `/tutorial/video#${courseid}`);
   $('#report-a').attr('href', `/feedback/index#${courseid}`);
-  $('#courseware-a').attr('href', `/courseware/course/${courseid}`); 
+  $('#courseware-a').attr('href', `/courseware/course/${courseid}`);
 }
 
 function getCourseList() {
@@ -83,7 +89,7 @@ function getCourseList() {
     }
     for (var i = 0; i < length; i++) {
 
-      $('#course-list').append(`<li><a href="/tutorial/index#${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
+      $('#course-list').append(`<li class="course-list-item"><a class="course-link" href="/tutorial/index#${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
     };
   });
 }
@@ -126,7 +132,7 @@ function setCourseInfo(info) {
     $.get({
       url: '/user/username/' + teacherID
     }).done(result => {
-      html += '<p>'+result.result.username + '</p>';
+      html += '<p>' + result.result.username + '</p>';
       $('#teacher-list').empty().append(html);
     })
   })
