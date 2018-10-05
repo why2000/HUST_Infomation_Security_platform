@@ -59,7 +59,7 @@
         </a>
       </li>
       <li>
-        <a id="catalog">
+        <a id="class-home-page">
           <i class="fa fa-book fa-lg"></i>
           <span class="nav-text">课程首页</span>
         </a>
@@ -77,10 +77,15 @@
         </div>
       </li>
       <li>
+        <a id='class-to-video'>
+          <i class="fa fa-film fa-lg"></i>
+          <span class="nav-text">观看视频</span>
+        </a>
+      </li>
+      <li>
         <a id='class-to-exam'>
           <i class="fa fa-tasks fa-lg"></i>
           <span class="nav-text">转到练习</span>
-
         </a>
       </li>
       <li>
@@ -159,8 +164,30 @@
                 <tbody id="report-tablet">
                 </tbody>
               </table>
-              <div id="judge-dialog" tittle="教师评价">
+              <!-- 模态框 -->
+              <div class="modal fade" id="judge-modal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+
+                    <!-- 模态框头部 -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">教师评价</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- 模态框主体 -->
+                    <div class="modal-body" id="judge-text">
+                    </div>
+
+                    <!-- 模态框底部 -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    </div>
+
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
         </div>

@@ -36,7 +36,6 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
 const getTutorialListByCourseID = async (course_id) => {
     let colTutorial = db.collection('tutorial');
     let cid = MongoDB.ObjectId(course_id);
-    console.log(cid);
     return colTutorial.find({
         course_id: cid
     })

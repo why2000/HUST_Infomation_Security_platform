@@ -1,33 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cmn-Hans">
 
 <head>
-
   <meta charset="UTF-8" />
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="google" value="notranslate" />
-  <title>华中科技大学信息安全实验平台 - 在线答题</title>
-
-
+  <title>华中科技大学信息安全实验平台 - 课程选择</title>
 
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/public/javascripts/exam.js"></script>
-  <script src="/public/javascripts/jquery.easy-pie-chart.js"></script>
-  <script src="/public/javascripts/jquery.countdown.js"></script>
-
+  <script type="text/javascript" src="/public/javascripts/courseware.js"></script>
   <!-- load CSS -->
-  <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <!-- Google web font "Open Sans" -->
   <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
   <!-- https://getbootstrap.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
   <!-- http://kenwheeler.github.io/slick/ -->
+  <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
   <!-- https://fontawesome.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
@@ -40,14 +34,13 @@
       <div class="headern">
         华中科技大学信息安全实验平台
       </div>
-
       <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
         <div class="logout-icon"></div>
         <span>退出</span>
       </div>
     </div>
   </div>
-
+  <br>
   <nav class="main-menu">
     <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
       <img src="/public/images/logo.gif" />
@@ -59,6 +52,7 @@
         <a id="home-page" href="/catalog">
           <i class="fa fa-home fa-lg"></i>
           <span class="nav-text">首页</span>
+
         </a>
       </li>
       <li>
@@ -89,18 +83,21 @@
         <a id='class-to-exam'>
           <i class="fa fa-tasks fa-lg"></i>
           <span class="nav-text">转到练习</span>
+
         </a>
       </li>
       <li>
         <a id='class-to-feedback'>
           <i class="fa fa-cloud-upload-alt fa-lg"></i>
           <span class="nav-text">上传报告</span>
+
         </a>
       </li>
       <li>
         <a id='class-to-courseware'>
           <i class="fa fa-folder-open fa-lg"></i>
           <span class="nav-text">下载课件</span>
+
         </a>
       </li>
       <li>
@@ -122,53 +119,21 @@
     </ul>
   </nav>
 
-  <div style="width: 100% ; margin: auto; margin-top: 80px;">
+  <div style="margin-left: 55px;width: 100% ; margin: auto; margin-top: 80px;">
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h5 id="big-title" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课程练习
+          <h5 id="big-title" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">下载课件
             当前课程:无数据</h5>
         </div>
       </div>
       <div class="row">
-        <div class="col-3">
+        <div class="col-1"></div>
+        <div class="col-10">
           <div class="card">
             <div class="card-body">
-              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择练习</h5>
-              <div>
-                <div class="row pre-scrollable">
-                  <div class="col-12">
-                    <div id="exam-select" class="list-group list-group-flush" style="font-size:12px">
-                      <h4>暂无练习</h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <br>
-          <div class="card">
-            <div class="card-body">
-              <div id="exam-info">
-                <h5 id="exam-name"></h5>
-                <h5 style="font-size:16px">练习简介:</h5>
-                <p id="exam-description"></p>
-                <h5 style="font-size:16px">时间限制:</h5>
-                <P type='number' id="exam-time" style="font-size:20px"></P>
-              </div>
-              <br>
-              <button id="start-btn" type="button" class='btn btn-primary btn-block' disabled="disabled">开始练习</button>
-              <p style="font-size:11px">开始练习后若意外退出，计时不会停止</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-9">
-          <div class="card">
-              <div class="row pre-scrollable">
-                <div class="col-12">
-                  <div class="exam-body">
-                    <h4>未选择练习</h4>
-                  </div>
+              <div id="courseware-list" class="list-group">
+                  <h5>暂无课件</h5>
               </div>
             </div>
           </div>
@@ -177,5 +142,3 @@
     </div>
   </div>
 </body>
-
-</html>

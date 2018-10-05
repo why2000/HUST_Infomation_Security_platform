@@ -10,10 +10,10 @@ exports.getIndexPage = async (req, res, next) => {
     res.redirect('/');
   } else {
     if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
-      res.render("courseware-edit");
+      res.render("courseware_teacher");
 
     } else if (await UserValidator.getUserTypeById(req.session.loginUser) == "student") {
-      res.render("courseware-download");
+      res.render("courseware");
     }
   }
 }

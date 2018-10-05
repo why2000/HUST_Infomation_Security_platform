@@ -11,27 +11,26 @@
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/judgeupload.js"></script>
   <!-- load CSS -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300">
+  <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <!-- Google web font "Open Sans" -->
   <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
   <!-- https://getbootstrap.com/ -->
-  <link rel="stylesheet" href="/public/stylesheets/fontawesome/css/fontawesome-all.min.css">
-  <!-- https://fontawesome.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
-  <!-- http://kenwheeler.github.io/slick/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
-  <link rel="stylesheet" type="text/css" href="/public/stylesheets/examsidebar.css">
-
-  <script>
-    document.documentElement.className = "js";
-    var supportsCssVars = function () {
-      var e, t = document.createElement("style");
-      return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS
-        .supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e
-    };
-    supportsCssVars() || alert(
-      "Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");
-  </script>
+  <!-- http://kenwheeler.github.io/slick/ -->
+  <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <!-- https://fontawesome.com/ -->
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
+<script>
+  document.documentElement.className = "js";
+  var supportsCssVars = function () {
+    var e, t = document.createElement("style");
+    return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS
+      .supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e
+  };
+  supportsCssVars() || alert(
+    "Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");
+</script>
 
 </head>
 
@@ -50,66 +49,141 @@
     </div>
   </div>
   <br>
-
-  <div class="container" style="margin-top:80px">
-    <div class="row">
-      <div class="col-12">
-        <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">教师评分</h5>
-        <p>先选择课程，然后选择对应的学生，点击下载按钮可以下载该名学生的报告</p>
-      </div>
+  <nav class="main-menu">
+    <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
+      <img src="/public/images/logo.gif" />
     </div>
-    <div class="row">
-      <div class="col-4">
+    <div class="settings" , style="text-align: center; font-size: 18px;">
+    </div>
+    <ul class="parent-menu" , id="parent">
+      <li>
+        <a id="home-page" href="/catalog">
+          <i class="fa fa-home fa-lg"></i>
+          <span class="nav-text">首页</span>
+        </a>
+      </li>
+      <li>
+        <a id="class-home-page">
+          <i class="fa fa-book fa-lg"></i>
+          <span class="nav-text">课程首页</span>
+        </a>
+      </li>
+      <li class="has-submenu" id="course-list-parent">
+        <a>
+          <i class="fa fa-chevron-right fa-lg list-icon" id="course-list-icon"></i>
+          <span class="nav-text">
+            选择课程
+          </span>
+        </a>
+        <div class="row pre-scrollable">
+          <ul id="course-list" class="submenu" style="display: none">
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a id='class-to-video'>
+          <i class="fa fa-film fa-lg"></i>
+          <span class="nav-text">上传视频</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-exam'>
+          <i class="fa fa-tasks fa-lg"></i>
+          <span class="nav-text">编辑练习</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-feedback'>
+          <i class="fa fa-cloud-upload-alt fa-lg"></i>
+          <span class="nav-text">评价报告</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-courseware'>
+          <i class="fa fa-folder-open fa-lg"></i>
+          <span class="nav-text">上传课件</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-logout'>
+          <i class="fa fa-power-off fa-lg"></i>
+          <span class="nav-text">退出系统</span>
+        </a>
+      </li>
+    </ul>
+    <ul id="sidebar-back" class="back">
+      <li>
+        <a href="javascript:history.go(-1);">
+          <i class="fa fa-chevron-left fa-lg"></i>
+          <span class="nav-text">
+            后退
+          </span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <div style="width: 100% ; margin: auto; margin-top: 80px;">
 
-        <div class="card">
-          <div class="card-body">
-            <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择学生</h5>
-            <div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h5 id="big-title" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">教师评分</h5>
+          <p>先选择课程，然后选择对应的学生，点击下载按钮可以下载该名学生的报告</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择学生</h5>
+              <div>
+                <div class="row pre-scrollable">
+                  <div class="col-12">
+                    <div id="student-select" class="list-group list-group-flush" style="font-size:12px">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="card">
+            <div class="card-body">
+              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择报告</h5>
               <div class="row pre-scrollable">
                 <div class="col-12">
-                  <div id="student-select" class="list-group list-group-flush" style="font-size:12px">
+                  <div id="report-select" class="list-group list-group-flush" style="font-size:12px">
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <br>
-        <div class="card">
-          <div class="card-body">
-            <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择报告</h5>
-            <div class="row pre-scrollable">
-              <div class="col-12">
-                <div id="report-select" class="list-group list-group-flush" style="font-size:12px">
+        <div class="col-8">
+          <div class="card">
+            <div class="card-body">
+              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">评价内容</h5>
+              <div class="card">
+                <div class="card-body">
+                  <form>
+                    <div class="form-group">
+                      <label style="color:black; font-size:14px;">分数</label>
+                      <input class="form-control" type="number" style="background-color: white; border:#ced4da solid 1px; color:black"
+                        id="inputScore" placeholder="请输入0-100的数字" value=''>
+                    </div>
+                    <div class="form-group">
+                      <label style="color:black; font-size:14px;">评价</label>
+                      <textarea class="form-control" rows="10 " style="background-color: white; border:#ced4da solid 1px; color:black;"
+                        id="inputText"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" id='back' onclick="javascript:history.back()" style="float: left">返回</button>
+                    <div class="btn-group pull-right">
+                      <button type="button" class="my-download-button btn btn-primary" disabled="">下载报告</button>
+                      <button type="button" class="my-upload-button btn btn-primary" id='submit'>提交</button>
+                    </div>
+                  </form>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-8">
-        <div class="card">
-          <div class="card-body">
-            <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">评价内容</h5>
-            <div class="card">
-              <div class="card-body">
-                <form>
-                  <div class="form-group">
-                    <label style="color:black; font-size:14px;">分数</label>
-                    <input class="form-control" type="number" style="background-color: white; border:#ced4da solid 1px; color:black"
-                      id="inputScore" placeholder="请输入0-100的数字" value=''>
-                  </div>
-                  <div class="form-group">
-                    <label style="color:black; font-size:14px;">评价</label>
-                    <textarea class="form-control" rows="10 " style="background-color: white; border:#ced4da solid 1px; color:black;"
-                      id="inputText"></textarea>
-                  </div>
-                  <button type="button" class="btn btn-primary" id='back' onclick="javascript:history.back()" style="float: left">返回</button>
-                  <div class="btn-group pull-right">
-                    <button type="button" class="my-download-button btn btn-primary" disabled="">下载报告</button>
-                    <button type="button" class="my-upload-button btn btn-primary" id='submit'>提交</button>
-                  </div>
-                </form>
               </div>
             </div>
           </div>

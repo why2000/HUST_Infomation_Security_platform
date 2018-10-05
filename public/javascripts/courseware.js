@@ -5,22 +5,22 @@ let courselist;
 let courseNum = new Set();
 let courseid;
 let classname;
+let username;
 
 $(document).ready(function () {
-  let localURLArgs = location.href.split('/');
-  courseid = localURLArgs[localURLArgs.length - 1];
-  $('#class-to-exam').attr('href', `/exam/${courseid}`);
-  $('#class-to-feedback').attr('href', `/feedback/${courseid}/class/null`);
+  courseid = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
+  $('#class-to-exam').attr('href', `/exam/index#${courseid}`);
+  $('#class-to-feedback').attr('href', `/feedback/index#${courseid}`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
-  $('#class-to-information').attr('href', `/information`);
-  $('#catalog').attr('href', `/tutorial/index#${courseid}`);
+  $('#class-to-video').attr('href', `/tutorial/video#${courseid}`);
+  $('#class-home-page').attr('href', `/tutorial/index#${courseid}`);
+  $('#class-to-logout').attr('href', `/login/logout`);
 
   $(".has-submenu").hover(function () {
     var height;
     var current_list = $(this).find('.submenu').attr("id");
     current_list = current_list.split('-').join('');
     if (current_list != null && current_list != undefined) {
-      console.log(eval(current_list))
       height = eval(current_list).length * 41;
     } else {
       height = 0;
@@ -47,24 +47,10 @@ $(document).ready(function () {
   getCourseList();
   getUserName();
 
-  $.get({
-    url: '/courseware/list/' + courseid,
-    success: (data) => {
-      coursewareFileList = data.data;
-      let selectedCourse = coursewareFileList.filter(e => {
-        return e._id == courseid;
-      })
-      if (selectedCourse[0]) {
-        render(coursewareFileList, selectedCourse[0].name);
-      } else {
-        $('#courseware-list').empty().append('<li class="list-group-item" >暂无课件</li>');
-      }
-    }
-  })
 })
   .on('click', '.my-download-button', async function () {
-    let nid = $(this).attr('nid');
-    let file_id = coursewareFileList[nid].file_id;
+    let file_id = $(this).attr('fid');
+    console.log(file_id);
     let url = 'http://' + window.location.host + '/file/' + file_id;
     let $form = $('<form method="GET"></form>');
     $form.attr('action', url);
@@ -77,7 +63,7 @@ async function render(coursewareFileList, courseName) {
   for (let n = 0, dLen = coursewareFileList.length; n < dLen; n++) {
     html += '<li class="list-group-item" >'
       + "  课程名称: " + courseName + "  课件名称: " + coursewareFileList[n].file_name
-    html += `<button type="button" class="my-download-button btn btn-primary pull-right" nid='${n}'>下载</button>`
+    html += `<button type="button" class="my-download-button btn btn-primary pull-right" fid='${coursewareFileList[n].file_id}'>下载</button>`
       + '</li >';
   }
   $('#courseware-list').empty().append(html);
@@ -87,7 +73,7 @@ async function render(coursewareFileList, courseName) {
 
 function Logout() {
   $.get({
-    url: '/tutorial/logout'
+    url: '/login/logout'
   }).done(function () {
     alert("退出成功！");
     window.location.href = '/';
@@ -104,24 +90,39 @@ function getCourseList() {
     });
     classname = selectedCourse[0].name;
     setClassName();
+    getCoursewareList();
     for (let n = 0; n < courselist.length; n++) {
       $('#course-list').append(`<li><a href="/tutorial/index#${courselist[n]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[n].name}</span></a></li>`);
     };
   });
 }
 
+function getCoursewareList() {
+  $.get({
+    url: '/courseware/list/' + courseid,
+    success: (data) => {
+      coursewareFileList = data.data;
+      if (coursewareFileList) {
+        render(coursewareFileList, classname);
+      } else {
+        $('#courseware-list').empty().append('<li class="list-group-item" >暂无课件</li>');
+      }
+    }
+  })
+}
+
 function getUserName() {
   $.get({
-    url: '/tutorial/username'
+    url: '/user/username'
   }).done(result => {
-    username = result.username;
+    username = result.result.username;
     setUserName();
   })
 }
 
 function setClassName() {
   if (classname) {
-    $('#big-title').text('上传报告 当前课程: ' + classname);
+    $('#big-title').text('下载课件 当前课程: ' + classname);
     $('#result-table tbody .classname').text(classname);
   }
 }

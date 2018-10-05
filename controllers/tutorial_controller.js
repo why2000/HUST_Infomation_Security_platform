@@ -11,17 +11,19 @@ let Tutorial = require('../models/tutorial_db');
 let Course = require('../models/course_db');
 
 
+
 exports.getIndexPage = async (req, res, next) => {
     var page = 'tutorial';
-    if (UserValidator.getUserTypeById(req.session.loginUser) == 'teacher') {
+    if (await UserValidator.getUserTypeById(req.session.loginUser) == 'teacher') {
         page += '_teacher';
     }
+    console.log(page);
     res.render(page);
 }
 
 exports.getVideoPage = async (req, res, next) => {
     var page = 'video';
-    if (UserValidator.getUserTypeById(req.session.loginUser) == 'teacher') {
+    if (await UserValidator.getUserTypeById(req.session.loginUser) == 'teacher') {
         page += '_teacher';
     }
     res.render(page);
@@ -31,7 +33,6 @@ exports.getTutorialList = async (req, res) => {
     let cid = req.params.course_id;
     Tutorial.getTutorialListByCourseID(cid)
         .then(r => {
-            console.log(r);
             response(res, r);
         })
         .catch(err => {

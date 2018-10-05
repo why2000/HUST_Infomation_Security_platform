@@ -156,8 +156,11 @@ const deleteStudentReport = async (req, res) => {
     if (sid) {
         feedback.getReportByStudentIDAndModuleID(sid, mid)
             .then(result => {
-                if (result) {
-                    file.removeFile(result.file_id)
+                result = result.filter(report => {
+                    return report.file_id == fid;
+                })
+                if (result.length) {
+                    file.removeFile(result[0].file_id)
                         .then(() => {
                             return feedback.removeReport(sid, mid);
                         })

@@ -8,7 +8,7 @@ let MongoDB = require('mongodb');
 let MongoClient = MongoDB.MongoClient;
 let IsEmpty = require('is-empty');
 
-let db = new MongoDB.Db;
+let db;
 
 MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
     if (err) {

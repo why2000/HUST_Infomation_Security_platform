@@ -12,14 +12,14 @@
   <title>华中科技大学信息安全实验平台 - 在线答题</title>
 
 
-
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/public/javascripts/exam.js"></script>
+  <script type="text/javascript" src="/public/javascripts/tutorial.js"></script>
   <script src="/public/javascripts/jquery.easy-pie-chart.js"></script>
   <script src="/public/javascripts/jquery.countdown.js"></script>
-
+  <script src="/public/javascripts/flowplayer.js"></script>
+  <script src="/public/javascripts/flowplayer.min.js"></script>
   <!-- load CSS -->
   <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <!-- Google web font "Open Sans" -->
@@ -82,25 +82,25 @@
       <li>
         <a id='class-to-video'>
           <i class="fa fa-film fa-lg"></i>
-          <span class="nav-text">观看视频</span>
+          <span class="nav-text">上传视频</span>
         </a>
       </li>
       <li>
         <a id='class-to-exam'>
           <i class="fa fa-tasks fa-lg"></i>
-          <span class="nav-text">转到练习</span>
+          <span class="nav-text">编辑练习</span>
         </a>
       </li>
       <li>
         <a id='class-to-feedback'>
           <i class="fa fa-cloud-upload-alt fa-lg"></i>
-          <span class="nav-text">上传报告</span>
+          <span class="nav-text">评价报告</span>
         </a>
       </li>
       <li>
         <a id='class-to-courseware'>
           <i class="fa fa-folder-open fa-lg"></i>
-          <span class="nav-text">下载课件</span>
+          <span class="nav-text">上传课件</span>
         </a>
       </li>
       <li>
@@ -125,50 +125,44 @@
   <div style="width: 100% ; margin: auto; margin-top: 80px;">
     <div class="container">
       <div class="row">
-        <div class="col-12">
-          <h5 id="big-title" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课程练习
-            当前课程:无数据</h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3">
+        <div class="col-1"></div>
+        <div class="col-10">
           <div class="card">
             <div class="card-body">
-              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择练习</h5>
-              <div>
-                <div class="row pre-scrollable">
-                  <div class="col-12">
-                    <div id="exam-select" class="list-group list-group-flush" style="font-size:12px">
-                      <h4>暂无练习</h4>
-                    </div>
-                  </div>
-                </div>
+              <h5 id="class-title" style="text-align:center;">课程名称：暂无数据</h5>
+              <br>
+              <p id="class-description" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课程描述：暂无数据</p>
+              <div id="teacher-list">
               </div>
             </div>
           </div>
           <br>
           <div class="card">
             <div class="card-body">
-              <div id="exam-info">
-                <h5 id="exam-name"></h5>
-                <h5 style="font-size:16px">练习简介:</h5>
-                <p id="exam-description"></p>
-                <h5 style="font-size:16px">时间限制:</h5>
-                <P type='number' id="exam-time" style="font-size:20px"></P>
+              <div class="row">
+                <div class="col-6">
+                  <a id="video-a">
+                    <button type="button" id="video-button" class="btn btn-outline-primary btn-block btn-lg">上传视频</button>
+                  </a>
+                </div>
+                <div class="col-6">
+                  <a id="courseware-a">
+                    <button type="button" id="courseware-button" class="btn btn-outline-success btn-block btn-lg">上传课件</button>
+                  </a>
+                </div>
               </div>
               <br>
-              <button id="start-btn" type="button" class='btn btn-primary btn-block' disabled="disabled">开始练习</button>
-              <p style="font-size:11px">开始练习后若意外退出，计时不会停止</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-9">
-          <div class="card">
-              <div class="row pre-scrollable">
-                <div class="col-12">
-                  <div class="exam-body">
-                    <h4>未选择练习</h4>
-                  </div>
+              <div class="row">
+                <div class="col-6">
+                  <a id="report-a">
+                    <button type="button" id="report-button" class="btn btn-outline-info btn-block btn-lg">评价报告</button>
+                  </a>
+                </div>
+                <div class="col-6">
+                  <a id="exam-a">
+                    <button type="button" id="exam-button" class="btn btn-outline-warning btn-block btn-lg">编辑练习</button>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
