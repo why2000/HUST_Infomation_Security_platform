@@ -305,7 +305,7 @@ None
 [
     {
         "id": 0,
-        "answer": "A"
+        "answer": "A,B,C"
     }
 ]
 ```

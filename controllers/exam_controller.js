@@ -106,7 +106,7 @@ exports.startExam = async (req, res) => {
         return;
     }
 
-    let inf = await Exam.getExamInfo(cid, eid, {projection: {'content.answer' : 0}});
+    let inf = await Exam.getExamInfo(cid, eid, {projection: {'content.options.is_correct' : 0}});
     if(!inf) {
         response(res, 404, 'Exam not found.');
         return;
@@ -186,10 +186,72 @@ exports.stopExam = async (req, res) => {
 }
 
 exports.getScores = async (req, res) => {
+    if(UserValidator.getUserTypeById(req.session.loginUser) == 'student') {
+        response(res, 401, 'Permission denied');
+        return;
+    }
 
+    Exam.getScoresByIDs(req.params.course_id, req.params.exam_id)
+        .then(r => {
+            if(r) {
+                response(res, r);
+            } else {
+                response(res, 500, 'Unknown error.');
+            }  
+        })
+        .catch(err => {
+            UserLogger.error(`getScores error => ${err.stack}`);
+            response(res, 500, 'Server error.');
+        });
 }
 
+/**
+ * 计算成绩
+ * @param {any} exam 测试信息 
+ * @param {any[]} user 用户答案
+ */
 const calcScore = async (exam, user) => {
-    exam = exam.content;
+    let subs = exam.content.filter(i => {
+        //TODO: 硬编码，很丑 改天再处理
+        return ['sc', 'mc'].includes(i.type);
+    });
+
+    let score = 0;
+    let set = {};
     
+    
+    // 我的天哪.jpg
+    user.forEach(i => {
+        if(!set[i.id]) { // 防止多个同一id重复计分
+            set[i.id] = true;
+            let subject = subs.find(e => e.id == i.id);
+            if(subject) { // 如果有这个题
+                switch(subject.type) {
+                    case 'sc': // 单选
+                        let opt = subject.find(e => e.choice == i.answer);
+                        if(opt.is_correct) score += 1;
+                        break;
+                    case 'mc':
+                        let cans = subject.find(e => e.is_correct);
+                        let uans = i.answer.split(',');
+                        
+                        // 如果正确答案数量和用户回答的数量不一样
+                        if(cans.length != uans.length) break;
+
+                        let correct = true;
+                        cans.forEach(e => {
+                            if(!uans.includes(e.choice)) correct = false;
+                        });
+                        
+                        if(correct) score += 1;
+                        break;
+                }
+            }
+        }
+
+    });
+
+    let final_score = `${score}/${subs.length}`;
+
+    return final_score;
 }

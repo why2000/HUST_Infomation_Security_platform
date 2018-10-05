@@ -115,6 +115,50 @@ const setStudentScoreDone = async (exam_id, student_id, score) => {
     .then(r => r.result.ok == 1);
 } 
 
+const getScoresByIDs = async (course_id, exam_id) => {
+    let cid = MongoDB.ObjectId(course_id),
+        eid = MongoDB.ObjectId(exam_id);
+
+    let colCourse = db.collection('course'); // 是不是放这儿不太对啊？
+
+    // 这聚合，写到头疼.jpg
+    let pipeline = [
+        {$match: {_id: cid}},
+        {$unwind: "$student"},
+        {
+            $lookup: {
+                from: "user",
+                localField: "student",
+                foreignField: "userid",
+                as: "info"
+            }
+        },
+        {
+            $lookup: {
+                from: "score",
+                let: {student_id: "$student"},
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    {$eq: ["$student_id", "$$student_id"]},
+                                    {$eq: ["$exam_id", eid]}
+                                ]
+                            }
+                        } 
+                    }
+                ],
+                as: "score"
+            }
+        },
+        {$project: {userid: "$student", info: {$arrayElemAt: ["$info", 0]}, score: {$arrayElemAt: ["$score", 0]}}},
+        {$project: {_id: 0, userid: 1, name: "$info.username", has_done: "$score.has_done", score: '$score.score'}}
+    ]
+
+    return colCourse.aggregate(pipeline).toArray();
+}
+
 module.exports = {
     getExamsByCourseID,
     saveExam,
@@ -122,5 +166,6 @@ module.exports = {
     getTimeLimit,
     getStudentScoreUndone,
     setStudentScoreDone,
-    createStudentScore
+    createStudentScore,
+    getScoresByIDs
 }
