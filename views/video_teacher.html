@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>华中科技大学信息安全实验平台 - 视频上传</title>
+  <!-- load JS-->
+  <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/video_teacher.js"></script>
+  <!-- load CSS -->
+  <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
+  <!-- Google web font "Open Sans" -->
+  <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
+  <!-- https://getbootstrap.com/ -->
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
+  <!-- http://kenwheeler.github.io/slick/ -->
+  <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <!-- https://fontawesome.com/ -->
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
+</head>
+
+<body>
+  <div class="header">
+    <div class="headerb">
+      <div class="top-logo" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
+      <div class="headern">
+        华中科技大学信息安全实验平台
+      </div>
+      <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
+        <div class="logout-icon"></div>
+        <span>退出</span>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <nav class="main-menu">
+    <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
+      <img src="/public/images/logo.gif" />
+    </div>
+    <div class="settings" , style="text-align: center; font-size: 18px;">
+    </div>
+    <ul class="parent-menu" , id="parent">
+      <li>
+        <a id="home-page" href="/catalog">
+          <i class="fa fa-home fa-lg"></i>
+          <span class="nav-text">首页</span>
+        </a>
+      </li>
+      <li>
+        <a id="class-home-page">
+          <i class="fa fa-book fa-lg"></i>
+          <span class="nav-text">课程首页</span>
+        </a>
+      </li>
+      <li class="has-submenu" id="course-list-parent">
+        <a>
+          <i class="fa fa-chevron-right fa-lg list-icon" id="course-list-icon"></i>
+          <span class="nav-text">
+            选择课程
+          </span>
+        </a>
+        <div class="row pre-scrollable">
+          <ul id="course-list" class="submenu" style="display: none">
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a id='class-to-video'>
+          <i class="fa fa-film fa-lg"></i>
+          <span class="nav-text">上传视频</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-exam'>
+          <i class="fa fa-tasks fa-lg"></i>
+          <span class="nav-text">编辑练习</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-feedback'>
+          <i class="fa fa-cloud-upload-alt fa-lg"></i>
+          <span class="nav-text">评价报告</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-courseware'>
+          <i class="fa fa-folder-open fa-lg"></i>
+          <span class="nav-text">上传课件</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-logout'>
+          <i class="fa fa-power-off fa-lg"></i>
+          <span class="nav-text">退出系统</span>
+        </a>
+      </li>
+    </ul>
+    <ul id="sidebar-back" class="back">
+      <li>
+        <a href="javascript:history.go(-1);">
+          <i class="fa fa-chevron-left fa-lg"></i>
+          <span class="nav-text">
+            后退
+          </span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div style="width: 100% ; margin: auto; margin-top: 80px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="col-12">
+                <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">视频上传</h5>
+                <div class="form-group">
+                  <label style="color:black; font-size:14px;">视频名称</label>
+                  <input class="form-control" type="text" style="background-color: white; border:#ced4da solid 1px; color:black"
+                    id="video-title">
+                  <label style="color:black; font-size:14px;">视频简介</label>
+                  <textarea class="form-control" rows="6" style="background-color: white; border:#ced4da solid 1px; color:black;"
+                    id="video-description"></textarea>
+                </div>
+                <form id="uploadFrom" class="import-file-form" enctype="multipart/form-data">
+                    <label style="color:black; font-size:14px;">选择视频</label>  
+                  <input type="file" name="upload" id="video-file" accept=".mp4,.flv,.f4v">
+                  <br>
+                  <br>
+                  <button type="button" class="my-upload-button btn btn-primary">上传</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="col-9">
+          <div class="card">
+            <div class="card-body">
+              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">视频列表</h5>
+              <div id="video-list" class="list-group">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

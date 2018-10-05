@@ -19,7 +19,7 @@ function Logout() {
 
 $(function sideBarInit() {
   courseid = window.location.href.substring(window.location.href.lastIndexOf('#') + 1, window.location.href.length);
-  $('#class-to-exam').attr('href', `/exam/${courseid}`);
+  $('#class-to-exam').attr('href', `/exam/index#${courseid}`);
   $('#class-to-video').attr('href', `/tutorial/video#${courseid}`);
   $('#class-home-page').attr('href', `/tutorial/index#${courseid}`);
   $('#class-to-feedback').attr('href', `/feedback/index#${courseid}`);
@@ -71,7 +71,7 @@ $(function sideBarInit() {
   })
 
 function setButton() {
-  $('#exam-a').attr('href', `/exam/${courseid}`);
+  $('#exam-a').attr('href', `/exam/index#${courseid}`);
   $('#video-a').attr('href', `/tutorial/video#${courseid}`);
   $('#report-a').attr('href', `/feedback/index#${courseid}`);
   $('#courseware-a').attr('href', `/courseware/course/${courseid}`);

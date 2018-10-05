@@ -111,7 +111,7 @@ function getCourseid() {
 }
 
 function sideBarInit() {
-  $('#class-to-exam').attr('href', `/exam/${courseid}`);
+  $('#class-to-exam').attr('href', `/exam/index#${courseid}`);
   $('#class-to-feedback').attr('href', `/feedback/index#${courseid}`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
   $('#class-to-video').attr('href', `/tutorial/video#${courseid}`);

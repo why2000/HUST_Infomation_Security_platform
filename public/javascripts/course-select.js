@@ -25,9 +25,7 @@ $(document).ready(function () {
 
 $(function sideBarInit() {
   classindex = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1, window.location.pathname.length);
-  $('#class-to-exam').attr('href', `/exam/${classindex}`);
-  $('#class-to-feedback').attr('href', `/feedback/${classindex}/class/null`);
-  $('#class-to-courseware').attr('href', `/courseware/course/${classindex}`);
+  $('#class-to-logout').attr('href', `/login/logout`);
   $('#class-to-information').attr('href', `/information`);
 
   $(".has-submenu").hover(function () {
@@ -92,7 +90,7 @@ function getUserName() {
   $.get({
     url: '/user/username'
   }).done(result => {
-    username = result.username;
+    username = result.result.username;
     setUserName();
   })
 }

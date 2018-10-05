@@ -1,6 +1,6 @@
 'use strict'
 
-let coursewareFileList;
+let videolist;
 let courselist;
 let courseNum = new Set();
 let courseid;
@@ -8,7 +8,7 @@ let classname;
 let username;
 
 $(document).ready(function () {
-  let localURLArgs = location.href.split('/');
+  let localURLArgs = location.href.split('#');
   courseid = localURLArgs[localURLArgs.length - 1];
 
   $('#class-to-exam').attr('href', `/exam/index#${courseid}`);
@@ -49,17 +49,17 @@ $(document).ready(function () {
   getCourseList();
   getUserName();
 })
-  .on('click', '.btn-warning', async function () {
+  .on('click', '.btn-warning', function () {
     $(this).removeClass("btn-warning");
     $(this).addClass("btn-danger");
     $(this).text("确认删除？");
   })
-  .on('mouseleave', '.btn-danger', async function () {
+  .on('mouseleave', '.btn-danger', function () {
     $(this).removeClass("btn-danger");
     $(this).addClass("btn-warning");
     $(this).text("删除");
   })
-  .on('click', '.btn-danger', async function () {
+  .on('click', '.btn-danger', function () {
     let $this = $(this);
     let file_id = $this.attr('fid');
 
@@ -79,7 +79,7 @@ $(document).ready(function () {
       $this.text("删除失败，请重试。");
     })
   })
-  .on('click', '.my-download-button', async function () {
+  .on('click', '.my-download-button', function () {
     let file_id = $(this).attr('fid');
     let url = 'http://' + window.location.host + '/file/' + file_id;
 
@@ -88,14 +88,23 @@ $(document).ready(function () {
     $form.appendTo($('body'));
     $form.submit();
   })
-  .on('click', '.my-upload-button', async function () {
+  .on('click', '.my-upload-button', function () {
+    if ($('#video-title').text() == '') {
+      alert("请输入教学视频名称。");
+      return;
+    }
+    if ($('#video-description').text() == '') {
+      alert("请输入教学视频简介。");
+      return;
+    }
+
     let cid = courseid;
-    let file = $("#uploadFile")[0].files[0]
+    let file = $("#video-file")[0].files[0]
 
     if (!file) {
       alert('您还未选择文件！');
     } else {
-      const acceptFile = /^.*(\.doc|\.docx|\.ppt|\.pptx|\.pdf)$/;
+      const acceptFile = /^.*(\.mp4|\.flv|\.f4v)$/;
       if (acceptFile.test(file.name)) {
         let form = new FormData();
         form.append('upload', file);
@@ -119,20 +128,21 @@ $(document).ready(function () {
         alert("文件格式错误！");
       }
     }
+
   })
 
-async function render(coursewareFileList, courseName) {
+async function render() {
   let html = "";
-  $('#courseware-list').empty();
-  for (let n = 0, dLen = coursewareFileList.length; n < dLen; n++) {
+  $('#video-list').empty();
+  for (let n = 0, dLen = videolist.length; n < dLen; n++) {
     html += '<li class="list-group-item" >'
-      + "  课程名称: " + courseName + " 课件名称: " + coursewareFileList[n].file_name
+      + "  课程名称: " + classname + " 视频名称: " + videolist[n].title
       + '<div class="btn-group pull-right">'
-    html += `<button type="button" class="my-delete-button btn btn-primary btn-warning" fid='${coursewareFileList[n].file_id}'>删除</button>`
-      + `<button type="button" class="my-download-button btn btn-primary" fid='${coursewareFileList[n].file_id}'>下载</button>`
+    html += `<button type="button" class="my-delete-button btn btn-primary btn-warning" fid='${videolist[n].video}'>删除</button>`
+      + `<button type="button" class="my-download-button btn btn-primary" fid='${videolist[n].video}'>下载</button>`
       + '</div > </li>';
   }
-  $('#courseware-list').append(html);
+  $('#video-list').append(html);
 }
 
 function Logout() {
@@ -154,20 +164,20 @@ function getCourseList() {
     });
     classname = selectedCourse[0].name;
     setClassName();
-    getCoursewareList();
+    getVideolist();
     for (let n = 0; n < courselist.length; n++) {
       $('#course-list').append(`<li><a href="/tutorial/index#${courselist[n]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[n].name}</span></a></li>`);
     };
   });
 }
 
-function getCoursewareList() {
+function getVideolist() {
   $.get({
-    url: '/courseware/list/' + courseid,
+    url: '/tutorial/' + courseid,
     success: (data) => {
-      coursewareFileList = data.data;
-      if (coursewareFileList.length) {
-        render(coursewareFileList, classname);
+      videolist = data.data;
+      if (videolist.length) {
+        render();
       }
     }
   });

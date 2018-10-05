@@ -8,7 +8,7 @@ let classname;
 
 $(document).ready(function () {
   courseid = window.location.href.substring(window.location.href.lastIndexOf('#') + 1, window.location.href.length);
-  $('#class-to-exam').attr('href', `/exam/${courseid}`);
+  $('#class-to-exam').attr('href', `/exam/index#${courseid}`);
   $('#class-to-feedback').attr('href', `/feedback/index#${courseid}`);
   $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
   $('#class-home-page').attr('href', `/tutorial/index#${courseid}`);
