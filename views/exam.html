@@ -149,18 +149,26 @@
           <br>
           <div class="card">
             <div class="card-body">
-              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">练习简介</h5>
-              <p id="exam-description">
-                <h4>未选择练习</h4>
-              </p>
+              <div id="exam-info">
+                <h5 id="exam-name"></h5>
+                <h5 style="font-size:16px">练习简介:</h5>
+                <p id="exam-description"></p>
+                <h5 style="font-size:16px">时间限制:</h5>
+                <P type='number' id="exam-time" style="font-size:20px"></P>
+              </div>
+              <br>
+              <button id="start-btn" type="button" class='btn btn-primary btn-block' disabled="disabled">开始练习</button>
+              <p style="font-size:11px">开始练习后若意外退出，计时不会停止</p>
             </div>
           </div>
         </div>
         <div class="col-9">
           <div class="card">
-            <div class="card-body">
-              <div class="exam-body">
-                <h4>未选择练习</h4>
+              <div class="row pre-scrollable">
+                <div class="col-12">
+                  <div class="exam-body">
+                    <h4>未选择练习</h4>
+                  </div>
               </div>
             </div>
           </div>
