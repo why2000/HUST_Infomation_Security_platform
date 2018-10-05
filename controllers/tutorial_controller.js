@@ -33,7 +33,6 @@ exports.getTutorialList = async (req, res) => {
     let cid = req.params.course_id;
     Tutorial.getTutorialListByCourseID(cid)
         .then(r => {
-            console.log(r);
             response(res, r);
         })
         .catch(err => {

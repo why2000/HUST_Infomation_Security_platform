@@ -7,14 +7,13 @@ let courseid;
 let classname;
 let courseList;
 
-$(document).ready(async function () {
+$(document).ready(function () {
   getCourseid();
   getClassname();
   getUserName();
   sideBarInit();
   getCourseList();
   getUserId();
-
 
   $('.my-upload-button').click(function () {
     var file = $('#upload')[0].files[0];
@@ -47,26 +46,28 @@ $(document).ready(async function () {
     }
   });
 })
-  .on('click', '.my-download-button', async () => {
+  .on('click', '.my-download-button', function () {
     let fileid = $(this).attr('fid');
     let url = 'http://' + window.location.host + '/file/' + fileid;
+    console.log(fileid)
 
     let $form = $('<form method="GET"></form>');
     $form.attr('action', url);
     $form.appendTo($('body'));
     $form.submit();
+
   })
-  .on('click', '.btn-warning', async function () {
+  .on('click', '.btn-warning', function () {
     $(this).removeClass("btn-warning");
     $(this).addClass("btn-danger");
     $(this).text("确认");
   })
-  .on('mouseleave', '.btn-danger', async function () {
+  .on('mouseleave', '.btn-danger', function () {
     $(this).removeClass("btn-danger");
     $(this).addClass("btn-warning");
     $(this).text("删除");
   })
-  .on('click', '.btn-danger', async function () {
+  .on('click', '.btn-danger', function () {
     let $this = $(this);
     let fileid = $this.attr('fid');
 
@@ -87,10 +88,7 @@ $(document).ready(async function () {
     })
   }).on('click', '.my-view-button', function () {
     let $this = $(this);
-    $('#judge-dialog').append(`<p>${$this.attr('jtext')}</p>`);
-    $('#judge-dialog').dialog({
-      model: true
-    })
+    $('#judge-text').empty().append(`<p>${$this.attr('jtext')}</p>`);
   })
 
 function Logout() {
@@ -114,9 +112,7 @@ function sideBarInit() {
     var height;
     var current_list = $(this).find('.submenu').attr("id");
     current_list = current_list.split('-').join('');
-    console.log(current_list);
     if (current_list != null && current_list != undefined) {
-      console.log(eval(current_list))
       height = eval(current_list).length * 41;
     } else {
       height = 0;
@@ -172,7 +168,7 @@ function getReportList() {
             + '<div class="btn-group pull-right">'
             + `<button type="button" class="my-delete-button btn btn-primary btn-warning" fid='${data.file_id}'>删除</button>`
             + `<button type="button" class="my-download-button btn btn-primary" fid='${data.file_id}'>下载</button>`
-            + `<button type="button" class="my-view-button btn btn-primary" jtext='${reportInjudgementList.text}'>查看评价</button>`
+            + `<button type="button" class="my-view-button btn btn-primary" jtext='${reportInjudgementList.text}' data-toggle="modal" data-target="#judge-modal"'>查看评价</button>`
             + '</div></td></tr >';
         } else {
           html += '<td class="score">未评分</td>'
@@ -237,7 +233,6 @@ function getCourseList() {
     if (courselist) {
       length = courselist.length;
     }
-    console.log(courselist);
     for (var i = 0; i < length; i++) {
 
       $('#course-list').append(`<li><a href="/tutorial/index#${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);

@@ -3,11 +3,16 @@
 let studentList;
 let courseid;
 let studentID;
+let courselist;
+let classname;
+let username;
 
 $(document).ready(function () {
   $('#inputScore').val('');
   $('#inputText').val('');
   getCourseid();
+  getCourseList();
+  getUserName();
   sideBarInit();
   $.get({
     url: `/feedback/${courseid}/list`,
@@ -78,7 +83,7 @@ $(document).ready(function () {
             return e.file_id == reportList.data[n].file_id;
           })
           if (reportInjudgementList) {
-            $('#report-select').append('<a class="list-group-item list-group-item-action report-select-item" fid="' + reportList.data[n].file_id + '">' + '报告名称' + reportList.data[n].file_name + '<span style="float:right;" class="badge badge-success badge-pill">[已评价]]</span></a > ');
+            $('#report-select').append('<a class="list-group-item list-group-item-action report-select-item" fid="' + reportList.data[n].file_id + '">' + '报告名称' + reportList.data[n].file_name + '<span style="float:right;" class="badge badge-success badge-pill">[已评价]</span></a > ');
           } else {
             $('#report-select').append('<a class="list-group-item list-group-item-action report-select-item" fid="' + reportList.data[n].file_id + '">' + '报告名称' + reportList.data[n].file_name + '<span style="float:right;" class="badge badge-danger badge-pill">[未评价]</span></a > ');
           }
@@ -116,10 +121,9 @@ function sideBarInit() {
   $(".has-submenu").hover(function () {
     var height;
     var current_list = $(this).find('.submenu').attr("id");
-    current_list = current_list.split('-').join('');
     console.log(current_list);
+    current_list = current_list.split('-').join('');
     if (current_list != null && current_list != undefined) {
-      console.log(eval(current_list))
       height = eval(current_list).length * 41;
     } else {
       height = 0;
@@ -145,6 +149,24 @@ function sideBarInit() {
   });
 }
 
+function logout() {
+  $.get({
+    url: '/login/logout'
+  }).done(function () {
+    alert("退出成功！");
+    window.location.href = '/';
+  })
+}
+
+function getUserName() {
+  $.get({
+    url: '/user/username'
+  }).done(result => {
+    username = result.result.username;
+    setUserName();
+  })
+}
+
 function getUserId() {
   $.get({
     url: '/user/userid'
@@ -154,27 +176,27 @@ function getUserId() {
   })
 }
 
-function getClassname() {
+function getCourseList() {
   $.get({
     url: '/course',
   }).done(result => {
-    courseList = result.data;
-    let selectedCourse = courseList.filter(e => {
+    courselist = result.data;
+    $('#course-list').empty();
+    for (let i = 0; i < courselist.length; i++) {
+      $('#course-list').append(`<li><a href="/tutorial/index#${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
+    };
+    let selectedCourse = courselist.filter(e => {
       return e._id == courseid;
     });
     classname = selectedCourse[0].name;
+    console.log(classname);
     setClassName();
   });
 }
 
-function getcourseid() {
-  let localURLArgs = location.href.split('/');
-  courseid = localURLArgs[localURLArgs.length - 3];
-}
-
-function setClassName() {
+function setClassName () {
   if (classname) {
-    $('#big-title').text('上传报告 当前课程: ' + classname);
+    $('#big-title').text('教师评分 当前课程: ' + classname);
     $('#result-table tbody .classname').text(classname);
   }
 }

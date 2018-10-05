@@ -164,8 +164,30 @@
                 <tbody id="report-tablet">
                 </tbody>
               </table>
-              <div id="judge-dialog" tittle="教师评价">
+              <!-- 模态框 -->
+              <div class="modal fade" id="judge-modal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+
+                    <!-- 模态框头部 -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">教师评价</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- 模态框主体 -->
+                    <div class="modal-body" id="judge-text">
+                    </div>
+
+                    <!-- 模态框底部 -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    </div>
+
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
         </div>

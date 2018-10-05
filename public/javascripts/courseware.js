@@ -21,7 +21,6 @@ $(document).ready(function () {
     var current_list = $(this).find('.submenu').attr("id");
     current_list = current_list.split('-').join('');
     if (current_list != null && current_list != undefined) {
-      console.log(eval(current_list))
       height = eval(current_list).length * 41;
     } else {
       height = 0;
@@ -51,6 +50,7 @@ $(document).ready(function () {
 })
   .on('click', '.my-download-button', async function () {
     let file_id = $(this).attr('fid');
+    console.log(file_id);
     let url = 'http://' + window.location.host + '/file/' + file_id;
     let $form = $('<form method="GET"></form>');
     $form.attr('action', url);

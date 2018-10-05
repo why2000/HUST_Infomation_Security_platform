@@ -4,7 +4,7 @@ let courseid;
 let username;
 let courselist;
 let videolist;
-let courseName;
+let classname;
 
 $(document).ready(function () {
   courseid = window.location.href.substring(window.location.href.lastIndexOf('#') + 1, window.location.href.length);
@@ -85,7 +85,7 @@ function getCourseList() {
     let selectedCourse = courselist.filter(e => {
       return e._id == courseID;
     });
-    courseName = selectedCourse[0].name;
+    classname = selectedCourse[0].name;
     setCourseName();
   });
 }
@@ -118,8 +118,8 @@ function setUserName() {
 }
 
 function setCourseName() {
-  if (courseName) {
-    $('#big-title').text('观看视频 当前课程: ' + courseName);
+  if (classname) {
+    $('#big-title').text('观看视频 当前课程: ' + classname);
   }
 }
 

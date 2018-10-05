@@ -23,7 +23,6 @@ $(document).ready(function () {
     var current_list = $(this).find('.submenu').attr("id");
     current_list = current_list.split('-').join('');
     if (current_list != null && current_list != undefined) {
-      console.log(eval(current_list))
       height = eval(current_list).length * 41;
     } else {
       height = 0;
@@ -135,7 +134,6 @@ async function render(coursewareFileList, courseName) {
       + `<button type="button" class="my-download-button btn btn-primary" fid='${coursewareFileList[n].file_id}'>下载</button>`
       + '</div > </li>';
   }
-  console.log(html);
   $('#courseware-list').append(html);
 }
 
@@ -173,7 +171,6 @@ function getCoursewareList() {
       if (coursewareFileList.length) {
         render(coursewareFileList, classname);
       }
-      console.log(coursewareFileList)
     }
   });
 }
@@ -182,7 +179,7 @@ function getUserName() {
   $.get({
     url: '/user/username'
   }).done(result => {
-    username = result.username;
+    username = result.result.username;
     setUserName();
   })
 }
