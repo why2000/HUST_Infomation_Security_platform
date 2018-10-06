@@ -132,11 +132,11 @@
       </div>
       <div class="row">
         <div class="col-3">
-          <div class="card">
+          <div class="card" id="exam-select-card" style="display:block">
             <div class="card-body">
               <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择练习</h5>
               <div>
-                <div class="row pre-scrollable">
+                <div class="row pre-scrollable" style="max-height: 35vh">
                   <div class="col-12">
                     <div id="exam-select" class="list-group list-group-flush" style="font-size:12px">
                       <h4>暂无练习</h4>
@@ -151,24 +151,22 @@
             <div class="card-body">
               <div id="exam-info">
                 <h5 id="exam-name"></h5>
+                <br>
                 <h5 style="font-size:16px">练习简介:</h5>
                 <p id="exam-description"></p>
                 <h5 style="font-size:16px">时间限制:</h5>
                 <P type='number' id="exam-time" style="font-size:20px"></P>
               </div>
-              <br>
-              <button id="start-btn" type="button" class='btn btn-primary btn-block' disabled="disabled">开始练习</button>
+              <button id="start-btn" type="button" class='btn btn-primary btn-block btn-exam-check' disabled="disabled">开始练习</button>
               <p style="font-size:11px">开始练习后若意外退出，计时不会停止</p>
             </div>
           </div>
         </div>
         <div class="col-9">
-          <div class="card">
-              <div class="row pre-scrollable">
-                <div class="col-12">
-                  <div class="exam-body">
-                    <h4>未选择练习</h4>
-                  </div>
+          <div class="row pre-scrollable" style="max-height: 80vh">
+            <div class="col-12">
+              <div id="exam-body">
+                <h4>未选择练习</h4>
               </div>
             </div>
           </div>

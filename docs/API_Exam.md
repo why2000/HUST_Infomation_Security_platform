@@ -291,6 +291,8 @@ None
 
 
 
+
+
 ### POST /:course_id/:exam_id/commit
 
 **交卷**
@@ -303,7 +305,7 @@ None
 [
     {
         "id": 0,
-        "answer": "A,B,C"
+        "answer": "A"
     }
 ]
 ```

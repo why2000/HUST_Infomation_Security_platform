@@ -6,7 +6,7 @@ let courselist;
 let examlist;
 let classname;
 let examid;
-let countIt;
+let countIT;
 
 $(document).ready(function () {
   courseid = window.location.href.substring(window.location.href.lastIndexOf('#') + 1, window.location.href.length);
@@ -48,26 +48,58 @@ $(document).ready(function () {
   getExamList();
   getUserName();
 })
-  .on('click', '#start-btn .btn-primary', function () {
-    $(this).addClass('btn-warning');
+  .on('click', '#start-btn.btn-exam-check', function () {
+    $(this).removeClass('btn-exam-check');
     $(this).removeClass('btn-primary');
+    $(this).addClass('btn-exam-ready');
+    $(this).addClass('btn-warning');
     $(this).text('确认开始？');
   })
-  .on('mouseleave', '#start-btn .btn-warning', function () {
-    $(this).addClass('btn-primary');
+  .on('mouseleave', '#start-btn.btn-exam-ready', function () {
+    $(this).removeClass('btn-exam-ready');
     $(this).removeClass('btn-warning');
+    $(this).addClass('btn-exam-check');
+    $(this).addClass('btn-primary');
     $(this).text('开始练习');
   })
-  .on('click', '#start-btn .btn-warning', function () {
-    $(this).attr("disabled", "disabled");
+  .on('click', '#start-btn.btn-exam-ready', function () {
+    $(this).removeClass('btn-exam-ready');
+    $(this).removeClass('btn-warning');
+    $(this).addClass('btn-info');
+    $(this).addClass('btn-sub-check');
     getExamContent();
-    $(this).text('已开始');
+    $(this).text('提交答案');
+  })
+  .on('click', '#start-btn.btn-sub-check', function () {
+    $(this).removeClass('btn-sub-check');
+    $(this).removeClass('btn-success');
+    $(this).addClass('btn-sub-ready');
+    $(this).addClass('btn-warning');
+    $(this).text('确认提交？');
+  })
+  .on('mouseleave', '#start-btn.btn-sub-ready', function () {
+    $(this).removeClass('btn-sub-ready');
+    $(this).removeClass('btn-warning');
+    $(this).addClass('btn-sub-check');
+    $(this).addClass('btn-info');
+    $(this).text('提交答案');
+  })
+  .on('click', '#start-btn.btn-sub-ready', function () {
+    $(this).removeClass('btn-sub-ready');
+    $(this).attr('disabled', 'disabled');
+    $(this).text('提交中...');
+    setExamStop();
+  })
+  .on('click', '.exam-select-item', function () {
+    examid = $(this).attr('eid');
+    getExamInformation();
   })
 
 function setTimeCount(time) {
   let curr_time = parseInt(Date.parse(new Date()) / 1000);
   let end_time = time + curr_time;
-  countIt = setInterval(timeCountDown, 1000, end_time);
+
+  countIT = setInterval(`timeCountDown(${end_time})`, 1000);
 }
 
 function timeCountDown(end_time) {
@@ -77,69 +109,155 @@ function timeCountDown(end_time) {
     setTimeLimit(diff_time);
   } else {
     clearInterval(countIT);
-    //setExamStop();
+    setExamStop();
   }
 }
 
 function setTimeLimit(time) {
-  let hours = parseInt(time / 3600);
-  let minutes = parseInt((time - hours * 3600) / 60)
-  let seconds = parseInt(time - hours * 3600 - minutes * 60)
+  let hours = 0,
+    minutes = 0,
+    seconds = time;
+  if (seconds > 60) {//如果秒数大于60，将秒数转换成整数
+    //获取分钟，除以60取整数，得到整数分钟
+    minutes = parseInt(seconds / 60);
+    //获取秒数，秒数取佘，得到整数秒数
+    seconds = parseInt(seconds % 60);
+    //如果分钟大于60，将分钟转换成小时
+    if (minutes > 60) {
+      //获取小时，获取分钟除以60，得到整数小时
+      hours = parseInt(minutes / 60);
+      //获取小时后取佘的分，获取分钟除以60取佘的分
+      minutes = parseInt(minutes % 60);
+    }
+  }
+
   $('#exam-time').text(`${hours}:${minutes}:${seconds}`);
 }
 
 function getExamContent() {
-  $.get({
+  $.post({
     url: `/exam/${courseid}/${examid}/start`
   }).done(result => {
     let questions = result.data.content;
     let time = result.data.timelimit;
-    setExamContent(time, questions);
+    setExamStart(time, questions);
   })
 }
 
 async function setExamStop() {
+  clearInterval(countIT);
+  let answer = [];
+  $('#exam-body').find('.question-options').each(function () {
+    if ($(this).attr('qtype') == 'sc') {
+      answer.push({
+        'id': $(this).attr('qid'), 'answer': $(this).find(':checked').val() ? $(this).find(':checked').val() : ''
+      });
+    } else if ($(this).attr('qtype') == 'mc') {
+      let mc_answer = [];
+      $(this).find(':checked').each(function () {
+        mc_answer.push($(this).val());
+      })
+      answer.push({ 'id': $(this).attr('qid'), 'answer': mc_answer.join(',') });
+    }
+  })
+  uploadExamAnswer(answer)
+    .done(function () {
+      let $btn = $('#start-btn.btn-sub-ready');
+      $btn.removeClass('btn-sub-ready');
+      $btn.removeClass('btn-warning');
+      $btn.addClass('btn-exam-check');
+      $btn.addClass('btn-primary');
+      $btn.removeAttr('disabled');
+      $btn.text('开始练习');
+      examid = null;
+      countIT = null;
+      $('#exam-select-card').attr('style', 'display:block;')
+    })
+}
 
+function uploadExamAnswer(answer) {
+  let json_answer = { data: answer };
+  console.log(json_answer);
+  return $.post({
+    url: `/exam/${courseid}/${examid}/commit`,
+    contentType: 'application/json',
+    data: JSON.stringify(answer),
+  })
 }
 
 async function setExamStart(time, questions) {
-  setTimeCount(time);
-  $('#exam-body').empty();
-  let qid = 0;
+  $('#exam-select-card').attr('style', 'display:none;')
+  console.log('start render');
+  let last_id = 0;
+  let html = '';
+  html += (`<div class="card"><div class="question card-body" qid="${last_id}">`);
+  html += (`<p><span style="font-weight:bold;">第${last_id + 1}题  </span>`);
   questions.forEach(question => {
-    $('#exam-body').append(`<div class="question card-body" id="qid-${qid}">`);
-    $('#exam-body').append(`<p><span style="font-weight:bold;">第${qid + 1}题</span> ${question.text}</p>`);
-    if (question.src != '') {
-      $(`#qid-${qid}`).append(`<img src="${question.src}" class="img-rounded">`);
+    if (question.id != last_id) {
+      last_id = question.id;
+      html += ('</div></div><br>');
+      html += (`<div class="card"><div class="question card-body" qid="${question.id}">`);
+      html += (`<p><span style="font-weight:bold;">第${question.id + 1}题  </span>`);
     }
-    $('#exam-body').append('</div>');
+    if (question.type == "text") {
+      html += (`${question.text}</p>`);
+    } else if (question.type == 'img') {
+      $(`#exam-body`).append(`<img src="${question.src}" class="img-rounded">`);
+    } else if (question.type == 'sc') {
+      html += "<label>(单选题)</label>";
+      html += `<div class="radio question-options" qtype="sc" qid="${question.id}">`;
+      question.options.forEach(
+        option => {
+          html += (
+            `  <label>
+                <input type="radio" name="optionsRadios" value="${option.choice}"> ${option.choice}.${option.text}
+              </label>`
+          )
+        })
+      html += '</div>';
+    } else if (question.type == 'mc') {
+      html += "<label>(多选题)</label>"
+      html += `<div class="checkbox question-options" qtype="mc" qid="${question.id}">`;
+      question.options.forEach(
+        option => {
+          html += (
+            `<label>
+                <input type="checkbox" class="mc-options" class="question-options" qtype="mc" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
+              </label>`
+          )
+        })
+      html += '</div>';
+    }
   });
+  html += ('</div></div>');
+  $('#exam-body').empty().append(html);
+  setTimeCount(time);
 }
 
 function getExamList() {
   $.get({
-    url: `/ exam / ` + courseid
+    url: `/exam/` + courseid
   }).done(result => {
     examlist = result.data;
     let html = '';
     for (let n = 0; n < examlist.length; n++) {
-      html += '<a class="list-group-item list-group-item-action video-select-item" vid="' + examlist[n]._id + '">'
+      html += '<li class="list-group-item list-group-item-action exam-select-item" eid="' + examlist[n]._id + '">'
         + "  练习名称: " + examlist[n].title
-        + '</a>';
+        + '</li>';
     }
-    $('#examlist-select').empty().append(html);
+    $('#exam-select').empty().append(html);
   })
 }
 
-function getExamInformation(examid) {
+function getExamInformation() {
   $.get({
-    url: `/ exam / ${courseid} / ${examid}`
+    url: `/exam/${courseid}/${examid}`
   }).done(result => {
     $('#exam-name').text(result.data.title);
     $('#exam-description').text(result.data.description);
+    $('#start-btn').removeAttr('disabled');
     let time = result.data.timelimit;
     setTimeLimit(time);
-    $('#exam-time').text(`${hours}: ${minutes}: ${seconds}`);
   })
 
 }

@@ -88,7 +88,7 @@ const getStudentScoreUndone = async (student_id, exam_id) => {
 
 const createStudentScore = async (exam_id, student_id, start_time)  => {
     let colScore = db.collection('score');
-    let eid = MongoDb.ObjectId(exam_id);
+    let eid = MongoDB.ObjectId(exam_id);
 
     return colScore.insertOne({
         exam_id: eid,
@@ -101,7 +101,7 @@ const createStudentScore = async (exam_id, student_id, start_time)  => {
 
 const setStudentScoreDone = async (exam_id, student_id, score) => {
     let colScore = db.collection('score');
-    let eid = MongoDb.ObjectId(exam_id);
+    let eid = MongoDB.ObjectId(exam_id);
 
     return colScore.updateOne({
         exam_id: eid,
