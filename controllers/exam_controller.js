@@ -147,7 +147,6 @@ exports.startExam = async (req, res) => {
 
 exports.stopExam = async (req, res) => {
     let user = req.body;
-    console.log(user);
     if (!user || !Array.isArray(user)) {
         response(res, 400, 'Bad request.');
         return;
@@ -162,7 +161,7 @@ exports.stopExam = async (req, res) => {
         return;
     }
 
-    let inf = Exam.getExamInfo(cid, eid);
+    let inf = await Exam.getExamInfo(cid, eid);
     if (!inf) {
         response(res, 404, 'Exam not found.');
         return;
@@ -230,18 +229,23 @@ const calcScore = async (exam, user) => {
             if (subject) { // 如果有这个题
                 switch (subject.type) {
                     case 'sc': // 单选
-                        let opt = subject.find(e => e.choice == i.answer);
-                        if (opt.is_correct) score += 1;
+                        let opt = subject.options.find(e => e.choice == i.answer);
+                        if (opt && opt.is_correct) score += 1;
                         break;
                     case 'mc':
-                        let cans = subject.find(e => e.is_correct);
+                        let cans = [];
+                        cans.push(subject.options.find(e => e.is_correct));
                         let uans = i.answer.split(',');
+
+                        console.log(cans.length)
+                        console.log(uans.length)
 
                         // 如果正确答案数量和用户回答的数量不一样
                         if (cans.length != uans.length) break;
 
                         let correct = true;
                         cans.forEach(e => {
+                            console.log(uans.includes(e.choice));
                             if (!uans.includes(e.choice)) correct = false;
                         });
 

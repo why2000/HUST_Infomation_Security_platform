@@ -72,7 +72,7 @@ $(document).ready(function () {
   })
   .on('click', '#start-btn.btn-sub-check', function () {
     $(this).removeClass('btn-sub-check');
-    $(this).removeClass('btn-success');
+    $(this).removeClass('btn-info');
     $(this).addClass('btn-sub-ready');
     $(this).addClass('btn-warning');
     $(this).text('确认提交？');
@@ -85,7 +85,6 @@ $(document).ready(function () {
     $(this).text('提交答案');
   })
   .on('click', '#start-btn.btn-sub-ready', function () {
-    $(this).removeClass('btn-sub-ready');
     $(this).attr('disabled', 'disabled');
     $(this).text('提交中...');
     setExamStop();
@@ -161,27 +160,25 @@ async function setExamStop() {
     }
   })
   uploadExamAnswer(answer)
-    .done(function () {
-      let $btn = $('#start-btn.btn-sub-ready');
-      $btn.removeClass('btn-sub-ready');
-      $btn.removeClass('btn-warning');
-      $btn.addClass('btn-exam-check');
-      $btn.addClass('btn-primary');
-      $btn.removeAttr('disabled');
-      $btn.text('开始练习');
-      examid = null;
-      countIT = null;
-      $('#exam-select-card').attr('style', 'display:block;')
-    })
 }
 
 function uploadExamAnswer(answer) {
-  let json_answer = { data: answer };
-  console.log(json_answer);
-  return $.post({
+  $.post({
     url: `/exam/${courseid}/${examid}/commit`,
     contentType: 'application/json',
     data: JSON.stringify(answer),
+  }).done(function (result) {
+    let $btn = $('#start-btn.btn-sub-ready');
+    $btn.removeClass('btn-sub-ready');
+    $btn.removeClass('btn-warning');
+    $btn.addClass('btn-exam-check');
+    $btn.addClass('btn-primary');
+    $btn.removeAttr('disabled');
+    $btn.text('开始练习');
+    examid = null;
+    countIT = null;
+    $('#exam-select-card').attr('style', 'display:block;')
+    alert('答对题目数:'+result.data.score);
   })
 }
 
