@@ -1,25 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cmn-Hans">
 
 <head>
-
-  <meta charset="UTF-8" />
-  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="google" value="notranslate" />
-  <title>华中科技大学信息安全实验平台 - 课程首页</title>
-
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>华中科技大学信息安全实验平台 - 查看练习</title>
+  <!-- load JS-->
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/public/javascripts/tutorial.js"></script>
-  <script src="/public/javascripts/jquery.easy-pie-chart.js"></script>
-  <script src="/public/javascripts/jquery.countdown.js"></script>
-  <script src="/public/javascripts/flowplayer.js"></script>
-  <script src="/public/javascripts/flowplayer.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/exam_teacher.js"></script>
   <!-- load CSS -->
   <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <!-- Google web font "Open Sans" -->
@@ -31,6 +21,17 @@
   <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
   <!-- https://fontawesome.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
+  <script>
+    document.documentElement.className = "js";
+    var supportsCssVars = function () {
+      var e, t = document.createElement("style");
+      return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS
+        .supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e
+    };
+    supportsCssVars() || alert(
+      "Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");
+  </script>
+
 </head>
 
 <body>
@@ -47,7 +48,7 @@
       </div>
     </div>
   </div>
-
+  <br>
   <nav class="main-menu">
     <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
       <img src="/public/images/logo.gif" />
@@ -121,47 +122,45 @@
       </li>
     </ul>
   </nav>
-
   <div style="width: 100% ; margin: auto; margin-top: 80px;">
+
     <div class="container">
       <div class="row">
-        <div class="col-1"></div>
-        <div class="col-10">
+        <div class="col-12">
+          <h5 id="big-title" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">查看练习</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
           <div class="card">
             <div class="card-body">
-              <h5 id="class-title" style="text-align:center;">课程名称：暂无数据</h5>
-              <br>
-              <p id="class-description" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课程描述：暂无数据</p>
-              <div id="teacher-list">
+              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择练习</h5>
+              <div class="row pre-scrollable" style="max-height: 35vh">
+                <div class="col-12">
+                  <div id="exams-select" class="list-group list-group-flush" style="font-size:12px">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <br>
+        </div>
+        <div class="col-8">
           <div class="card">
             <div class="card-body">
-              <div class="row">
-                <div class="col-6">
-                  <a id="video-a">
-                    <button type="button" id="video-button" class="btn btn-outline-primary btn-block btn-lg">上传视频</button>
-                  </a>
-                </div>
-                <div class="col-6">
-                  <a id="courseware-a">
-                    <button type="button" id="courseware-button" class="btn btn-outline-success btn-block btn-lg">上传课件</button>
-                  </a>
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <div class="col-6">
-                  <a id="report-a">
-                    <button type="button" id="report-button" class="btn btn-outline-info btn-block btn-lg">评价报告</button>
-                  </a>
-                </div>
-                <div class="col-6">
-                  <a id="exam-a">
-                    <button type="button" id="exam-button" class="btn btn-outline-warning btn-block btn-lg">编辑练习</button>
-                  </a>
+              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">评价内容</h5>
+              <div class="card">
+                <div class="card-body">
+                  <table class="table" style="margin-top: 10px;">
+                    <thead>
+                      <tr>
+                        <th>学生姓名 </th>
+                        <th>学号</th>
+                        <th>练习得分</th>
+                      </tr>
+                    </thead>
+                    <tbody id="exam-result-table">
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -171,5 +170,3 @@
     </div>
   </div>
 </body>
-
-</html>
