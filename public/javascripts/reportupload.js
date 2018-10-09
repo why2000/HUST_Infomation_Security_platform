@@ -194,22 +194,6 @@ function getUserName() {
   })
 }
 
-function openJudge() {
-  if ($('#judgement-text-form').hasClass('hidden')) {
-    //打开评价窗口
-    $('#judgement-text-form').removeClass('hidden');
-    $('#judgement-text-form').addClass('shown');
-    $('#judgement-text-form').css('display', 'block');
-    $('#show-judgement').text('收起评价');
-  } else if ($('#judgement-text-form').hasClass('shown')) {
-    //关闭评价窗口
-    $('#judgement-text-form').removeClass('shown');
-    $('#judgement-text-form').addClass('hidden');
-    $('#judgement-text-form').css('display', 'none');
-    $('#show-judgement').text('显示评价');
-  }
-}
-
 function getClassname() {
   $.get({
     url: '/course',

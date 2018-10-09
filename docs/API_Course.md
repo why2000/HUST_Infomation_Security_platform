@@ -178,7 +178,7 @@ None
 
 
 
-### GET /:id/student
+### GET /:id/teacher
 
 **获取该课程所有的老师**
 
