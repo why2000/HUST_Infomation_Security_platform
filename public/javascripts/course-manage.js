@@ -100,6 +100,10 @@ $(document).ready(function () {
     let new_member_id = $('#new-member-id').val();
     $('#new-member-id').val('');
     let new_member_type = $('#member-type-select').find(':checked').val();
+    if (teacherlist.indexOf(new_member_id) != -1 && teacherlist.indexOf(new_member_id) != -1) {
+      alert('请勿重复添加同一人');
+      return;
+    }
 
     let type_url = '';
     if (new_member_id && new_member_type) {
