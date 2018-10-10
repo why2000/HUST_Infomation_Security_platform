@@ -37,8 +37,8 @@ const assembleCourseData = async (data) => {
  */
 const getAllCourses = async () => {
     return db.collection('course').find()
-           .project({student: 0})
-           .toArray()
+        .project({ student: 0 })
+        .toArray()
 }
 
 /**
@@ -48,14 +48,14 @@ const getAllCourses = async () => {
 const getCourseInfo = async (id) => {
     let colCourse = db.collection('course')
     id = MongoDB.ObjectID(id)
-    return colCourse.findOne({_id: id})
-           .then(r => {
-               return {
-                   name: r.name,
-                   description: r.description,
-                   teacher: r.teacher
-               }
-           })
+    return colCourse.findOne({ _id: id })
+        .then(r => {
+            return {
+                name: r.name,
+                description: r.description,
+                teacher: r.teacher
+            }
+        })
 }
 
 /**
@@ -64,7 +64,7 @@ const getCourseInfo = async (id) => {
  */
 const createCourse = async (data) => {
     data = await assembleCourseData(data);
-
+    console.log(data);
     let colCourse = db.collection('course')
     return colCourse.insertOne(data).then(res => res.result.ok == 1);
 }
@@ -76,6 +76,7 @@ const createCourse = async (data) => {
 const removeCourse = async (id) => {
     let colCourse = db.collection('course');
     id = MongoDB.ObjectID(id);
+    console.log(id);
     return colCourse.deleteOne({
         _id: id
     }).then(res => res.result.ok == 1);
@@ -86,10 +87,10 @@ const removeCourse = async (id) => {
  * @param {string} course_id 课程ID
  * @param {string} student_id 学生ID
  */
-const addStudentToCourse = async (course_id, student_id)  => {
+const addStudentToCourse = async (course_id, student_id) => {
     let colCourse = db.collection('course');
     course_id = MongoDB.ObjectID(course_id);
-    return colCourse.updateOne({_id: course_id}, {$addToSet: {"student": student_id}}).then(r => r.result.ok == 1);
+    return colCourse.updateOne({ _id: course_id }, { $addToSet: { "student": student_id } }).then(r => r.result.ok == 1);
 }
 
 /**
@@ -100,7 +101,7 @@ const addStudentToCourse = async (course_id, student_id)  => {
 const addTeacherToCourse = async (course_id, teacher_id) => {
     let colCourse = db.collection('course');
     course_id = MongoDB.ObjectID(course_id);
-    return colCourse.updateOne({_id: course_id}, {$addToSet: {student: teacher_id}}).then(r => r.result.ok == 1);
+    return colCourse.updateOne({ _id: course_id }, { $addToSet: { student: teacher_id } }).then(r => r.result.ok == 1);
 }
 
 /**
@@ -109,9 +110,9 @@ const addTeacherToCourse = async (course_id, teacher_id) => {
  */
 const getCoursesByStudent = async (id) => {
     let colCourse = db.collection('course');
-    return colCourse.find({student: id})
-           .project({teacher: 0, student: 0})
-           .toArray();
+    return colCourse.find({ student: id })
+        .project({ teacher: 0, student: 0 })
+        .toArray();
 }
 
 /**
@@ -120,9 +121,9 @@ const getCoursesByStudent = async (id) => {
  */
 const getCoursesByTeacher = async (id) => {
     let colCourse = db.collection('course');
-    return colCourse.find({teacher: id})
-           .project({teacher: 0, student: 0})
-           .toArray();
+    return colCourse.find({ teacher: id })
+        .project({ teacher: 0, student: 0 })
+        .toArray();
 }
 
 /**
@@ -133,7 +134,7 @@ const getCoursesByTeacher = async (id) => {
 const studentInCourse = async (course_id, student_id) => {
     let colCourse = db.collection('course');
     course_id = MongoDB.ObjectID(course_id);
-    return colCourse.findOne({_id: course_id, student: student_id}).then(r => r ? true : false);
+    return colCourse.findOne({ _id: course_id, student: student_id }).then(r => r ? true : false);
 }
 
 /**
@@ -144,7 +145,7 @@ const studentInCourse = async (course_id, student_id) => {
 const teacherInCourse = async (course_id, teacher_id) => {
     let colCourse = db.collection('course');
     course_id = MongoDB.ObjectID(course_id);
-    return colCourse.findOne({_id: course_id, teacher: teacher_id}).then(r => r ? true : false);
+    return colCourse.findOne({ _id: course_id, teacher: teacher_id }).then(r => r ? true : false);
 }
 
 /**
@@ -155,7 +156,7 @@ const teacherInCourse = async (course_id, teacher_id) => {
 const getStudentsByCourseID = async (id) => {
     let colCourse = db.collection('course');
     id = MongoDB.ObjectID(id)
-    return colCourse.findOne({_id: id}).then(r => r ? r.student : null)
+    return colCourse.findOne({ _id: id }).then(r => r ? r.student : null)
 }
 
 /**
@@ -166,7 +167,7 @@ const getStudentsByCourseID = async (id) => {
 const getTeachersByCourseID = async (id) => {
     let colCourse = db.collection('course');
     id = MongoDB.ObjectID(id)
-    return colCourse.findOne({_id: id}).then(r => r ? r.teacher : null)
+    return colCourse.findOne({ _id: id }).then(r => r ? r.teacher : null)
 }
 
 

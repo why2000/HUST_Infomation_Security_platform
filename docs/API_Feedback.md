@@ -44,7 +44,7 @@
 
 ## 报告部分
 
-### GET /report/:student_id/:course_id
+### GET /:course_id/:student_id/report
 
 **获取报告**
 
@@ -67,7 +67,7 @@ None
 ```json
 [
     {
-        "file_name": "文件名.txt"
+        "file_name": "文件名.txt",
         "file_id": "somefileid"
     }
 ]
@@ -79,7 +79,7 @@ None
 
 
 
-### POST /report/:student_id/:course_id
+### POST /:course_id/:student_id/report
 
 ****
 
@@ -111,7 +111,7 @@ Form表单，文件(id为upload)
 
 
 
-### DELETE /report/:student_id/:course_id/:file_id
+### DELETE /:course_id/:student_id/:file_id/report
 
 **删除报告文件**
 
@@ -145,9 +145,40 @@ None
 
 ## 评价反馈
 
-### GET /judgement/:student_id/:course_id/:file_id
+### GET /:course_id/:student_id/judgement
 
-**获得学生该模块的教师评价**
+**获得学生该课程的所有文件的教师评价**
+
+参数：
+
+​	student_id: 学生ID
+
+​	course_id: 课程ID
+
+权限: 学生(student_id符合), 教师&管理员(所有)
+
+#### Request
+
+None
+
+#### Response
+
+```json
+[
+    {
+        "file_name": "文件名",
+        "file_id": "somefileid",
+        "score": "59",
+        "text": "Very good!!!"
+    }
+]
+```
+
+
+
+### GET /:course_id/:student_id/:file_id/judgement
+
+**获得学生该课程某一个文件的教师评价**
 
 参数：
 
@@ -178,9 +209,9 @@ None
 
 
 
-### POST /judgement/:student_id/:course_id/:file_id
+### POST /:course_id/:student_id/:file_id/judgement
 
-**提交学生该模块的教师评价(已有情况下会被覆盖)**
+**提交学生该课程的教师评价(已有情况下会被覆盖)**
 
 参数：
 
@@ -211,13 +242,13 @@ None
 
 
 
-错误: 400, 401, 404
+错误: 500, 400, 401, 404
 
 
 
-### DELETE /judgement/:student_id/:course_id/:file_id
+### DELETE /:course_id/:student_id/:file_id/judgement
 
-**删除学生该模块的教师评价**
+**删除学生该课程的教师评价**
 
 参数：
 
@@ -271,6 +302,7 @@ None
 {
     "student_id": "studentid",
     "module_id": "moduleid",
+    "file_name": "文件名",
     "file_id": "file_id",
     "score": 59,
     "text": "Very good!!"

@@ -48,7 +48,7 @@ collection: course
 
 ```json
 {
-    "_id": "课程ID(会由MongoDB自行创建)",
+    "_id": ObjectID("课程ID(会由MongoDB自行创建)"),
     "name": "课程名称",
     "description": "课程介绍",
     "teacher": ["老师ID1", "老师ID2"],
@@ -178,7 +178,7 @@ None
 
 
 
-### GET /:id/student
+### GET /:id/teacher
 
 **获取该课程所有的老师**
 

@@ -4,43 +4,26 @@ let ExamLogger = require('../logger').ExamLogger;
 let ExamController = require('../controllers/exam_controller');
 let UserLogger = require('../logger').UserLogger;
 let UserController = require('../controllers/user_controller');
+let middleware = require('../utils/middleware');
+
+// All need login!
+router.use(middleware.checkLogin);
 
 // root not supported -- redirected
 router.get('/', async (req, res, next) => {
   res.redirect('/exam/index');
 });
 
-// Logout
-router.get('/*logout', UserController.getLogout);
-
-/* GET exam page. */
 router.get('/index', ExamController.getIndexPage);
 
-router.get('/*username', UserController.getUserNameById);
+router.get('/:course_id', ExamController.getExams);
+router.post('/:course_id', ExamController.saveExam);
 
-router.get('/:taskindex', ExamController.getTaskPage);
+router.get('/:course_id/:exam_id', ExamController.getExamInfo);
 
-router.get('/*tasklist', ExamController.getTaskList);
+router.post('/:course_id/:exam_id/start', middleware.checkIP, ExamController.startExam);
+router.post('/:course_id/:exam_id/commit', middleware.checkIP, ExamController.stopExam);
 
-router.get('/*favorlist', ExamController.getFavorList);
-
-
-// 收藏状态控制
-router.get('/:taskindex/favor', ExamController.getFavor);
-
-router.post('/:taskindex/favor', ExamController.postFavor);
-
-router.delete('/:taskindex/favor', ExamController.deleteFavor);
-
-
-// 题目主体信息控制
-
-router.get('/:taskindex/info', ExamController.getInfo);
-
-
-router.post('/:taskindex/submit', ExamController.submitTask);
-
-router.get('/:taskindex/timelimit', ExamController.getTimeLimit);
-
+router.get('/:course_id/:exam_id/score', ExamController.getScores);
 
 module.exports = router;

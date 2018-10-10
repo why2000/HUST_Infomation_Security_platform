@@ -7,6 +7,12 @@ function checkLogin(req, res, next) {
     next()
 }
 
+function checkIP(req, res, next) {
+    // TODO: TODO
+    next()
+}
+
 module.exports = {
-    checkLogin
+    checkLogin,
+    checkIP
 }

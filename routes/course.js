@@ -5,6 +5,7 @@ let CourseController = require('../controllers/course_controller');
 
 router.use(middleware.checkLogin)
 
+router.get('/manage', CourseController.getCoursesManagePage)
 router.get('/all', CourseController.getAllCourses)
 router.get('/', CourseController.getCourses)
 router.post('/', CourseController.createCourse)

@@ -1,4 +1,5 @@
 var feedback = require('../models/feedback_db');
+var course = require('../models/course_db');
 var file = require('../models/file_db');
 var user = require('../models/user_db');
 var response = require('../utils/response');
@@ -13,27 +14,57 @@ let FeedbackLogger = require('../logger').FeedbackLogger;
 */
 
 const getStudentList = async (req, res) => {
-    if (req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
-        var teacherID = req.session.loginUser;
-        user.getStudentListByTeaID(teacherID)
-            .catch(err => {
-                res.status(500).send("Server error");
-                throw (err);
-            })
-            .then(result => {
-                if (result) {
-                    res.status(200).json(result);
-                } else {
-                    res.status(500).send("No data");
+    // if (req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
+
+    let course_id = req.params.class_id;
+    course.getStudentsByCourseID(course_id)
+        .catch(err => {
+            res.status(500).send("Server error");
+            throw (err);
+        })
+        .then(async result => {
+            let data = [];
+            if (result) {
+                for (let n = 0; n < result.length; n++) {
+                    let stu = await user.findUserById(result[n]);
+
+                    let report = await feedback.getReportByStudentIDAndModuleID(result[n], course_id)
+                    let reportFileID;
+                    if (report) {
+                        reportFileID = report.file_id;
+                    } else {
+                        reportFileID = false;
+                    }
+                    data.push({
+                        id: result[n],
+                        name: stu.username,
+                        file_id: reportFileID
+                    })
                 }
-            })
+                res.status(200).json(data);
+            } else {
+                res.status(500).send("No data");
+            }
+        })
+    /* } else {
+         res.status(401).send("permission denied");
+     }*/
+}
+
+const getTeacherIndexPage = async (req, res) => {
+    if (!req.session.loginUser) {
+        res.redirect('/');
     } else {
-        res.status(401).send("permission denied");
+        UserValidator.getUserTypeById(req.session.loginUser).then(user_type => {
+            if (user_type == "teacher") {
+                res.render("judge-upload");
+            }
+            res.redirect('/feedback/index/class');
+        })
     }
 }
 
 const getPageByUserType = async (req, res) => {
-
     if (!req.session.loginUser) {
         res.redirect('/');
     } else {
@@ -44,18 +75,22 @@ const getPageByUserType = async (req, res) => {
                 } else {
                     res.render('report-index');
                 }
-            } else if (user_type == "teacher") {
-                res.render("judge-upload");
+            } else {
+                res.render('judge-upload');
             }
         });
     }
 }
 
 const getStudentReport = async (req, res) => {
+    console.log(req.session.loginUser)
+    console.log(req.params.student_id)
+
     if (req.session.loginUser &&
         ((await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) ||
         (req.session.loginUser == req.params.student_id)) {
-        feedback.getReportByStudentIDAndModuleID(req.params.student_id, req.params.class_id)
+
+        feedback.getReportByStudentIDAndModuleID(req.params.student_id, req.params.course_id)
             .catch(err => {
                 //need a logger
                 response(res, 500, "Server error.");
@@ -74,10 +109,10 @@ const getStudentReport = async (req, res) => {
 }
 
 const saveStudentReport = async (req, res) => {
-    // 注意student_id和class_id是否存在
+    // 注意student_id和course_id是否存在
     // form内input file的id为upload
     let sid = req.session.loginUser;
-    let mid = req.params.class_id;
+    let mid = req.params.course_id;
     if (sid) {
         if (!req.file) { // 没上传文件
             response(res, 400, "Argument error.");
@@ -100,7 +135,7 @@ const saveStudentReport = async (req, res) => {
                 return file.saveFile(req.file.originalname, req.file.path, `student:${sid}`);
             })
             .then(fid => {
-                return feedback.upsertReport(sid, mid, fid);
+                return feedback.upsertReport(sid, mid, fid, req.file.originalname);
             })
             .then(() => {
                 response(res, {});
@@ -110,18 +145,22 @@ const saveStudentReport = async (req, res) => {
                 response(res, 500, 'Server error.');
             });
     } else {
-        res.status(401).send("permission denied");
+        res.status(401).send("No Login.");
     }
 }
 
 const deleteStudentReport = async (req, res) => {
-    let sid = req.session.loginUser;
-    let mid = req.params.class_id;
+    let sid = req.params.student_id;
+    let mid = req.params.course_id;
+    let fid = req.params.file_id;
     if (sid) {
         feedback.getReportByStudentIDAndModuleID(sid, mid)
             .then(result => {
-                if (result) {
-                    file.removeFile(result.file_id)
+                result = result.filter(report => {
+                    return report.file_id == fid;
+                })
+                if (result.length) {
+                    file.removeFile(result[0].file_id)
                         .then(() => {
                             return feedback.removeReport(sid, mid);
                         })
@@ -140,27 +179,73 @@ const deleteStudentReport = async (req, res) => {
     }
 }
 
+const getAllTeacherJudgement = async (req, res) => {
+    var mid = req.params.course_id;
+    var sid = req.params.student_id;
+
+    if (!req.session.loginUser) {
+        response(res, 401, 'Not Login.');
+        return;
+    }
+
+    if (await UserValidator.getUserTypeById(req.session.loginUser) == 'student' &&
+        req.params.student_id != req.session.loginUser.toString()) { // 学生用户访问不是自己的
+        response(res, 401, 'Permission denied.');
+        return;
+    }
+
+    feedback.getAllJudgementByStudentIDAndModuleID(sid, mid)
+        .then(r => {
+            if (r) {
+                response(res, r);
+            } else {
+                response(res, 404, 'Not found.')
+            }
+        })
+        .catch(err => {
+            FeedbackLogger.error(`controller error => ${err.stack}`)
+            next(err);
+        })
+}
+
+
 const getTeacherJudgement = async (req, res, next) => {
-    var student_id;
-    if (req.session.loginUser &&
-        (await UserValidator.getUserTypeById(req.session.loginUser) == 'student')) {
-        student_id = req.session.loginUser.toString();
+    if (!req.session.loginUser) {
+        response(res, 401, 'Not Login.');
+        return;
     }
-    if (req.session.loginUser &&
-        (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
-        student_id = req.params.student_id.toString();
+
+    if (await UserValidator.getUserTypeById(req.session.loginUser) == 'student' &&
+        req.params.student_id != req.session.loginUser.toString()) { // 学生用户访问不是自己的
+        response(res, 401, 'Permission denied.');
+        return;
     }
+
+
     try {
-        var class_id = req.params.class_id;
-        feedback.getJudgementByStudentIDAndModuleID(student_id, class_id).then(result => {
-            res.json({
-                result: {
-                    info: {
-                        score: result.score,
-                        text: result.text
+        var course_id = req.params.course_id;
+        var student_id = req.params.student_id;
+        var file_id = req.params.file_id;
+        feedback.getJudgementByStudentIDAndModuleID(student_id, course_id, file_id).then(result => {
+            if (result) {
+                res.json({
+                    result: {
+                        info: {
+                            score: result.score,
+                            text: result.text
+                        }
                     }
-                }
-            });
+                })
+            } else {
+                res.json({
+                    result: {
+                        info: {
+                            score: '',
+                            text: ''
+                        }
+                    }
+                })
+            }
         });
     } catch (err) {
         FeedbackLogger.error(`controller error => ${err.stack}`)
@@ -169,16 +254,24 @@ const getTeacherJudgement = async (req, res, next) => {
 }
 
 const saveTeacherJudgement = async (req, res) => {
-    // 注意student_id和class_id是否存在
+    // 注意student_id和course_id是否存在
     let sid = req.params.student_id;
-    let mid = req.params.class_id;
+    let mid = req.params.course_id;
+    let fid = req.params.file_id;
+
     if (req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
 
         // 参数类型检查和范围检查 其实很丑，看看有什么比较好看的解决方案
         if (typeof (req.body.score) == 'number' && typeof (req.body.body == 'string') && (req.body.score >= 0 && req.body.score <= 100)) {
             req.body.score = Math.floor(req.body.score);//取整
-            // 注意HTML转义的问题，先尝试在前端解决
-            feedback.upsertJudgement(sid, mid, req.body.score, req.body.text)
+            // TODO: 有XSS攻击风险!!!
+            let fname = await file.getFileNameByID(fid);
+            if (!fname) {
+                response(res, 404, 'File Not Found!');
+                return;
+            }
+
+            feedback.upsertJudgement(sid, mid, fid, fname, req.body.score, req.body.text)
                 .then(() => {
                     response(res, {});
                 })
@@ -190,15 +283,17 @@ const saveTeacherJudgement = async (req, res) => {
             response(res, 400, 'Data error.');
         }
     } else {
-        response(res, 401, "permission denied");
+        response(res, 401, "Not Login.");
     }
 }
 
 const deleteTeacherJudgement = async (req, res) => {
     let sid = req.params.student_id;
-    let mid = req.params.class_id;
+    let mid = req.params.course_id;
+    let fid = req.params.file_id;
+
     if (req.session.loginUser && (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) {
-        feedback.removeJudgement(sid, mid)
+        feedback.removeJudgement(sid, mid, fid)
             .then(() => {
                 response(res, {});
             })
@@ -206,7 +301,7 @@ const deleteTeacherJudgement = async (req, res) => {
                 response(res, 500, 'Server error.');
             });
     } else {
-        response(res, 401, "permission denied");
+        response(res, 401, "Permission denied.");
     }
 }
 
@@ -216,7 +311,9 @@ module.exports = {
     getStudentReport,
     saveStudentReport,
     deleteStudentReport,
+    getAllTeacherJudgement,
     getTeacherJudgement,
     saveTeacherJudgement,
-    deleteTeacherJudgement
+    deleteTeacherJudgement,
+    getTeacherIndexPage
 }

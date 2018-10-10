@@ -3,267 +3,177 @@
 
 <head>
 
-    <meta charset="UTF-8" />
-    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="google" value="notranslate" />
-    <title>华中科技大学信息安全实验平台 - 在线练习</title>
-    <link href="/public/stylesheets/examindex.css" rel="stylesheet" type="text/css" />
-    <link href="/public/stylesheets/examiconfont.css" rel="stylesheet" type="text/css" />
-    <link href="/public/stylesheets/examtest.css" rel="stylesheet" type="text/css" />
-    <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-    <script src="/public/javascripts/jquery-3.3.1.min.js"></script>
-    <script src="/public/javascripts/exam.js"></script>
-    <script src="/public/javascripts/jquery.easy-pie-chart.js"></script>
-    <script src="/public/javascripts/jquery.countdown.js"></script>
+  <meta charset="UTF-8" />
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="google" value="notranslate" />
+  <title>华中科技大学信息安全实验平台 - 在线答题</title>
 
+
+
+  <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/exam.js"></script>
+  <script src="/public/javascripts/jquery.easy-pie-chart.js"></script>
+  <script src="/public/javascripts/jquery.countdown.js"></script>
+
+  <!-- load CSS -->
+  <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
+  <!-- Google web font "Open Sans" -->
+  <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
+  <!-- https://getbootstrap.com/ -->
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
+  <!-- http://kenwheeler.github.io/slick/ -->
+  <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <!-- https://fontawesome.com/ -->
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
 </head>
 
 <body>
-    <div class="header">
-        <div class="headerb">
-            <div class="top-logo" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
-            <div class="headern">
-                华中科技大学信息安全实验平台
-            </div>
+  <div class="header">
+    <div class="headerb">
+      <div class="top-logo" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
+      <div class="headern">
+        华中科技大学信息安全实验平台
+      </div>
 
-            <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
-                <div class="logout-icon"></div>
-                <span>退出</span>
-            </div>
-        </div>
+      <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
+        <div class="logout-icon"></div>
+        <span>退出</span>
+      </div>
     </div>
-    <nav class="main-menu">
-        <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
-            <img src="/public/images/logo.gif" />
-        </div>
-        <div class="settings" , style="text-align: center; font-size: 18px;">
-        </div>
-        <ul class="parent-menu" , id="parent">
-            <li>
+  </div>
 
-                <a id="catalog" href="/catalog">
-                    <i class="fa fa-home fa-lg"></i>
-                    <span class="nav-text">首页</span>
-
-                </a>
-            </li>
-            <li>
-                <a id='exam-to-class'>
-                    <i class="fa fa-book fa-lg"></i>
-                    <span class="nav-text">转到课程</span>
-
-                </a>
-            </li>
-            <li>
-                <a id='exam-to-feedback'>
-                    <i class="fa fa-folder-open fa-lg"></i>
-                    <span class="nav-text">上传报告</span>
-
-                </a>
-            </li>
-            <li class="has-submenu" id="favor-list-parent">
-                <a>
-                    <i class="fa fa-chevron-right fa-lg list-icon" id="favor-list-icon"></i>
-                    <span class="nav-text">
-                        我的收藏
-                    </span>
-                </a>
-                <ul id="favor-list" class="submenu" style="display: none">
-                </ul>
-            </li>
-            <li>
-                <a href="###" class="favor" , id="favor">
-                    <i class="fa fa-star-o fa-lg" id="favor-icon"></i>
-                    <span class="nav-text">
-                        收藏本节
-                    </span>
-                </a>
-            </li>
-            <li class="has-submenu" id="task-list-parent">
-                <a>
-                    <i class="fa fa-chevron-right fa-lg list-icon" id="task-list-icon"></i>
-                    <span class="nav-text">
-                        练习列表
-                    </span>
-                </a>
-                <ul id="task-list" class="submenu" style="display: none">
-                </ul>
-            </li>
-        </ul>
-        <ul class="back">
-            <li>
-                <a href="javascript:history.go(-1);">
-                    <i class="fa fa-chevron-left fa-lg"></i>
-                    <span class="nav-text">
-                        后退
-                    </span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    <div class="main" style="clear: both">
-        <div class="index-main">
-            <div layoutid="onecolumn" class="main_content" style="margin-left: 15% !important;">
-                <div class="foo">
-                    <div id="pimShowWidget" widget_id="pimShowWidget" class="widget" style="visibility: visible;">
-                        <div id="pimShowWidget-content" class="widget-content">
-                            <div class="info" id="index-info" style="margin-left: 15% !important;">
-                                <div class="depart_content_02">
-                                    <div class="audit_notice_content">
-                                        <span class="notice_title_01 audit_notice_span" style="padding-bottom: 16px;"></span>
-                                        <div class="notice_mess_bar">
-                                            <span class="info-author"></span>
-                                            <span class="">&nbsp;|&nbsp;</span>
-                                            <span class="info-category"></span>
-                                            <span class="">&nbsp;|&nbsp;</span>
-                                            <span class="info-time"></span>
-                                            <!-- <span class="">&nbsp;|&nbsp;</span> -->
-                                            <!-- <span class="info-hot"></span> -->
-                                        </div>
-                                        <div class="notice_content_01" id="pim_content">
-                                            <form>
-                                                <p style="text-indent: 2em;" dir="ltr">
-                                                </p>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="test-main">
-            <div layoutid="onecolumn" class="main_content">
-                <div class="foo">
-                    <div id="pimShowWidget" widget_id="pimShowWidget" class="widget" style="visibility: visible;">
-                        <div id="pimShowWidget-content" class="widget-content">
-                            <div class="info" id="task-info">
-                                <div class="depart_content_02">
-                                    <div class="audit_notice_content">
-                                        <span class="notice_title_01 audit_notice_span" style="padding-bottom: 16px;"></span>
-                                        <div class="notice_mess_bar">
-                                            <span class="info-author"></span>
-                                            <span class="">&nbsp;|&nbsp;</span>
-                                            <span class="info-category"></span>
-                                            <span class="">&nbsp;|&nbsp;</span>
-                                            <span class="info-time"></span>
-                                            <span class="">&nbsp;|&nbsp;</span>
-                                            <span class="info-hot"></span>
-                                        </div>
-                                        <div class="notice_content_01" id="pim_content">
-                                            <form method="POST" id="exam-form">
-                                                <p style="text-indent: 2em;" dir="ltr">
-                                                </p>
-                                            </form>
-                                        </div>
-
-                                        <!-- <li id="task-3" class="sc">123</li>
-                                            <li id="task-3" class="sc">123</li> -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="test_footer">
-                    <p class="test_time">
-                        <i class="icon iconfont">&#xe6fb;</i>
-                        <b class="alt-1"></b>
-                    </p>
-                    <button type="submit" id="exam-submit" name="exam-submit" value="交卷" form="exam-form">提交</button>
-                </div>
-            </div>
-            <div class="nr_right">
-                <div class="nr_rt_main">
-                    <div class="rt_nr1">
-                        <div class="rt_nr1_title">
-                            <button type="button" id="exam-start" class="waiting">
-                                <i class="icon iconfont">&#xe692;</i>
-                                <span></span>
-                            </button>
-                            <p class="test_time">
-                                <i class="icon iconfont">&#xe6fb;</i>
-                                <b class="alt-1"></b>
-                            </p>
-                        </div>
-
-                        <div class="rt_content" id="rt_content_sc">
-                            <div class="rt_content_tt">
-                                <h2>单选题</h2>
-                                <p>
-                                    <span>共</span>
-                                    <i class="content_lit"></i>
-                                    <span>题</span>
-                                </p>
-                            </div>
-                            <div class="rt_content_nr answerSheet">
-                                <ul>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="rt_content" id="rt_content_mc">
-                            <div class="rt_content_tt">
-                                <h2>多选题</h2>
-                                <p>
-                                    <span>共</span>
-                                    <i class="content_lit"></i>
-                                    <span>题</span>
-                                </p>
-                            </div>
-                            <div class="rt_content_nr answerSheet">
-                                <ul>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="rt_content" id="rt_content_fb">
-                            <div class="rt_content_tt">
-                                <h2>填空题</h2>
-                                <p>
-                                    <span>共</span>
-                                    <i class="content_lit"></i>
-                                    <span>题</span>
-                                </p>
-                            </div>
-                            <div class="rt_content_nr answerSheet">
-                                <ul>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <nav class="main-menu">
+    <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
+      <img src="/public/images/logo.gif" />
     </div>
+    <div class="settings" , style="text-align: center; font-size: 18px;">
+    </div>
+    <ul class="parent-menu" , id="parent">
+      <li>
+        <a id="home-page" href="/catalog">
+          <i class="fa fa-home fa-lg"></i>
+          <span class="nav-text">首页</span>
+        </a>
+      </li>
+      <li>
+        <a id="class-home-page">
+          <i class="fa fa-book fa-lg"></i>
+          <span class="nav-text">课程首页</span>
+        </a>
+      </li>
+      <li class="has-submenu" id="course-list-parent">
+        <a>
+          <i class="fa fa-chevron-right fa-lg list-icon" id="course-list-icon"></i>
+          <span class="nav-text">
+            选择课程
+          </span>
+        </a>
+        <div class="row pre-scrollable">
+          <ul id="course-list" class="submenu" style="display: none">
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a id='class-to-video'>
+          <i class="fa fa-film fa-lg"></i>
+          <span class="nav-text">观看视频</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-exam'>
+          <i class="fa fa-tasks fa-lg"></i>
+          <span class="nav-text">转到练习</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-feedback'>
+          <i class="fa fa-cloud-upload-alt fa-lg"></i>
+          <span class="nav-text">上传报告</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-courseware'>
+          <i class="fa fa-folder-open fa-lg"></i>
+          <span class="nav-text">下载课件</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-logout'>
+          <i class="fa fa-power-off fa-lg"></i>
+          <span class="nav-text">退出系统</span>
+        </a>
+      </li>
+    </ul>
+    <ul id="sidebar-back" class="back">
+      <li>
+        <a href="javascript:history.go(-1);">
+          <i class="fa fa-chevron-left fa-lg"></i>
+          <span class="nav-text">
+            后退
+          </span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 
+  <div style="width: 100% ; margin: auto; margin-top: 80px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h5 id="big-title" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课程练习
+            当前课程:无数据</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <div class="card" id="exam-select-card" style="display:block">
+            <div class="card-body">
+              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择练习</h5>
+              <div>
+                <div class="row pre-scrollable" style="max-height: 35vh">
+                  <div class="col-12">
+                    <div id="exam-select" class="list-group list-group-flush" style="font-size:12px">
+                      <h4>暂无练习</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="card">
+            <div class="card-body">
+              <div id="exam-info">
+                <h5 id="exam-name"></h5>
+                <br>
+                <h5 style="font-size:16px">练习简介:</h5>
+                <p id="exam-description"></p>
+                <h5 style="font-size:16px">时间限制:</h5>
+                <P type='number' id="exam-time" style="font-size:20px"></P>
+              </div>
+              <button id="start-btn" type="button" class='btn btn-primary btn-block btn-exam-check' disabled="disabled">开始练习</button>
+              <p style="font-size:11px">开始练习后若意外退出，计时不会停止</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-9">
+          <div class="row pre-scrollable" style="max-height: 80vh">
+            <div class="col-12">
+              <div id="exam-body">
+                <h4>未选择练习</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

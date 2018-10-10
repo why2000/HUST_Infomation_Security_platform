@@ -101,9 +101,20 @@ const removeFile = async (file_id) => {
     return colFiles.deleteOne({file_id: file_id}).then(res => res.result.ok == 1);
 }
 
+/**
+ * 通过文件ID返回文件名
+ * @param {string} file_id 
+ */
+const getFileNameByID = async (file_id) => {
+    var colFiles = db.collection('file');
+    return colFiles.findOne({file_id: file_id})
+    .then(res => res ? res.name : null);
+}
+
 module.exports = {
     getAllFiles,
     getFile,
     saveFile,
-    removeFile
+    removeFile,
+    getFileNameByID
 }

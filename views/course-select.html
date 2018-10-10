@@ -9,27 +9,25 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="google" value="notranslate" />
-  <title>华中科技大学信息安全实验平台 - 课程首页</title>
-
+  <title>华中科技大学信息安全实验平台 - 课程选择</title>
 
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/public/javascripts/tutorial.js"></script>
-  <script src="/public/javascripts/jquery.easy-pie-chart.js"></script>
-  <script src="/public/javascripts/jquery.countdown.js"></script>
-  
+  <script type="text/javascript" src="/public/javascripts/course-select.js"></script>
   <!-- load CSS -->
-  <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <!-- Google web font "Open Sans" -->
   <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
   <!-- https://getbootstrap.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
   <!-- http://kenwheeler.github.io/slick/ -->
+  <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+
   <!-- https://fontawesome.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
+
 </head>
 
 <body>
@@ -39,14 +37,12 @@
       <div class="headern">
         华中科技大学信息安全实验平台
       </div>
-
       <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
         <div class="logout-icon"></div>
         <span>退出</span>
       </div>
     </div>
   </div>
-
   <nav class="main-menu">
     <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
       <img src="/public/images/logo.gif" />
@@ -60,17 +56,11 @@
           <span class="nav-text">首页</span>
         </a>
       </li>
-      <li>
-        <a id="class-home-page">
-          <i class="fa fa-book fa-lg"></i>
-          <span class="nav-text">课程首页</span>
-        </a>
-      </li>
       <li class="has-submenu" id="course-list-parent">
         <a>
-          <i class="fa fa-chevron-right fa-lg list-icon" id="course-list-icon"></i>
+          <i class="fa fa-chevron-right fa-lg mlist-icon" id="course-list-icon"></i>
           <span class="nav-text">
-            选择课程
+            其他课程
           </span>
         </a>
         <div class="row pre-scrollable">
@@ -79,27 +69,9 @@
         </div>
       </li>
       <li>
-        <a id='class-to-video'>
-          <i class="fa fa-film fa-lg"></i>
-          <span class="nav-text">观看视频</span>
-        </a>
-      </li>
-      <li>
-        <a id='class-to-exam'>
-          <i class="fa fa-tasks fa-lg"></i>
-          <span class="nav-text">转到练习</span>
-        </a>
-      </li>
-      <li>
-        <a id='class-to-feedback'>
-          <i class="fa fa-cloud-upload-alt fa-lg"></i>
-          <span class="nav-text">上传报告</span>
-        </a>
-      </li>
-      <li>
-        <a id='class-to-courseware'>
-          <i class="fa fa-folder-open fa-lg"></i>
-          <span class="nav-text">下载课件</span>
+        <a id='class-to-information'>
+          <i class="fa fa-id-card fa-lg"></i>
+          <span class="nav-text">修改信息</span>
         </a>
       </li>
       <li>
@@ -121,47 +93,15 @@
     </ul>
   </nav>
 
-  <div style="width: 100% ; margin: auto; margin-top: 80px;">
+  <div style="margin-left: 55px;width: 100% ; margin: auto; margin-top: 80px;">
     <div class="container">
       <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-          <div class="card">
-            <div class="card-body">
-              <h5 id="class-title" style="text-align:center;">课程名称：暂无数据</h5>
-              <br>
-              <p id="class-description" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课程描述：暂无数据</p>
-              <div id="teacher-list">
-              </div>
-            </div>
-          </div>
-          <br>
-          <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-6">
-                  <a id="video-a">
-                    <button type="button" id="video-button" class="btn btn-outline-primary btn-block btn-lg">观看视频</button>
-                  </a>
-                </div>
-                <div class="col-6">
-                  <a id="courseware-a">
-                    <button type="button" id="courseware-button" class="btn btn-outline-success btn-block btn-lg">下载课件</button>
-                  </a>
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <div class="col-6">
-                  <a id="report-a">
-                    <button type="button" id="report-button" class="btn btn-outline-info btn-block btn-lg">上传报告</button>
-                  </a>
-                </div>
-                <div class="col-6">
-                  <a id="exam-a">
-                    <button type="button" id="exam-button" class="btn btn-outline-warning btn-block btn-lg">进行练习</button>
-                  </a>
-                </div>
+          <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择课程</h5>
+          <div class="row pre-scrollable" style="max-height: 85vh;">
+            <div class="col-12">
+              <div id="course-select" class="list-group">
               </div>
             </div>
           </div>
@@ -169,6 +109,7 @@
       </div>
     </div>
   </div>
+
 </body>
 
 </html>

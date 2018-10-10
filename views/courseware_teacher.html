@@ -4,12 +4,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>华中科技大学信息安全实验平台 - 教师评价</title>
+  <title>华中科技大学信息安全实验平台 - 课件上传</title>
   <!-- load JS-->
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/public/javascripts/judgeupload.js"></script>
+  <script type="text/javascript" src="/public/javascripts/courseware_teacher.js"></script>
   <!-- load CSS -->
   <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
   <!-- Google web font "Open Sans" -->
@@ -21,17 +21,6 @@
   <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
   <!-- https://fontawesome.com/ -->
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
-<script>
-  document.documentElement.className = "js";
-  var supportsCssVars = function () {
-    var e, t = document.createElement("style");
-    return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS
-      .supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e
-  };
-  supportsCssVars() || alert(
-    "Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");
-</script>
-
 </head>
 
 <body>
@@ -41,7 +30,6 @@
       <div class="headern">
         华中科技大学信息安全实验平台
       </div>
-
       <div class="logout pointer" title="退出登录" onclick="Logout()" style="cursor: pointer;">
         <div class="logout-icon"></div>
         <span>退出</span>
@@ -49,6 +37,7 @@
     </div>
   </div>
   <br>
+
   <nav class="main-menu">
     <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
       <img src="/public/images/logo.gif" />
@@ -122,68 +111,31 @@
       </li>
     </ul>
   </nav>
-  <div style="width: 100% ; margin: auto; margin-top: 80px;">
 
+  <div style="width: 100% ; margin: auto; margin-top: 80px;">
     <div class="container">
       <div class="row">
-        <div class="col-12">
-          <h5 id="big-title" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">教师评分</h5>
-          <p>先选择课程，然后选择对应的学生，点击下载按钮可以下载该名学生的报告</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4">
-
+        <div class="col-3">
           <div class="card">
             <div class="card-body">
-              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择学生</h5>
-              <div>
-                <div class="row pre-scrollable" style="max-height: 35vh">
-                  <div class="col-12">
-                    <div id="student-select" class="list-group list-group-flush" style="font-size:12px">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <br>
-          <div class="card">
-            <div class="card-body">
-              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">选择报告</h5>
-              <div class="row pre-scrollable" style="max-height: 35vh">
-                <div class="col-12">
-                  <div id="report-select" class="list-group list-group-flush" style="font-size:12px">
-                  </div>
-                </div>
+              <div class="col-12">
+                <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课件上传</h5>
+                <form id="uploadFrom" class="import-file-form" enctype="multipart/form-data">
+                  <input type="file" name="upload" id="uploadFile" accept=".ppt,.pptx,.doc,.docx,.pdf">
+                  <br>
+                  <br>
+                  <button type="button" class="my-upload-button btn btn-primary">上传</button>
+                </form>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-8">
+        <br>
+        <div class="col-9">
           <div class="card">
             <div class="card-body">
-              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">评价内容</h5>
-              <div class="card">
-                <div class="card-body">
-                  <form>
-                    <div class="form-group">
-                      <label style="color:black; font-size:14px;">分数</label>
-                      <input class="form-control" type="number" style="background-color: white; border:#ced4da solid 1px; color:black"
-                        id="inputScore" placeholder="请输入0-100的数字" value=''>
-                    </div>
-                    <div class="form-group">
-                      <label style="color:black; font-size:14px;">评价</label>
-                      <textarea class="form-control" rows="10 " style="background-color: white; border:#ced4da solid 1px; color:black;"
-                        id="inputText"></textarea>
-                    </div>
-                    <button type="button" class="btn btn-primary" id='back' onclick="javascript:history.back()" style="float: left">返回</button>
-                    <div class="btn-group pull-right">
-                      <button type="button" class="my-download-button btn btn-primary" disabled="">下载报告</button>
-                      <button type="button" class="my-upload-button btn btn-primary" id='submit'>提交</button>
-                    </div>
-                  </form>
-                </div>
+              <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课件列表</h5>
+              <div id="courseware-list" class="list-group">
               </div>
             </div>
           </div>

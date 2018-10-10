@@ -8,5 +8,5 @@ router.get('/', UserController.getLoginPage);
 
 router.post('/', UserController.postLoginInfo);
 
-
+router.get('/logout',UserController.getLogout);
 module.exports = router;

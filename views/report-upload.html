@@ -2,36 +2,29 @@
 <html lang="zh-cmn-Hans">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>华中科技大学信息安全实验平台 - 上传报告</title>
-  <!-- load JS-->
+  <meta charset="UTF-8" />
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="google" value="notranslate" />
+  <title>华中科技大学信息安全实验平台 - 报告上传</title>
+
   <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
   <script type="text/javascript" src="/public/javascripts/reportupload.js"></script>
   <!-- load CSS -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300" />
   <!-- Google web font "Open Sans" -->
-  <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css" />
+  <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
   <!-- https://getbootstrap.com/ -->
-  <link rel="stylesheet" href="/public/stylesheets/fontawesome/css/fontawesome-all.min.css" />
-  <!-- https://fontawesome.com/ -->
-
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
   <!-- http://kenwheeler.github.io/slick/ -->
-
-
-  <link rel="stylesheet" type="text/css" href="/public/stylesheets/examsidebar.css" />
-  <script>
-    document.documentElement.className = "js";
-    var supportsCssVars = function () {
-      var e, t = document.createElement("style");
-      return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS
-        .supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e
-    };
-    supportsCssVars() || alert(
-      "Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");
-  </script>
+  <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <!-- https://fontawesome.com/ -->
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
 
 </head>
 
@@ -50,61 +43,155 @@
     </div>
   </div>
 
-  <div style="width: 1200px ; margin: auto; margin-top: 80px;">
-    <div class="row">
-      <div class="col-12">
-        <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">上传报告</h5>
-      </div>
+
+  <nav class="main-menu">
+    <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
+      <img src="/public/images/logo.gif" />
     </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <form id="uploadForm">
-              <small class="form-text text-muted">选择要上传的文件，并点击“上传”按钮。支持上传的文件格式： doc、docx、pdf、txt</small>
-              <br />
-              <center>
-                <div class="form-group" style="width: 30%; text-align: center;">
-                  <input type="file" class="form-control-file" id="upload" placeholder="" aria-describedby="fileHelpId" style="font-size: 14px" accept=".txt,.doc,.docx,.pdf">
-                  <small id="fileHelpId" class="form-text text-muted" style="text-align: left;" hidden>当前未选择文件</small>
+    <div class="settings" , style="text-align: center; font-size: 18px;">
+    </div>
+    <ul class="parent-menu" , id="parent">
+      <li>
+        <a id="home-page" href="/catalog">
+          <i class="fa fa-home fa-lg"></i>
+          <span class="nav-text">首页</span>
+
+        </a>
+      </li>
+      <li>
+        <a id="class-home-page">
+          <i class="fa fa-book fa-lg"></i>
+          <span class="nav-text">课程首页</span>
+        </a>
+      </li>
+      <li class="has-submenu" id="course-list-parent">
+        <a>
+          <i class="fa fa-chevron-right fa-lg list-icon" id="course-list-icon"></i>
+          <span class="nav-text">
+            选择课程
+          </span>
+        </a>
+        <div class="row pre-scrollable">
+          <ul id="course-list" class="submenu" style="display: none">
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a id='class-to-video'>
+          <i class="fa fa-film fa-lg"></i>
+          <span class="nav-text">观看视频</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-exam'>
+          <i class="fa fa-tasks fa-lg"></i>
+          <span class="nav-text">转到练习</span>
+        </a>
+      </li>
+      <li>
+        <a id='class-to-feedback'>
+          <i class="fa fa-cloud-upload-alt fa-lg"></i>
+          <span class="nav-text">上传报告</span>
+
+        </a>
+      </li>
+      <li>
+        <a id='class-to-courseware'>
+          <i class="fa fa-folder-open fa-lg"></i>
+          <span class="nav-text">下载课件</span>
+
+        </a>
+      </li>
+      <li>
+        <a id='class-to-logout'>
+          <i class="fa fa-power-off fa-lg"></i>
+          <span class="nav-text">退出系统</span>
+        </a>
+      </li>
+    </ul>
+    <ul id="sidebar-back" class="back">
+      <li>
+        <a href="javascript:history.go(-1);">
+          <i class="fa fa-chevron-left fa-lg"></i>
+          <span class="nav-text">
+            后退
+          </span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div style="margin-left: 55px;width: 100% ; margin: auto; margin-top: 80px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h5 id="big-title" style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">上传报告
+            当前课程:无数据</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <div class="card">
+            <div class="card-body">
+              <form id="uploadForm">
+                <small class="form-text text-muted">选择要上传的文件，并点击“上传”按钮。支持上传的文件格式： doc、docx、pdf、txt</small>
+                <br>
+                <input type="file" class="form-control-file" id="upload" placeholder="" aria-describedby="fileHelpId"
+                  style="font-size: 14px" accept=".txt,.doc,.docx,.pdf">
+                <br>
+                <button id="text" type="button" class="btn btn-primary" style="cursor: pointer; float:right;" onclick="javascript:history.back();">返回</button>
+                <div class="btn-group pull-left" id="control-button-group">
+                  <button type="button" class="my-upload-button btn btn-primary">上传</button>
                 </div>
-                <small id="fileUploaded" class="form-text text-muted" style="display: none">已上传报告，<a id='reportaddr'
-                    href="/">点击下载</a></small>
-                <button id="text" type="button" class="btn btn-primary" style="cursor: pointer; float:left;" onclick="javascript:history.back();">返回</button>
-                <button id="submit" type="button" class="btn btn-primary">上传</button>
-              </center>
-            </form>
-            <table class="table" style="margin-top: 10px;" id="result-table">
-              <thead>
-                <tr>
-                  <th>姓名</th>
-                  <th>课程名</th>
-                  <th>得分</th>
-                  <th style="text-align: right">教师评价</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="classindex" id="1">
-                  <td scope="row" class="username">伍瀚缘</td>
-                  <td class="classname">未找到课程</td>
-                  <td class="score">未评分</td>
-                  <td class="judge">
-                    <button id="show-judgement" type="button" class="btn btn-primary" style="cursor: pointer; float:right;"
-                      onclick="openJudge(classindex);">查看评价</button>
-                      <br>
-                    <form role="form" id='judgement-text-form' class='hidden' style="display: none; ">
-                      <div class="form-group">
-                        <label for="name"></label>
-                        <textarea class="form-control" id="judgement-text" rows="3" readonly="readonly"></textarea>
-                      </div>
-                    </form>
-
-                  </td>
-                </tr>
-              </tbody>
-
-            </table>
-
+                </center>
+              </form>
+            </div>
           </div>
         </div>
+        <br>
+        <div class="col-8">
+          <div class="card">
+            <div class="card-body">
+              <table class="table" style="margin-top: 10px;" id="result-table">
+                <thead>
+                  <tr>
+                    <th>课程名称</th>
+                    <th>报告名称</th>
+                    <th>报告得分</th>
+                    <th style="text-align: right">教师评价</th>
+                  </tr>
+                </thead>
+                <tbody id="report-tablet">
+                </tbody>
+              </table>
+              <!-- 模态框 -->
+              <div class="modal fade" id="judge-modal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+
+                    <!-- 模态框头部 -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">教师评价</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- 模态框主体 -->
+                    <div class="modal-body" id="judge-text">
+                    </div>
+
+                    <!-- 模态框底部 -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>

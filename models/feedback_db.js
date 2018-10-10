@@ -55,13 +55,9 @@ const getReportByStudentIDAndModuleID = async (student_id, module_id) => {
         student_id: student_id,
         module_id: module_id
     })
-    if (res) {
-        ret = {
-            file_id: res.file_id
-        }
-    };
 
-    return ret;
+
+    return res ? res.report : null;
 }
 
 /**
@@ -85,9 +81,11 @@ const getReportsByModuleID = async (module_id) => {
     let colReport = db.collection('report');
     return colReport.find({
         module_id: module_id
-    }).project({
+    })
+    .project({
         _id: 0
-    }).toArray();
+    })
+    .toArray();
 }
 
 /**
@@ -120,8 +118,11 @@ const upsertReport = async (student_id, module_id, file_id, file_name) => {
         student_id: student_id,
         module_id: module_id
     }, {
-            $set: {
-                file_id: file_id
+            $addToSet: {
+                report: {
+                    file_name: file_name,
+                    file_id: file_id
+                }
             }
         }, {
             upsert: true
@@ -135,10 +136,35 @@ const upsertReport = async (student_id, module_id, file_id, file_name) => {
  */
 const removeReport = async (student_id, module_id, file_id) => {
     let colReport = db.collection('report');
-    return colReport.deleteOne({
+    return colReport.updateOne({
         student_id: student_id,
         module_id: module_id
+    }, {
+        $pull: {
+            report: {
+                file_id: file_id
+            }
+        }
     }).then(res => res.result.ok == 1);
+}
+
+/**
+ * 获得学生和模块ID符合的所有记录
+ * @param {string} student_id 
+ * @param {string} module_id 
+ */
+const getAllJudgementByStudentIDAndModuleID = async (student_id, module_id) => {
+    var colJudgement = db.collection('judgement');
+    return colJudgement.find({
+        student_id: student_id,
+        module_id, module_id
+    })
+    .project({
+        _id: 0,
+        student_id: 0,
+        module_id: 0
+    })
+    .toArray()
 }
 
 /**
@@ -147,17 +173,14 @@ const removeReport = async (student_id, module_id, file_id) => {
  * @param {string} module_id 模块ID
  */
 
-const getJudgementByStudentIDAndModuleID = async (student_id, module_id) => {
+const getJudgementByStudentIDAndModuleID = async (student_id, module_id, file_id) => {
     var colJudgement = db.collection('judgement');
     try {
         var result = await colJudgement.findOne({
             student_id: student_id,
-            module_id: module_id
-        }, {
-                "score": 1,
-                "text": 1,
-                "_id": 0
-            });
+            module_id: module_id,
+            file_id: file_id
+        });
     } catch (err) {
         FeedbackLogger.error(`database error => ${err.stack}`);
         throw err;
@@ -218,11 +241,12 @@ const insertJudgement = async (student_id, module_id, score, text) => {
  * @param {string} score 成绩
  * @param {string} text 评价文字
  */
-const upsertJudgement = async (student_id, module_id, score, text) => {
+const upsertJudgement = async (student_id, module_id, file_id, file_name, score, text) => {
     let colReport = db.collection('judgement');
     return colReport.updateOne({
         student_id: student_id,
-        module_id: module_id
+        module_id: module_id,
+        file_id: file_id
         }, {
             $set: {
                 score: score,
@@ -238,16 +262,18 @@ const upsertJudgement = async (student_id, module_id, score, text) => {
  * @param {string} student_id 学生ID
  * @param {string} module_id 模块ID
  */
-const removeJudgement = async (student_id, module_id) => {
+const removeJudgement = async (student_id, module_id, file_id) => {
     let colJudgement = db.collection('judgement');
     return colJudgement.deleteOne({
         student_id: student_id,
-        module_id: module_id
+        module_id: module_id,
+        file_id: file_id
     }).then(res => res.result.ok == 1);
 }
 
 
 module.exports = {
+    getAllJudgementByStudentIDAndModuleID,
     getJudgementsByModuleID,
     getJudgementByStudentIDAndModuleID,
     getJudgementsByStudentID,
