@@ -83,7 +83,7 @@ function getCourseList() {
       $('#course-list').append(`<li><a href="/tutorial/index#${courselist[i]._id}"><i class="fa fa-dot-circle-o fa-lg"></i><span class="nav-text-small">${courselist[i].name}</span></a></li>`);
     };
     let selectedCourse = courselist.filter(e => {
-      return e._id == courseID;
+      return e._id == courseid;
     });
     classname = selectedCourse[0].name;
     setCourseName();

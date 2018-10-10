@@ -30,7 +30,7 @@ const getStudentList = async (req, res) => {
 
                     let report = await feedback.getReportByStudentIDAndModuleID(result[n], course_id)
                     let reportFileID;
-                    if (report) {
+                    if (report && report.length != 0) {
                         reportFileID = report.file_id;
                     } else {
                         reportFileID = false;
@@ -156,13 +156,10 @@ const deleteStudentReport = async (req, res) => {
     if (sid) {
         feedback.getReportByStudentIDAndModuleID(sid, mid)
             .then(result => {
-                result = result.filter(report => {
-                    return report.file_id == fid;
-                })
-                if (result.length) {
-                    file.removeFile(result[0].file_id)
+                if (result) {
+                    file.removeFile(fid)
                         .then(() => {
-                            return feedback.removeReport(sid, mid);
+                            return feedback.removeReport(sid, mid, fid);
                         })
                         .then(() => {
                             response(res, {});
@@ -171,7 +168,7 @@ const deleteStudentReport = async (req, res) => {
                             response(res, 500, 'Server error.');
                         });
                 } else {
-                    res.status(500).send("No data");
+                    res.status(500).send("Not found.");
                 }
             });
     } else {

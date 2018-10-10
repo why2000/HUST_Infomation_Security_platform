@@ -91,7 +91,7 @@ $(document).ready(function () {
     $('#judge-text').empty().append(`<p>${$this.attr('jtext')}</p>`);
   })
 
-function Logout() {
+function logout() {
   $.get({
     url: '/login/logout'
   }).done(function () {

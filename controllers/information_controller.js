@@ -14,7 +14,6 @@ exports.getIndex = async (req, res, next) => {
 // TODO
 exports.setData = async (req, res, next) => {
   if (req.session.loginUser) {
-
     let data = {
       uid: req.session.loginUser,
       pwd: req.body.pw,

@@ -98,7 +98,7 @@ function keepAlive() {
     }
 }
 
-function Logout() {
+function logout() {
     var xmlhttp = setXmlHttp();
     RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'logout']), null, true, function () {
         if (xmlhttp.readyState == 4) {

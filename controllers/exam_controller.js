@@ -233,8 +233,7 @@ const calcScore = async (exam, user) => {
                         if (opt && opt.is_correct) score += 1;
                         break;
                     case 'mc':
-                        let cans = [];
-                        cans.push(subject.options.find(e => e.is_correct));
+                        let cans = subject.options.filter(e => e.is_correct);
                         let uans = i.answer.split(',');
 
                         console.log(cans.length)

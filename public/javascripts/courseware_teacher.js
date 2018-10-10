@@ -135,7 +135,7 @@ async function render(coursewareFileList, courseName) {
   $('#courseware-list').append(html);
 }
 
-function Logout() {
+function logout() {
   $.get({
     url: '/login/logout'
   }).done(function () {

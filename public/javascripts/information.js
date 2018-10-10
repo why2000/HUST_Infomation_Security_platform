@@ -45,7 +45,7 @@ function RESTful(xmlhttp, method, url, queryString, async, fnc) { //获取JSON�
 
 
 
-function Logout() {
+function logout() {
     var xmlhttp = setXmlHttp();
     RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'logout']), null, true, function () {
         if (xmlhttp.readyState == 4) {
@@ -94,7 +94,7 @@ $(function mainpart(){
 
 function getUserName(callback) {
     var xmlhttp = setXmlHttp();
-    RESTful(xmlhttp, "GET", creatURL([current_url_valid, 'username']), null, true, function () {
+    RESTful(xmlhttp, "GET", "/user/username", null, true, function () {
         if (xmlhttp.readyState == 4) {
             if (xmlhttp.status == 200) {
                 // alert(xmlhttp.responseText);
