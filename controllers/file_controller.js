@@ -36,7 +36,7 @@ const getFile = (req, res) => {
         if(info) {
             res.set({
                 "Content-type":"application/octet-stream",
-                "Content-Disposition":"attachment;filename=" + info.name
+                "Content-Disposition":"attachment;filename=" + encodeURIComponent(info.name)
             });
             info.stream.on("data",function(chunk){res.write(chunk,"binary")});
             info.stream.on("end",function () {
@@ -47,6 +47,7 @@ const getFile = (req, res) => {
         }
     })
     .catch(err => {
+        console.log(err)
         response(res, 500, 'Server error.')
     });
 }

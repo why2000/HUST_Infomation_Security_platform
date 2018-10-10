@@ -89,11 +89,11 @@ $(document).ready(function () {
     $form.submit();
   })
   .on('click', '.my-upload-button', function () {
-    if ($('#video-title').text() == '') {
+    if ($('#video-title').val() == '') {
       alert("请输入教学视频名称。");
       return;
     }
-    if ($('#video-description').text() == '') {
+    if ($('#video-description').val() == '') {
       alert("请输入教学视频简介。");
       return;
     }
@@ -145,7 +145,7 @@ async function render() {
   $('#video-list').append(html);
 }
 
-function Logout() {
+function logout() {
   $.get({
     url: '/login/logout'
   }).done(function () {

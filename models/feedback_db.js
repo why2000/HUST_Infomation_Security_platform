@@ -136,10 +136,7 @@ const upsertReport = async (student_id, module_id, file_id, file_name) => {
  */
 const removeReport = async (student_id, module_id, file_id) => {
     let colReport = db.collection('report');
-    return colReport.updateOne({
-        student_id: student_id,
-        module_id: module_id
-    }, {
+    return colReport.updateOne({}, {
         $pull: {
             report: {
                 file_id: file_id

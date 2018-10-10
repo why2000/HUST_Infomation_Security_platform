@@ -6,7 +6,7 @@ let courselist;
 
 /* TopBar*/
 
-function Logout() {
+function logout() {
   $.get({
     url: '/login/logout'
   }).done(function () {

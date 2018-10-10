@@ -71,7 +71,7 @@ async function render(coursewareFileList, courseName) {
 
 /* TopBar*/
 
-function Logout() {
+function logout() {
   $.get({
     url: '/login/logout'
   }).done(function () {
