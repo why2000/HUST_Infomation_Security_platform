@@ -157,12 +157,10 @@ const deleteStudentReport = async (req, res) => {
         feedback.getReportByStudentIDAndModuleID(sid, mid)
             .then(result => {
                 if (result) {
-                    file.removeFile(fid)
+                    feedback.removeReport(sid, mid, fid)
                         .then(() => {
-                            return feedback.removeReport(sid, mid, fid);
-                        })
-                        .then(() => {
-                            response(res, {});
+                            file.removeFile(fid);
+                            response(res, {})
                         })
                         .catch(err => {
                             response(res, 500, 'Server error.');
