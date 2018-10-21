@@ -159,8 +159,8 @@ const deleteStudentReport = async (req, res) => {
                 if (result) {
                     feedback.removeReport(sid, mid, fid)
                         .then(() => {
-                            file.removeFile(fid);
-                            response(res, {})
+                            file.removeFile(fid).catch(() => {}); // 不报错
+                            response(res, {});
                         })
                         .catch(err => {
                             response(res, 500, 'Server error.');
