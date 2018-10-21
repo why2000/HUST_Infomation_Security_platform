@@ -97,8 +97,12 @@ const saveFile = async (file_name, tmp_path, uploader) => {
  */
 const removeFile = async (file_id) => {
     var colFiles = db.collection('file');
-    fs.unlinkSync(path.join(cfg.PATH, file_id))
-    return colFiles.deleteOne({file_id: file_id}).then(res => res.result.ok == 1);
+    
+    return colFiles.deleteOne({file_id: file_id})
+           .then(res => {
+                fs.unlink(path.join(cfg.PATH, file_id))
+           })
+           .then(() => true)
 }
 
 /**
