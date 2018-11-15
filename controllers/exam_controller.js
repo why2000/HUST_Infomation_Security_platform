@@ -21,6 +21,15 @@ exports.getIndexPage = async (req, res) => {
     res.render(page);
 }
 
+exports.getAddPage = async (req, res) =>{
+    if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+        res.render("addexam");
+    }
+    else{
+        response(res,404,"Bad Request.")
+    }
+}
+
 exports.getExams = async (req, res) => {
     let cid = req.params.course_id;
 

@@ -8,12 +8,16 @@ let username;
 let examlist;
 
 $(document).ready(function () {
+    window.onbeforeunload=function(e){     
+        　　var e = window.event||e;  
+        　　e.returnValue=("确定离开当前页面吗？");
+        }
   getCourseid();
   getCourseList();
   getUserName();
   sideBarInit();
   getExamList();
-  $(this).find('#add-exam-a').attr('href', `/exam/add#${courseid}`);
+
 })
   .on("click", ".exam-select-item", function () {
     $('.exam-select-item').removeClass('list-group-item-success');
@@ -40,6 +44,19 @@ $(document).ready(function () {
       $('#exam-result-table').empty().append(html);
     })
   })
+
+
+function AddOption(o){
+  $(o).parent().parent().parent().find('#options').append(" <input class=\" text-center form-control \" style=\"background-color: white; border:#ced4da solid 1px;color:black; margin-bottom:10px; \" id=\"questionname \" placeholder=\"选项 \">");
+}
+
+function DecOption(o){
+  let num =   $(o).parent().parent().parent().find('#options').children().length;
+  console.log(num);
+  if(num <= 2) return;
+
+  $(o).parent().parent().parent().find('#options').children(":eq(-1)").remove();
+}
 
 function getExamList() {
   $.get({

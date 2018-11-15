@@ -16,6 +16,8 @@ router.get('/', async (req, res, next) => {
 
 router.get('/index', ExamController.getIndexPage);
 
+router.get('/add',ExamController.getAddPage);
+
 router.get('/:course_id', ExamController.getExams);
 router.post('/:course_id', ExamController.saveExam);
 
