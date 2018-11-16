@@ -128,34 +128,13 @@
                 </div>
             </row>
             <br>
-            <div class="card" id="singlechoose" style="margin-left:20px; margin-right:20px;">
+            <div id="questions">
 
-                <div class="card-body" style="padding-left:20px; padding-right:20px;">
-                    <input class=" text-center form-control" style="background-color: white; border:#ced4da solid 1px;color:black; margin-bottom:10px;" id="questionname" placeholder="题目名称">
-                    <div class="card">
-                        <div class="card-body">
-                            <div id="options">
-                                    <input name="Fruit" type="radio" value="" /><input class=" text-center form-control" style="background-color: white; border:#ced4da solid 1px;color:black; margin-bottom:10px;" id="questionname" placeholder="选项">
-                                    <input name="Fruit" type="radio" value="" /><input class=" text-center form-control " style="background-color: white; border:#ced4da solid 1px;color:black; margin-bottom:10px; " id="questionname " placeholder="选项 ">
-                        </div>
-                            <div class="row form-inline " style="padding-left:20px; padding-right:20px; ">
-                                <div class="col-6 ">
-                                    <button type="button " id="addopt " class="btn btn-outline-info btn-block btn-lg " onclick = "AddOption(this)">增加选项</button>
-                                </div>
-                                <div class="col-6 ">
-
-                                    <button type="button " id="decopt " class="btn btn-outline-info btn-block btn-lg " onclick= "DecOption(this);">减少选项</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
             </div>
             <br>
             <div class="row form-inline" style="padding-left:20px; padding-right:20px;">
                 <div class="col-4">
-                    <button type="button" id="addsingle" class="btn btn-outline-success btn-block btn-lg">增加单选题</button>
+                    <button type="button" id="addsingle" class="btn btn-outline-success btn-block btn-lg" onclick="AddSingle()">增加单选题</button>
                 </div>
                 <div class="col-4">
 
@@ -172,7 +151,7 @@
 
             <div id="submit " style="padding-left:20px; padding-right:20px; ">
 
-                <button type="button " id="submit " class="btn btn-outline-warning btn-block btn-lg ">提交测试</button>
+                <button type="button " id="submit " class="btn btn-outline-warning btn-block btn-lg "  onclick = "Submit()">提交测试</button>
 
             </div>
         </div>

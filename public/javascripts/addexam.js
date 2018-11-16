@@ -6,6 +6,10 @@ let courselist;
 let classname;
 let username;
 let examlist;
+let currentsingle = 0;
+let singlelist = new Array();
+let currentmulti = 0;
+let multilist = new Array();
 
 $(document).ready(function () {
     window.onbeforeunload=function(e){     
@@ -46,13 +50,75 @@ $(document).ready(function () {
   })
 
 
+function AddSingle(){
+    singlelist[currentsingle] = 1;
+    $('#questions').append("<div class=\"card\" id=\"singlechoose" + currentsingle.toString() +"\" style=\"margin-left:20px; margin-right:20px;\">                <div class=\"card-body\" style=\"padding-left:20px; padding-right:20px;\">                    <input class=\" text-center form-control\" style=\"background-color: white; border:#ced4da solid 1px;color:black; margin-bottom:10px;\" id=\"questionname\" placeholder=\"题目名称\">                    <div class=\"card\">                        <div class=\"card-body\">                            <div id=\"options\">                                <div class=\"input-group mb-3\">                                    <div class=\"input-group-prepend\">                                      <div class=\"input-group-text\">                                        <input type=\"radio\" aria-label=\"Checkbox for following text input\"  checked=\"checked\" name=\"single" + currentsingle.toString() + "\">                                      </div>                                    </div>                                    <input type=\"text\" class=\"form-control text-center\"  id= \"singleoption\" aria-label=\"Text input with checkbox\" placeholder=\"选项\">                                  </div>                                  <div class=\"input-group mb-3\">                                    <div class=\"input-group-prepend\">                                      <div class=\"input-group-text\">                                        <input type=\"radio\" aria-label=\"Checkbox for following text input\" name=\"single" + currentsingle.toString() + "\">                                      </div>                                    </div>                                    <input type=\"text\" class=\"form-control text-center\"  id= \"singleoption\" aria-label=\"Text input with checkbox\" placeholder=\"选项\" >                                  </div>                        </div>                            <div class=\"row form-inline \" style=\"padding-left:20px; padding-right:20px; \">                                <div class=\"col-6 \">                                    <button type=\"button \" id=\"addopt \" class=\"btn btn-outline-info btn-block btn-lg \" onclick = \"AddOption(this)\">增加选项</button>                                </div>                                <div class=\"col-6 \">                                    <button type=\"button \" id=\"decopt \" class=\"btn btn-outline-info btn-block btn-lg \" onclick= \"DecOption(this);\">减少选项</button>                                </div>                            </div>                  				<br>			 <div class=\"row form-inline \" style=\"padding-left:20px; padding-right:20px; \"><button type=\"button \" id=\"decq \" class=\"btn btn-outline-info btn-block btn-lg \" onclick= \"DecQuestion(this);\">去掉本题</button>               </div>      </div>                    </div>                </div>            </div>")
+    currentsingle++;
+}
+
+function Submit(){
+
+    var contents = [];
+    var content;
+    var id = 0;
+    var name = $('#examname').val();
+    if(name == ''){
+      alert("请填写测试名称！");
+      return;
+    }
+    for(var i = 0;i <currentsingle; i++){
+      if(singlelist[i] != 1) continue;
+      else{
+        var op = [];
+        var text = $("#singlechoose"+i.toString()).find('#questionname').val();
+        console.log(text);
+        content= {"id":id,"type":"sc","text":text,"indents":0,"options":[],"src" : ""};
+        var options =  $("#singlechoose"+i.toString()).find("input[type='text']");
+        var radios = $("#singlechoose"+i.toString()).find("input[type='radio']");
+        var trueanswer = 0;
+        for(;trueanswer < radios.length;trueanswer++){
+          if(radios[trueanswer].checked == true) break;
+        }
+        for(var o = 0;o < options.length;o++){
+          op.push({"text":options[o].value,"choice":String.fromCharCode('A'.charCodeAt() + o),"is_correct":o == trueanswer? true : false});
+        }
+        content['options'] = op;
+        contents.push(content);
+        id++;
+      }
+    }
+    var request = {"course_id":courseid,"title":name,"content":contents,"timelimit":300};
+    $.post({
+      url: `/exam/${courseid}`,
+      contentType: 'application/json',
+      data: JSON.stringify(request)
+    }).done(result => {
+      if(result.status != 200) alert("提交错误！");
+      else{
+        alert("提交成功！");
+        window.onbeforeunload=null;
+        window.history.back(-1);
+      }
+    })
+}
+
+function DecQuestion(o){
+  $(o).parent().parent().parent().parent().parent().remove();
+}
+
+function AddFill(){
+  
+}
+
 function AddOption(o){
-  $(o).parent().parent().parent().find('#options').append(" <input class=\" text-center form-control \" style=\"background-color: white; border:#ced4da solid 1px;color:black; margin-bottom:10px; \" id=\"questionname \" placeholder=\"选项 \">");
+  var current = $(o).parent().parent().parent().parent().parent().parent().attr("id");
+  current=current.substr(12,1);
+  $(o).parent().parent().parent().find('#options').append("<div class=\"input-group mb-3\"><div class=\"input-group-prepend\"><div class=\"input-group-text\"><input type=\"radio\" aria-label=\"Checkbox for following text input\" name=\"single" + current + "\"></div></div><input type=\"text\" id= \"singleoption\" class=\"form-control text-center\" aria-label=\"Text input with checkbox\" placeholder=\"选项\" ></div>");
 }
 
 function DecOption(o){
   let num =   $(o).parent().parent().parent().find('#options').children().length;
-  console.log(num);
+
   if(num <= 2) return;
 
   $(o).parent().parent().parent().find('#options').children(":eq(-1)").remove();
