@@ -74,6 +74,32 @@ exports.saveExam = async (req, res) => {
         });
 }
 
+exports.deleteExam = async (req ,res) =>{
+    if (await UserValidator.getUserTypeById(req.session.loginUser) != 'teacher') {
+        response(res, 401, 'Permission denied.');
+        return
+    }
+    let cid = req.params.course_id,
+        eid = req.params.exam_id;
+    console.log(cid);
+    console.log(eid);
+        Exam.removeExam({
+            course_id:cid,
+            exam_id:eid
+        })
+        .then(r => {
+            if (r) {
+                response(res, {});
+            } else {
+                response(res, 404, 'Not found.');// 其实不清楚是不是not found
+            }
+        })
+        .catch(err => {
+            CourseLogger.error(`delete exam error => ${err.stack}`);
+            response(res, 500, 'Server error.');
+        });
+        
+}
 exports.getExamInfo = async (req, res) => {
     let p = ['title', 'description', 'timelimit'];
     if (UserValidator.getUserTypeById(req.session.loginUser) == 'teacher') {

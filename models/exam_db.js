@@ -59,6 +59,28 @@ const saveExam = async (data) => {
            .then(r => r.result.ok == 1);
 }
 
+/**
+ * 删除练习 
+ * @param {{course_id: string, exam_id:string} data 数据
+ */
+const removeExam = async (data) => {
+    let colExam = db.collection('exam');
+    let colScore = db.collection('score');
+    let eid = MongoDB.ObjectID(data.exam_id);
+    let cid = MongoDB.ObjectID(data.course_id);
+    console.log(eid);
+    console.log(cid);
+    colScore.deleteOne({
+        exam_id:eid
+    });
+    return colExam.deleteOne({
+        _id: eid,
+        course_id: cid
+    }).then(res => res.result.ok == 1);
+}
+
+
+
 const getExamInfo = async (course_id, exam_id) => {
     let colExam = db.collection('exam');
     let cid = MongoDB.ObjectId(course_id),
@@ -162,6 +184,7 @@ const getScoresByIDs = async (course_id, exam_id) => {
 module.exports = {
     getExamsByCourseID,
     saveExam,
+    removeExam,
     getExamInfo,
     getTimeLimit,
     getStudentScoreUndone,

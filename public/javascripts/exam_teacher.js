@@ -41,6 +41,26 @@ $(document).ready(function () {
     })
   })
 
+function deleteExam(){
+  let eid;
+  let selected = $('.list-group-item-success');
+  if(selected.length == 0){
+    alert("请选择要删除的练习！");
+    return;
+  }
+  else{
+    eid = selected.attr('eid');
+  }
+  console.log(eid);
+  $.ajax({
+    url:`/exam/${courseid}/${eid}`,
+    type:'DELETE'
+    }).done(result =>{
+      if(result.status == 200)
+      location.reload();
+    })
+}
+
 function getExamList() {
   $.get({
     url: `/exam/${courseid}`
