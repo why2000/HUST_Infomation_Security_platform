@@ -186,7 +186,6 @@ function uploadExamAnswer(answer) {
     $btn.addClass('btn-primary');
     $btn.removeAttr('disabled');
     $btn.text('开始练习');
-    examid = null;
     countIT = null;
     $('#exam-select-card').attr('style', 'display:block;')
     alert('答对题目数:' + result.data.score);

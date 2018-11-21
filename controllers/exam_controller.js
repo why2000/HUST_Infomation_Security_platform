@@ -249,7 +249,7 @@ exports.getScores = async (req, res) => {
 const calcScore = async (exam, user) => {
     let subs = exam.content.filter(i => {
         //TODO: 硬编码，很丑 改天再处理
-        return ['sc', 'mc'].includes(i.type);
+        return ['sc', 'mc', 'fb'].includes(i.type);
     });
 
     let score = 0;
@@ -285,6 +285,9 @@ const calcScore = async (exam, user) => {
 
                         if (correct) score += 1;
                         break;
+                    case 'fb':
+                        let fb_opt = subject.options.find(e => e.text == i.answer);
+                        if(fb_opt) score+=1;
                 }
             }
         }
