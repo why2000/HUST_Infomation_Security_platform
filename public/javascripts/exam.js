@@ -227,7 +227,7 @@ async function setExamStart(time, questions) {
         option => {
           html += (
             `<label>
-                <input type="checkbox" class="mc-options question-options" qtype="mc" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
+                <input type="checkbox" class="mc-options" class="question-options" qtype="mc" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
               </label>`
           )
         })
@@ -240,7 +240,7 @@ async function setExamStart(time, questions) {
         option => {
           html += (
             `<label>
-                <input type="text" class="fb-options" class="question-options" qtype="fb" qid="${question.id}" value="${option.choice}" style="border: 0;border-bottom:1px solid #666666; outline: none;" />${option.choice}.${option.text}
+                <input type="text" class="fb-options" class="question-options" qtype="fb" qid="${question.id}" value="" style="border: 0;border-bottom:1px solid #666666; outline: none;" />
               </label>`
           )
         })
