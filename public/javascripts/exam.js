@@ -207,7 +207,7 @@ async function setExamStart(time, questions) {
         option => {
           html += (
             `  <label>
-                <input type="radio" name="optionsRadios" value="${option.choice}"> ${option.choice}.${option.text}
+                <input type="radio" name="optionsRadios-${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
               </label>`
           )
         })
@@ -219,7 +219,7 @@ async function setExamStart(time, questions) {
         option => {
           html += (
             `<label>
-                <input type="checkbox" class="mc-options" class="question-options" qtype="mc" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
+                <input type="checkbox" class="mc-options question-options" qtype="mc" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
               </label>`
           )
         })
