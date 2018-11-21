@@ -161,7 +161,7 @@ async function setExamStop() {
     } else if ($(this).attr('qtype') == 'fb') {
       answer.push({ 
         'id': $(this).attr('qid'), 
-        'answer': $(this).find('.fb-options').text() });
+        'answer': $(this).find('.fb-options').val().toString() });
     }
   })
   uploadExamAnswer(answer)
@@ -213,7 +213,7 @@ async function setExamStart(time, questions) {
         option => {
           html += (
             `  <label>
-                <input type="radio" name="optionsRadios-${question.id}" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}>
+                <input type="radio" name="optionsRadios-${question.id}" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
               </label>`
           )
         })
@@ -226,7 +226,7 @@ async function setExamStart(time, questions) {
         option => {
           html += (
             `<label>
-                <input type="checkbox" class="mc-options question-options" qtype="mc" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}>
+                <input type="checkbox" class="mc-options question-options" qtype="mc" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
               </label>`
           )
         })
