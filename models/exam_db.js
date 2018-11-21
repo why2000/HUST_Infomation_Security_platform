@@ -70,7 +70,7 @@ const removeExam = async (data) => {
     let cid = MongoDB.ObjectID(data.course_id);
     console.log(eid);
     console.log(cid);
-    colScore.deleteOne({
+    colScore.deleteMany({
         exam_id:eid
     });
     return colExam.deleteOne({
