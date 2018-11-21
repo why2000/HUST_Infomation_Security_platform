@@ -157,6 +157,12 @@ async function setExamStop() {
         mc_answer.push($(this).val());
       })
       answer.push({ 'id': $(this).attr('qid'), 'answer': mc_answer.join(',') });
+    } else if ($(this).attr('qtype') == 'fb') {
+      let mc_answer = [];
+      $(this).find(':checked').each(function () {
+        mc_answer.push($(this).val());
+      })
+      answer.push({ 'id': $(this).attr('qid'), 'answer': mc_answer.join(',') });
     }
   })
   uploadExamAnswer(answer)
@@ -202,6 +208,7 @@ async function setExamStart(time, questions) {
       $(`#exam-body`).append(`<img src="${question.src}" class="img-rounded">`);
     } else if (question.type == 'sc') {
       html += "<label>(单选题)</label>";
+      html += `${question.text}</p>`;
       html += `<div class="radio question-options" qtype="sc" qid="${question.id}">`;
       question.options.forEach(
         option => {
@@ -213,13 +220,27 @@ async function setExamStart(time, questions) {
         })
       html += '</div>';
     } else if (question.type == 'mc') {
-      html += "<label>(多选题)</label>"
+      html += "<label>(多选题)</label>";
+      html += `${question.text}</p>`;
       html += `<div class="checkbox question-options" qtype="mc" qid="${question.id}">`;
       question.options.forEach(
         option => {
           html += (
             `<label>
                 <input type="checkbox" class="mc-options" class="question-options" qtype="mc" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
+              </label>`
+          )
+        })
+      html += '</div>';
+    } else if (question.type == 'fb') {
+      html += "<label>(填空题)</label>";
+      html += `${question.text}</p>`;
+      html += `<div class="text question-options" qtype="fb" qid="${question.id}">`;
+      question.options.forEach(
+        option => {
+          html += (
+            `<label>
+                <input type="text" class="fb-options" class="question-options" qtype="fb" qid="${question.id}" value="${option.choice}" style="border: 0;border-bottom:1px solid #666666; outline: none;" />${option.choice}.${option.text}
               </label>`
           )
         })
