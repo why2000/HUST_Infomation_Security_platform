@@ -149,7 +149,8 @@ async function setExamStop() {
   $('#exam-body').find('.question-options').each(function () {
     if ($(this).attr('qtype') == 'sc') {
       answer.push({
-        'id': $(this).attr('qid'), 'answer': $(this).find(':checked').val() ? $(this).find(':checked').val() : ''
+        'id': $(this).attr('qid'),
+        'answer': $(this).find(':checked').val() ? $(this).find(':checked').val() : ''
       });
     } else if ($(this).attr('qtype') == 'mc') {
       let mc_answer = [];
@@ -158,11 +159,9 @@ async function setExamStop() {
       })
       answer.push({ 'id': $(this).attr('qid'), 'answer': mc_answer.join(',') });
     } else if ($(this).attr('qtype') == 'fb') {
-      let mc_answer = [];
-      $(this).find(':checked').each(function () {
-        mc_answer.push($(this).val());
-      })
-      answer.push({ 'id': $(this).attr('qid'), 'answer': mc_answer.join(',') });
+      answer.push({ 
+        'id': $(this).attr('qid'), 
+        'answer': $(this).find('.fb-options').text() });
     }
   })
   uploadExamAnswer(answer)
@@ -214,7 +213,7 @@ async function setExamStart(time, questions) {
         option => {
           html += (
             `  <label>
-                <input type="radio" name="optionsRadios-${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
+                <input type="radio" name="optionsRadios-${question.id}" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}>
               </label>`
           )
         })
@@ -227,7 +226,7 @@ async function setExamStart(time, questions) {
         option => {
           html += (
             `<label>
-                <input type="checkbox" class="mc-options question-options" qtype="mc" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
+                <input type="checkbox" class="mc-options question-options" qtype="mc" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}>
               </label>`
           )
         })
@@ -236,14 +235,11 @@ async function setExamStart(time, questions) {
       html += "<label>(填空题)</label>";
       html += `${question.text}</p>`;
       html += `<div class="text question-options" qtype="fb" qid="${question.id}">`;
-      question.options.forEach(
-        option => {
-          html += (
-            `<label>
-                <input type="text" class="fb-options" class="question-options" qtype="fb" qid="${question.id}" value="${option.choice}" style="border: 0;border-bottom:1px solid #666666; outline: none;" />${option.choice}.${option.text}
-              </label>`
-          )
-        })
+      html += (
+        `<label>
+         <input type="text" class="fb-options" class="question-options" qid="${question.id} "style="border: 0;border-bottom:1px solid #666666; outline: none;">
+         </label>`
+      )
       html += '</div>';
     }
   });
