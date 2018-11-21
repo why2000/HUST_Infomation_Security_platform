@@ -13,6 +13,7 @@ $(document).ready(function () {
   getUserName();
   sideBarInit();
   getExamList();
+  $(this).find('#add-exam-a').attr('href', `/exam/add#${courseid}`);
 })
   .on("click", ".exam-select-item", function () {
     $('.exam-select-item').removeClass('list-group-item-success');
@@ -39,6 +40,26 @@ $(document).ready(function () {
       $('#exam-result-table').empty().append(html);
     })
   })
+
+function deleteExam(){
+  let eid;
+  let selected = $('.list-group-item-success');
+  if(selected.length == 0){
+    alert("请选择要删除的练习！");
+    return;
+  }
+  else{
+    eid = selected.attr('eid');
+  }
+  console.log(eid);
+  $.ajax({
+    url:`/exam/${courseid}/${eid}`,
+    type:'DELETE'
+    }).done(result =>{
+      if(result.status == 200)
+      location.reload();
+    })
+}
 
 function getExamList() {
   $.get({

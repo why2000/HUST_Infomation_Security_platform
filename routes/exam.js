@@ -16,8 +16,11 @@ router.get('/', async (req, res, next) => {
 
 router.get('/index', ExamController.getIndexPage);
 
+router.get('/add',ExamController.getAddPage);
+
 router.get('/:course_id', ExamController.getExams);
 router.post('/:course_id', ExamController.saveExam);
+router.delete('/:course_id/:exam_id',ExamController.deleteExam);
 
 router.get('/:course_id/:exam_id', ExamController.getExamInfo);
 
