@@ -95,7 +95,7 @@ exports.deleteExam = async (req ,res) =>{
             }
         })
         .catch(err => {
-            CourseLogger.error(`delete exam error => ${err.stack}`);
+            ExamLogger.error(`delete exam error => ${err.stack}`);
             response(res, 500, 'Server error.');
         });
         
