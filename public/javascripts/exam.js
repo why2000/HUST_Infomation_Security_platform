@@ -116,19 +116,24 @@ function setTimeLimit(time) {
   let hours = 0,
     minutes = 0,
     seconds = time;
-  if (seconds > 60) {//如果秒数大于60，将秒数转换成整数
+  if (seconds >= 60) {//如果秒数大于60，将秒数转换成整数
     //获取分钟，除以60取整数，得到整数分钟
     minutes = parseInt(seconds / 60);
     //获取秒数，秒数取佘，得到整数秒数
     seconds = parseInt(seconds % 60);
     //如果分钟大于60，将分钟转换成小时
-    if (minutes > 60) {
+    if (minutes >= 60) {
       //获取小时，获取分钟除以60，得到整数小时
       hours = parseInt(minutes / 60);
       //获取小时后取佘的分，获取分钟除以60取佘的分
       minutes = parseInt(minutes % 60);
     }
   }
+  if (hours < 10) hours = `0${hours}`;
+  if (minutes < 10) minutes = `0${minutes}`;
+  if (seconds < 10) seconds = `0${seconds}`;
+
+
 
   $('#exam-time').text(`${hours}:${minutes}:${seconds}`);
 }
@@ -149,7 +154,8 @@ async function setExamStop() {
   $('#exam-body').find('.question-options').each(function () {
     if ($(this).attr('qtype') == 'sc') {
       answer.push({
-        'id': $(this).attr('qid'), 'answer': $(this).find(':checked').val() ? $(this).find(':checked').val() : ''
+        'id': $(this).attr('qid'),
+        'answer': $(this).find(':checked').val() ? $(this).find(':checked').val() : ''
       });
     } else if ($(this).attr('qtype') == 'mc') {
       let mc_answer = [];
@@ -158,11 +164,10 @@ async function setExamStop() {
       })
       answer.push({ 'id': $(this).attr('qid'), 'answer': mc_answer.join(',') });
     } else if ($(this).attr('qtype') == 'fb') {
-      let mc_answer = [];
-      $(this).find(':checked').each(function () {
-        mc_answer.push($(this).val());
-      })
-      answer.push({ 'id': $(this).attr('qid'), 'answer': mc_answer.join(',') });
+      answer.push({
+        'id': $(this).attr('qid'),
+        'answer': $(this).find('.fb-options').val().toString()
+      });
     }
   })
   uploadExamAnswer(answer)
@@ -180,11 +185,10 @@ function uploadExamAnswer(answer) {
     $btn.addClass('btn-exam-check');
     $btn.addClass('btn-primary');
     $btn.removeAttr('disabled');
-    $btn.text('开始练习'); 
-    examid = null;
+    $btn.text('开始练习');
     countIT = null;
     $('#exam-select-card').attr('style', 'display:block;')
-    alert('答对题目数:'+result.data.score);
+    alert('答对题目数:' + result.data.score);
   })
 }
 
@@ -214,7 +218,7 @@ async function setExamStart(time, questions) {
         option => {
           html += (
             `  <label>
-                <input type="radio" name="optionsRadios-${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
+                <input type="radio" name="optionsRadios-${question.id}" qid="${question.id}" value="${option.choice}"> ${option.choice}.${option.text}
               </label>`
           )
         })
@@ -236,14 +240,11 @@ async function setExamStart(time, questions) {
       html += "<label>(填空题)</label>";
       html += `${question.text}</p>`;
       html += `<div class="text question-options" qtype="fb" qid="${question.id}">`;
-      question.options.forEach(
-        option => {
-          html += (
-            `<label>
-                <input type="text" class="fb-options" class="question-options" qtype="fb" qid="${question.id}" value="" style="border: 0;border-bottom:1px solid #666666; outline: none;" />
-              </label>`
-          )
-        })
+      html += (
+        `<label>
+         <input type="text" class="fb-options" class="question-options" qid="${question.id} "style="border: 0;border-bottom:1px solid #666666; outline: none;">
+         </label>`
+      )
       html += '</div>';
     }
   });
@@ -275,6 +276,7 @@ function getExamInformation() {
     $('#exam-description').text(result.data.description);
     $('#start-btn').removeAttr('disabled');
     let time = result.data.timelimit;
+    $('#exam-body').empty();
     setTimeLimit(time);
   })
 
