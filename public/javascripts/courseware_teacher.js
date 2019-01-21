@@ -95,7 +95,7 @@ $(document).ready(function () {
     if (!file) {
       alert('您还未选择文件！');
     } else {
-      const acceptFile = /^.*(\.doc|\.docx|\.ppt|\.pptx|\.pdf)$/;
+      const acceptFile = /^.*(\.doc|\.docx|\.ppt|\.pptx|\.pdf|\.zip|\.rar|\.7z)$/;
       if (acceptFile.test(file.name)) {
         let form = new FormData();
         form.append('upload', file);

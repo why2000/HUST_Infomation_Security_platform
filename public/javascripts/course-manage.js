@@ -22,6 +22,7 @@ $(document).ready(function () {
     $('#course-info-div').attr('style', 'display:blcok');
     $('.course-delete-button').attr('cid', courselist[$(this).attr('nid')]._id);
     getMemberList(courselist[$(this).attr('nid')]._id);
+    $('.course-add-member-button').removeAttr('disabled');
   })
   .on('click', '.course-delete-button.btn-warning', function () {
     $(this).addClass('btn-danger');
@@ -100,9 +101,11 @@ $(document).ready(function () {
     let new_member_id = $('#new-member-id').val();
     $('#new-member-id').val('');
     let new_member_type = $('#member-type-select').find(':checked').val();
-    if (teacherlist.indexOf(new_member_id) != -1 && teacherlist.indexOf(new_member_id) != -1) {
-      alert('请勿重复添加同一人');
-      return;
+    if (teacherlist && studentlist) {
+      if (teacherlist.indexOf(new_member_id) != -1 && studentlist.indexOf(new_member_id) != -1) {
+        alert('请勿重复添加同一人');
+        return;
+      }
     }
 
     let type_url = '';
@@ -145,7 +148,7 @@ function sideBarInit() {
   $(".has-submenu").hover(function () {
     var height;
     var current_list = $(this).find('.submenu').attr("id");
-    console.log(current_list);
+
     current_list = current_list.split('-').join('');
     if (current_list != null && current_list != undefined) {
       height = eval(current_list).length * 41;
@@ -224,9 +227,11 @@ function appendMemberList(name, user, type) {
   html += `<td class="member-row-name">${name}</td>`
   html += `<td class="member-row-id">${user}</td>`
   html += `<td class="member-row-type">${type}</td>`
-  // todo add teacher/student delete from a course
-  //html += `<button type="button" class="member-delete-button btn btn-warning" uid='${user}'>删除此成员</button></tr>`
-  $('#course-member-table').append(html);
+/*
+  if (user != userID)
+    html += `<td><button type="button" class="member-delete-button btn btn-warning" uid='${user}'>删除</button></td>`
+*/
+    $('#course-member-table').append(html);
 }
 
 function getUserName() {
