@@ -20,7 +20,7 @@ $(document).ready(function () {
     if (!file) {
       alert('您还未选择文件！');
     } else {
-      const acceptFile = /^.*(\.doc|\.docx|\.txt|\.pdf)$/;
+      const acceptFile = /^.*(\.doc|\.docx|\.txt|\.pdf|\.zip|\.rar|\.7z)$/;
       if (acceptFile.test(file.name)) {
         var form = new FormData();
         form.append('upload', file);

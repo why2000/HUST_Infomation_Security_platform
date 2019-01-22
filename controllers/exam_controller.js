@@ -21,6 +21,15 @@ exports.getIndexPage = async (req, res) => {
     res.render(page);
 }
 
+exports.getAddPage = async (req, res) =>{
+    if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+        res.render("addexam");
+    }
+    else{
+        response(res,404,"Bad Request.")
+    }
+}
+
 exports.getExams = async (req, res) => {
     let cid = req.params.course_id;
 
@@ -65,6 +74,32 @@ exports.saveExam = async (req, res) => {
         });
 }
 
+exports.deleteExam = async (req ,res) =>{
+    if (await UserValidator.getUserTypeById(req.session.loginUser) != 'teacher') {
+        response(res, 401, 'Permission denied.');
+        return
+    }
+    let cid = req.params.course_id,
+        eid = req.params.exam_id;
+    console.log(cid);
+    console.log(eid);
+        Exam.removeExam({
+            course_id:cid,
+            exam_id:eid
+        })
+        .then(r => {
+            if (r) {
+                response(res, {});
+            } else {
+                response(res, 404, 'Not found.');// 其实不清楚是不是not found
+            }
+        })
+        .catch(err => {
+            ExamLogger.error(`delete exam error => ${err.stack}`);
+            response(res, 500, 'Server error.');
+        });
+        
+}
 exports.getExamInfo = async (req, res) => {
     let p = ['title', 'description', 'timelimit'];
     if (UserValidator.getUserTypeById(req.session.loginUser) == 'teacher') {
@@ -214,7 +249,7 @@ exports.getScores = async (req, res) => {
 const calcScore = async (exam, user) => {
     let subs = exam.content.filter(i => {
         //TODO: 硬编码，很丑 改天再处理
-        return ['sc', 'mc'].includes(i.type);
+        return ['sc', 'mc', 'fb'].includes(i.type);
     });
 
     let score = 0;
@@ -250,6 +285,9 @@ const calcScore = async (exam, user) => {
 
                         if (correct) score += 1;
                         break;
+                    case 'fb':
+                        let fb_opt = subject.options.find(e => e.text == i.answer);
+                        if(fb_opt) score+=1;
                 }
             }
         }

@@ -35,7 +35,7 @@
 </head>
 
 <body>
-  <div class="header">
+  <div class="header" style="z-index:999">
     <div class="headerb">
       <div class="top-logo" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
       <div class="headern">
@@ -143,6 +143,14 @@
               </div>
             </div>
           </div>
+          <br>
+          <a id="add-exam-a" href="/exam/add">
+            <button type="button" id="report-button" class="btn btn-outline-info btn-block btn-lg">增加练习</button>
+          </a>
+          <br>
+          <a id="add-exam-a">
+            <button type="button" id="report-button" class="btn btn-outline-danger btn-block btn-lg" onclick = "deleteExam()">删除练习</button>
+          </a>
         </div>
         <div class="col-8">
           <div class="card">
