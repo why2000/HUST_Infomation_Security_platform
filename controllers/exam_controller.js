@@ -286,7 +286,9 @@ const calcScore = async (exam, user) => {
                         if (correct) score += 1;
                         break;
                     case 'fb':
-                        let fb_opt = subject.options.find(e => e.text == i.answer);
+                        let fb_opt = subject.options.find(e => e.text.replace(/(\s)*(\,|\，)(\s)*/g,"#") == i.answer.replace(/(\s)*(\,|\，)(\s)*/g,"#"));
+                        console.log(i.answer.replace(/(\s)*(\,|\，)(\s)*/g,"#"));
+
                         if(fb_opt) score+=1;
                 }
             }
