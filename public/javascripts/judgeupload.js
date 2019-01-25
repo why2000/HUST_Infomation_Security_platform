@@ -7,8 +7,12 @@ let classname;
 let username;
 
 $(document).ready(function () {
-  $('#inputScore').val('');
-  $('#inputText').val('');
+
+  window.onbeforeunload=function(e){     
+    　　var e = window.event||e;  
+    　　e.returnValue=("确定离开当前页面吗？");
+    }
+
   getCourseid();
   getCourseList();
   getUserName();
@@ -19,11 +23,10 @@ $(document).ready(function () {
     studentList = result;
     for (let n = 0; n < studentList.length; n++) {
       let html = '';
-      html += '<div class="card">'
-      html += '<div class="card-body">'
+      html += '<div class="list-group-item">'
       html += '<div class="row">'
       html += '<div class="col-4">'
-      html += '<p style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">学号: ' + studentList[n].id + '  姓名: ' + studentList[n].name + '</p>'
+      html += '<p style="color: black; padding-bottom: 16px;">学号: ' + studentList[n].id + '  姓名: ' + studentList[n].name + '</p>'
       html += '</div>'
       html += '<div class="col-8">'
       html += '<div class=" btn-group pull-right">'
@@ -34,8 +37,8 @@ $(document).ready(function () {
       html += '</div>'
       html += '<div class="row">'
       html += '<div class="col-12">'
-      html += '<div class="student-list-body" nid="' + n + '">';
-      html += '</div> </div> </div> </div> </div> <br>';
+      html += '<div class="student-list-body list-group" nid="' + n + '">';
+      html += '</div> </div> </div> </div> <br>';
       console.log(studentList[n].id);
       $('.student-list').append(html);
 
@@ -111,8 +114,7 @@ async function getReportList(nid) {
         url: `/feedback/${courseid}/${studentID}/${report.file_id}/judgement`,
       }).done(result => {
         let html = '';
-        html += '<div class="card report-list-body" sid=' + studentID + ' fid=' + report.file_id + '>'
-        html += '<div class="card-body">'
+        html += '<div class="report-list-body list-group-item" sid=' + studentID + ' fid=' + report.file_id + '>'
         html += '<div class="row">'
         html += '<div class="col-4">'
         html += '<label style="color:black; font-size:14px;">报告名称: ' + report.file_name + '</label>'
@@ -133,7 +135,7 @@ async function getReportList(nid) {
         html += '<label style="color:black; font-size:14px;">评价</label>'
         html += '<textarea class="form-control" rows="1" style="background-color: white; border:#ced4da solid 1px; color:black;"'
         html += 'id="inputText"></textarea>'
-        html += '</div> </div> </div> </div>'
+        html += '</div> </div> </div>'
         $(`.student-list-body[nid=${nid}]`)
           .append(html)
         $(`.report-list-body[fid=${report.file_id}]`)
