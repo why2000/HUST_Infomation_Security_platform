@@ -2,14 +2,17 @@
 
 let studentList;
 let courseid;
-let studentID;
 let courselist;
 let classname;
 let username;
 
 $(document).ready(function () {
-  $('#inputScore').val('');
-  $('#inputText').val('');
+
+  window.onbeforeunload=function(e){     
+    　　var e = window.event||e;  
+    　　e.returnValue=("确定离开当前页面吗？");
+    }
+
   getCourseid();
   getCourseList();
   getUserName();
@@ -19,43 +22,63 @@ $(document).ready(function () {
   }).done(result => {
     studentList = result;
     for (let n = 0; n < studentList.length; n++) {
-      if (studentList[n].file_id != undefined && studentList[n].file_id == false) {
-        $('#student-select').append('<a class="list-group-item list-group-item-action student-select-item" nid="' + n + '">' + ' 学号: ' + studentList[n].id + ' 名称: ' + studentList[n].name + '<span style="float:right;" class="badge badge-danger badge-pill">[未上传]</span></a > ')
-      } else {
-        $('#student-select').append('<a class="list-group-item list-group-item-action student-select-item" nid="' + n + '">' + ' 学号: ' + studentList[n].id + ' 名称: ' + studentList[n].name + '<span style="float:right;" class="badge badge-success badge-pill">[已上传]</span></a > ')
-      }
+      let html = '';
+      html += '<div class="list-group-item">'
+      html += '<div class="row">'
+      html += '<div class="col-4">'
+      html += '<p style="color: black; padding-bottom: 16px;">学号: ' + studentList[n].id + '  姓名: ' + studentList[n].name + '</p>'
+      html += '</div>'
+      html += '<div class="col-8">'
+      html += '<div class=" btn-group pull-right">'
+      html += '<button type="button" class="my-many-download-button btn btn-primary" id="many-download" sid=' + studentList[n].id + '>批量下载该生所有报告</button>'
+      html += '<button type="button" class="my-upload-button btn btn-primary" id="submit">提交</button>'
+      html += '</div>'
+      html += '</div>'
+      html += '</div>'
+      html += '<div class="row">'
+      html += '<div class="col-12">'
+      html += '<div class="student-list-body list-group" nid="' + n + '">';
+      html += '</div> </div> </div> </div> <br>';
+      console.log(studentList[n].id);
+      $('.student-list').append(html);
+
+      getReportList(n);
     };
   });
 })
   .on('click', '#submit', function () {
-    var score = $('#inputScore').val();
-    var text = $('#inputText').val();
-    // 参数检查
-    if (score == '') {
-      alert('分数不能为空！');
-    } else if (!/^0$|^[1-9][0-9]{0,1}$|^100$/.test(score)) { // 是否0-100
-      alert('分数应为0-100间的整数！')
-    } else {
-      let url = `/feedback/${courseid}/${studentID}/${$('.report-select-item.list-group-item-success').attr('fid')}/judgement`
-      score = parseInt(score);
-      $.ajax({
-        type: "post",
-        url: url,
-        contentType: 'application/json',
-        data: JSON.stringify({ score: score, text: text }),
-        success: () => {
-          alert('上传成功！');
-          location.reload();
-        },
-        error: xhr => {
-          alert(JSON.parse(xhr.responseText).msg);
-          // location.reload();
-        }
-      })
-    }
+    $('.report-list-body').each(function () {
+      let studentID = $(this).attr('sid');
+      let fid = $(this).attr('fid');
+      var score = $(this).find('#inputScore').val();
+      var text = $(this).find('#inputText').val();
+      // 参数检查
+      if (score == '') {
+        alert('分数不能为空！');
+      } else if (!/^0$|^[1-9][0-9]{0,1}$|^100$/.test(score)) { // 是否0-100
+        alert('分数应为0-100间的整数！')
+      } else {
+        let url = `/feedback/${courseid}/${studentID}/${fid}/judgement`
+        score = parseInt(score);
+        $.ajax({
+          type: "post",
+          url: url,
+          contentType: 'application/json',
+          data: JSON.stringify({ score: score, text: text }),
+          success: () => {
+            //location.reload();
+            console.log('done');
+          },
+          error: xhr => {
+            alert(JSON.parse(xhr.responseText).msg);
+            // location.reload();
+          }
+        })
+      }
+    })
   })
   .on('click', '.my-download-button', function () {
-    let file_id = $('.report-select-item.list-group-item-success').attr('fid')
+    let file_id = $(this).attr('fid')
     let url = 'http://' + window.location.host + '/file/' + file_id
 
     let $form = $('<form method="GET"></form>');
@@ -63,48 +86,66 @@ $(document).ready(function () {
     $form.appendTo($('body'));
     $form.submit();
   })
-  .on("click", ".student-select-item", function () {
-    $('#inputScore').val('');
-    $('#inputText').val('');
-    $('.student-select-item').removeClass('list-group-item-success');
-    $(this).addClass('list-group-item-success');
-    $('#report-select').empty();
-    let $this = $(this);
-    let nid = $this.attr('nid');
-    studentID = studentList[nid].id;
+  .on('click', '.my-many-download-button', function () {
+    let studentID = $(this).attr('sid');
     $.get({
       url: `/feedback/${courseid}/${studentID}/report`,
     }).done((reportList) => {
+      for(let n =0;n<reportList.data.length;n++){
+        setTimeout(function(){
+          let url = 'http://' + window.location.host + '/file/' + reportList.data[n].file_id;
+          let $form = $('<form method="GET"></form>');
+          $form.attr('action', url);
+          $form.appendTo($('body'));
+          $form.submit();
+        },n*500);
+      }
+    })
+  })
+
+async function getReportList(nid) {
+  let studentID = studentList[nid].id;
+  $.get({
+    url: `/feedback/${courseid}/${studentID}/report`,
+  }).done((reportList) => {
+    reportList.data.sort(function (a, b) { return a.file_name - b.file_name });
+    reportList.data.forEach(report => {
       $.get({
-        url: `/feedback/${courseid}/${studentID}/judgement`,
-      }).done(judgementList => {
-        for (let n = 0; n < reportList.data.length; n++) {
-          let reportInjudgementList = judgementList.data.find(e => {
-            return e.file_id == reportList.data[n].file_id;
-          })
-          if (reportInjudgementList) {
-            $('#report-select').append('<a class="list-group-item list-group-item-action report-select-item" fid="' + reportList.data[n].file_id + '">' + '报告名称' + reportList.data[n].file_name + '<span style="float:right;" class="badge badge-success badge-pill">[已评价]</span></a > ');
-          } else {
-            $('#report-select').append('<a class="list-group-item list-group-item-action report-select-item" fid="' + reportList.data[n].file_id + '">' + '报告名称' + reportList.data[n].file_name + '<span style="float:right;" class="badge badge-danger badge-pill">[未评价]</span></a > ');
-          }
-        }
+        url: `/feedback/${courseid}/${studentID}/${report.file_id}/judgement`,
+      }).done(result => {
+        let html = '';
+        html += '<div class="report-list-body list-group-item" sid=' + studentID + ' fid=' + report.file_id + '>'
+        html += '<div class="row">'
+        html += '<div class="col-4">'
+        html += '<label style="color:black; font-size:14px;">报告名称: ' + report.file_name + '</label>'
+        html += '</div>'
+        html += '<div class="col-8">'
+        html += '<div class="btn-group pull-right">'
+        html += '<button type="button" class="my-download-button btn btn-primary" fid=' + report.file_id + '>下载报告</button>'
+        html += '</div>'
+        html += '</div>'
+        html += '</div>'
+        html += '<div class="row">'
+        html += '<div class="form-group col-4">'
+        html += '<label style="color:black; font-size:14px;">分数</label>'
+        html += '<input class="form-control" type="number" style="background-color: white; border:#ced4da solid 1px; color:black"'
+        html += 'id="inputScore" placeholder="请输入0-100的数字" value="">'
+        html += '</div> '
+        html += '<div class="form-group col-8">'
+        html += '<label style="color:black; font-size:14px;">评价</label>'
+        html += '<textarea class="form-control" rows="1" style="background-color: white; border:#ced4da solid 1px; color:black;"'
+        html += 'id="inputText"></textarea>'
+        html += '</div> </div> </div>'
+        $(`.student-list-body[nid=${nid}]`)
+          .append(html)
+        $(`.report-list-body[fid=${report.file_id}]`)
+          .find('#inputScore').val(result.result.info.score);
+        $(`.report-list-body[fid=${report.file_id}]`)
+          .find('#inputText').val(result.result.info.text);
       })
-    })
+    });
   })
-  .on('click', '.report-select-item', function () {
-    $('#inputScore').val('');
-    $('#inputText').val('');
-    $('.report-select-item').removeClass('list-group-item-success');
-    $(this).addClass('list-group-item-success');
-    $('.my-download-button').removeAttr('disabled');
-    let fileID = $(this).attr('fid');
-    $.get({
-      url: `/feedback/${courseid}/${studentID}/${fileID}/judgement`,
-    }).done(result => {
-      $('#inputScore').val(result.result.info.score);
-      $('#inputText').val(result.result.info.text);
-    })
-  })
+}
 
 function getCourseid() {
   courseid = window.location.href.substring(window.location.href.lastIndexOf('#') + 1, window.location.href.length);
@@ -167,15 +208,6 @@ function getUserName() {
   })
 }
 
-function getUserId() {
-  $.get({
-    url: '/user/userid'
-  }).done(result => {
-    userid = result.result.userid;
-    getReportList();
-  })
-}
-
 function getCourseList() {
   $.get({
     url: '/course',
@@ -189,12 +221,11 @@ function getCourseList() {
       return e._id == courseid;
     });
     classname = selectedCourse[0].name;
-    console.log(classname);
     setClassName();
   });
 }
 
-function setClassName () {
+function setClassName() {
   if (classname) {
     $('#big-title').text('教师评分 当前课程: ' + classname);
     $('#result-table tbody .classname').text(classname);

@@ -30,8 +30,9 @@ $(function sideBarInit() {
     var height;
     var current_list = $(this).find('.submenu').attr("id");
     current_list = current_list.split('-').join('');
+    console.log(eval(current_list));
     if (current_list != null && current_list != undefined) {
-      if (eval(current_list) <= 8) {
+      if (eval(current_list).length <= 8) {
         height = eval(current_list).length * 41;
       } else {
         height = 328;
