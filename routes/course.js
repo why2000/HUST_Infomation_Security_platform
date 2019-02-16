@@ -14,6 +14,8 @@ router.get('/:id/student', CourseController.getStudentsByCourseID)
 router.get('/:id/teacher', CourseController.getTeacherByCourseID)
 router.post('/:id/student', CourseController.addStudentsByCourseID)
 router.post('/:id/teacher', CourseController.addTeacherByCOurseID)
+router.post('/:id/student/delete', CourseController.deleteStudentsByCourseID)
+router.post('/:id/teacher/delete', CourseController.deleteTeacherByCOurseID)
 
 
 module.exports = router;

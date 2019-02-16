@@ -93,6 +93,8 @@ const addStudentToCourse = async (course_id, student_id) => {
     return colCourse.updateOne({ _id: course_id }, { $addToSet: { "student": student_id } }).then(r => r.result.ok == 1);
 }
 
+
+
 /**
  * 添加教师到课程中
  * @param {string} course_id 课程ID
@@ -102,6 +104,28 @@ const addTeacherToCourse = async (course_id, teacher_id) => {
     let colCourse = db.collection('course');
     course_id = MongoDB.ObjectID(course_id);
     return colCourse.updateOne({ _id: course_id }, { $addToSet: { student: teacher_id } }).then(r => r.result.ok == 1);
+}
+
+/**
+ * 从课程中删除学生
+ * @param {string} course_id 课程ID
+ * @param {string} student_id 学生ID
+ */
+const deleteStudentToCourse = async (course_id, student_id) => {
+    let colCourse = db.collection('course');
+    course_id = MongoDB.ObjectID(course_id);
+    return colCourse.updateOne({ _id: course_id }, { $pull: { "student": student_id } }).then(r => r.result.ok == 1);
+}
+
+/**
+ * 从课程中删除教师
+ * @param {string} course_id 课程ID
+ * @param {string} teacher_id 教师ID
+ */
+const deleteTeacherToCourse = async (course_id, teacher_id) => {
+    let colCourse = db.collection('course');
+    course_id = MongoDB.ObjectID(course_id);
+    return colCourse.updateOne({ _id: course_id }, { $pull: { teacher: teacher_id } }).then(r => r.result.ok == 1);
 }
 
 /**
@@ -177,6 +201,8 @@ module.exports = {
     removeCourse,
     addStudentToCourse,
     addTeacherToCourse,
+    deleteStudentToCourse,
+    deleteTeacherToCourse,
     getCoursesByStudent,
     getCoursesByTeacher,
     studentInCourse,
