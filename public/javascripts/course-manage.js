@@ -51,23 +51,58 @@ $(document).ready(function () {
       }, 500)
     })
   })
-  .on('click', '.member-delete-button.btn-warning', function () {
+  .on('click', '.teacher-delete-button.btn-warning', function () {
     $(this).addClass('btn-danger');
     $(this).removeClass('btn-warning');
     $(this).text('确认删除?');
   })
-  .on('mouseleave', '.member-delete-button.btn-danger', function () {
+  .on('mouseleave', '.teacher-delete-button.btn-danger', function () {
     $(this).addClass('btn-warning');
     $(this).removeClass('btn-danger');
     $(this).text('删除');
   })
-  .on('click', '.member-delete-button.btn-danger', function () {
+  .on('click', '.teacher-delete-button.btn-danger', function () {
+    if ($(this).attr('uid') == userID){
+      alert("不能删除自己！")
+    }
+    else{
+      let $this = $(this)
+      $(this).attr('disabled', 'disabled');
+      $(this).text('删除中...');
+      console.log($(this).attr('cid'));
+      let select_courseid = $('.course-delete-button').attr('cid');
+      $.ajax({
+        url: `/course/${select_courseid}/teacher/delete`,
+        data: {id: $(this).attr('uid')},
+        method: 'POST'
+      }).done(function () {
+        $this.addClass('btn-success');
+        $this.removeClass('btn-danger');
+        $this.text('删除成功');
+        getMemberList($('.course-delete-button').attr('cid'));
+      })
+    }
+  })
+  .on('click', '.student-delete-button.btn-warning', function () {
+    $(this).addClass('btn-danger');
+    $(this).removeClass('btn-warning');
+    $(this).text('确认删除?');
+  })
+  .on('mouseleave', '.student-delete-button.btn-danger', function () {
+    $(this).addClass('btn-warning');
+    $(this).removeClass('btn-danger');
+    $(this).text('删除');
+  })
+  .on('click', '.student-delete-button.btn-danger', function () {
     let $this = $(this)
     $(this).attr('disabled', 'disabled');
     $(this).text('删除中...');
+    console.log($(this).attr('cid'));
+    let select_courseid = $('.course-delete-button').attr('cid');
     $.ajax({
-      url: `/course/${$(this).attr('uid')}/member`,
-      method: 'DELETE'
+      url: `/course/${select_courseid}/student/delete`,
+      data: {id: $(this).attr('uid')},
+      method: 'POST'
     }).done(function () {
       $this.addClass('btn-success');
       $this.removeClass('btn-danger');
@@ -223,14 +258,15 @@ function getMemberListUnit(userlist, type) {
 
 function appendMemberList(name, user, type) {
   let html = '<tr class="member-row">';
-
+  let oritype = 'student';
+  if (type === '管理员'){
+    oritype = 'teacher'
+  }
   html += `<td class="member-row-name">${name}</td>`
   html += `<td class="member-row-id">${user}</td>`
   html += `<td class="member-row-type">${type}</td>`
-/*
-  if (user != userID)
-    html += `<td><button type="button" class="member-delete-button btn btn-warning" uid='${user}'>删除</button></td>`
-*/
+  html += `<td><button type="button" class="${oritype}-delete-button btn btn-warning" uid='${user}'>删除</button></td>`
+
     $('#course-member-table').append(html);
 }
 

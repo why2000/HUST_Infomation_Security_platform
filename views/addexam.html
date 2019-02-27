@@ -56,23 +56,23 @@
         <ul class="parent-menu" , id="parent">
             <li>
                 <a id="home-page" href="/catalog">
-                      <i class="fa fa-home fa-lg"></i>
-                      <span class="nav-text">首页</span>
-                    </a>
+                    <i class="fa fa-home fa-lg"></i>
+                    <span class="nav-text">首页</span>
+                </a>
             </li>
             <li>
                 <a id="class-home-page">
-                      <i class="fa fa-book fa-lg"></i>
-                      <span class="nav-text">课程首页</span>
-                    </a>
+                    <i class="fa fa-book fa-lg"></i>
+                    <span class="nav-text">课程首页</span>
+                </a>
             </li>
             <li class="has-submenu" id="course-list-parent">
                 <a>
-                      <i class="fa fa-chevron-right fa-lg list-icon" id="course-list-icon"></i>
-                      <span class="nav-text">
+                    <i class="fa fa-chevron-right fa-lg list-icon" id="course-list-icon"></i>
+                    <span class="nav-text">
                         选择课程
-                      </span>
-                    </a>
+                    </span>
+                </a>
                 <div class="row pre-scrollable">
                     <ul id="course-list" class="submenu" style="display: none">
                     </ul>
@@ -80,67 +80,97 @@
             </li>
             <li>
                 <a id='class-to-video'>
-                      <i class="fa fa-film fa-lg"></i>
-                      <span class="nav-text">上传视频</span>
-                    </a>
+                    <i class="fa fa-film fa-lg"></i>
+                    <span class="nav-text">上传视频</span>
+                </a>
             </li>
             <li>
                 <a id='class-to-exam'>
-                      <i class="fa fa-tasks fa-lg"></i>
-                      <span class="nav-text">编辑练习</span>
-                    </a>
+                    <i class="fa fa-tasks fa-lg"></i>
+                    <span class="nav-text">编辑练习</span>
+                </a>
             </li>
             <li>
                 <a id='class-to-feedback'>
-                      <i class="fa fa-cloud-upload-alt fa-lg"></i>
-                      <span class="nav-text">评价报告</span>
-                    </a>
+                    <i class="fa fa-cloud-upload-alt fa-lg"></i>
+                    <span class="nav-text">评价报告</span>
+                </a>
             </li>
             <li>
                 <a id='class-to-courseware'>
-                      <i class="fa fa-folder-open fa-lg"></i>
-                      <span class="nav-text">上传课件</span>
-                    </a>
+                    <i class="fa fa-folder-open fa-lg"></i>
+                    <span class="nav-text">上传课件</span>
+                </a>
             </li>
             <li>
                 <a id='class-to-logout'>
-                      <i class="fa fa-power-off fa-lg"></i>
-                      <span class="nav-text">退出系统</span>
-                    </a>
+                    <i class="fa fa-power-off fa-lg"></i>
+                    <span class="nav-text">退出系统</span>
+                </a>
             </li>
         </ul>
         <ul id="sidebar-back" class="back">
             <li>
                 <a href="javascript:history.go(-1);">
-                      <i class="fa fa-chevron-left fa-lg"></i>
-                      <span class="nav-text">
+                    <i class="fa fa-chevron-left fa-lg"></i>
+                    <span class="nav-text">
                         后退
-                      </span>
-                    </a>
+                    </span>
+                </a>
             </li>
         </ul>
     </nav>
     <div style="width: 100% ; margin: auto; margin-top: 80px;">
         <div class="container" style="width: 1200px ; margin-top: auto;">
-            <row>
-                <div class="col-12">
-                    <input class=" text-center form-control" style="background-color: white; border:#ced4da solid 1px;color:black;" id="examname" placeholder="测试名称">
+            <div class="row">
+                <div class="col-4">
+                    <input class=" text-center form-control" style="background-color: white; border:#ced4da solid 1px;color:black;"
+                        id="examname" placeholder="测试名称">
                 </div>
-            </row>
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-4">
+                            <label style="line-height:38px; float:right">测试时限(默认5分钟):</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="number" class=" text-center form-control" style="background-color: white; border:#ced4da solid 1px;color:black;"
+                                id="examtimehour" placeholder="时">
+                        </div>
+                        <div class="col-2">
+                            <input type="number" class=" text-center form-control" style="background-color: white; border:#ced4da solid 1px;color:black;"
+                                id="examtimeminute" placeholder="分">
+                        </div>
+                        <div class="col-2">
+                            <input type="number" class=" text-center form-control" style="background-color: white; border:#ced4da solid 1px;color:black;"
+                                id="examtimesecond" placeholder="秒">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <br>
+            <div class="row">
+                <div class="col-12">
+                    <textarea class="text-center form-control" style="background-color: white; border:#ced4da solid 1px;color:black;"
+                        id="examdescription" placeholder="测试简介"></textarea>
+                </div>
+            </div>
+            <br>
+
             <div id="questions">
 
             </div>
             <br>
             <div class="row form-inline" style="padding-left:20px; padding-right:20px;">
-                <div class="col-6">
+                <div class="col-4">
                     <button type="button" id="addsingle" class="btn btn-outline-success btn-block btn-lg" onclick="AddSingle()">增加单选题</button>
                 </div>
-                <div class="col-6">
-
+                <div class="col-4">
                     <button type="button" id="addmuiti" class="btn btn-outline-success btn-block btn-lg" onclick="AddMulti()">增加多选题</button>
                 </div>
-
+                <div class="col-4">
+                    <button type="button" id="addfill" class="btn btn-outline-success btn-block btn-lg" onclick="AddFill()">增加填空题</button>
+                </div>
             </div>
             <br>
 
@@ -148,9 +178,9 @@
 
             <div id="submit " style="padding-left:20px; padding-right:20px; ">
 
-                <button type="button " id="submit " class="btn btn-outline-warning btn-block btn-lg "  onclick = "Submit()">提交测试</button>
+                <button type="button " id="submit " class="btn btn-outline-warning btn-block btn-lg " onclick="Submit()">提交测试</button>
 
             </div>
         </div>
-        </div>
+    </div>
 </body>

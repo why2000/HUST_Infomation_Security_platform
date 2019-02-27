@@ -136,6 +136,8 @@ const addStudentsByCourseID = async (req, res) => {
         })
 }
 
+
+
 const addTeacherByCOurseID = async (req, res) => {
 
     if (await UserValidator.getUserTypeById(req.session.loginUser) != 'teacher') {
@@ -163,6 +165,61 @@ const addTeacherByCOurseID = async (req, res) => {
         })
 }
 
+const deleteStudentsByCourseID = async (req, res) => {
+    // 其实为啥不扩展成一次能添加多个的
+
+    if (await UserValidator.getUserTypeById(req.session.loginUser) != 'teacher') {
+        response(res, 401, 'Permission denied.');
+        return
+    }
+
+    cid = req.params.id;
+    sid = req.body.id;
+    if (!sid) {
+        response(res, 400, 'Bad request.');
+        return;
+    }
+
+    course.deleteStudentToCourse(cid, sid)
+        .then(r => {
+            if (r)
+                response(res, {});
+            else
+                response(res, 404, 'Not found.');
+        })
+        .catch(err => {
+            CourseLogger.error(`delete student by course_id error => ${err.stack}`);
+            response(res, 500, 'Server error.');
+        })
+}
+
+const deleteTeacherByCOurseID = async (req, res) => {
+
+    if (await UserValidator.getUserTypeById(req.session.loginUser) != 'teacher') {
+        response(res, 401, 'Permission denied.');
+        return
+    }
+
+    cid = req.params.id;
+    tid = req.body.id;
+    if (!tid) {
+        response(res, 400, 'Bad request.');
+        return;
+    }
+
+    course.deleteTeacherToCourse(cid, tid)
+        .then(r => {
+            if (r)
+                response(res, {});
+            else
+                response(res, 404, 'Not found.');
+        })
+        .catch(err => {
+            CourseLogger.error(`delete teacher by course_id error => ${err.stack}`);
+            response(res, 500, 'Server error.');
+        })
+}
+
 const getCoursesManagePage = async (req, res) => {
     if (await UserValidator.getUserTypeById(req.session.loginUser) != 'teacher') {
         response(res, 401, 'Permission denied.');
@@ -181,5 +238,7 @@ module.exports = {
     getStudentsByCourseID,
     getTeacherByCourseID,
     addStudentsByCourseID,
-    addTeacherByCOurseID
+    addTeacherByCOurseID,
+    deleteStudentsByCourseID,
+    deleteTeacherByCOurseID
 }
