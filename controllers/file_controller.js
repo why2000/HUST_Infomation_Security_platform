@@ -58,6 +58,11 @@ const getFile = (req, res) => {
 const getFiles = async function (req, res) {
     let fileList = req.query.fileList;
     let fileName = req.query.fileName;
+    
+    if(!fileList || !fileName){
+        response(res, 404, 'Not found!');
+    }
+
     var output = fs.createWriteStream('/tmp/' + fileName + '.zip');
     var archive = arch('zip', {
         zlib: { level: 1 }
