@@ -3,7 +3,7 @@ var file = require('../controllers/file_controller');
 
 var router = express.Router();
 
-router.get('/', file.getAllFiles);
+router.get('/', file.getFiles);
 router.post('/', file.uploadFile);
 router.get('/:file_id', file.getFile);
 router.delete('/:file_id', file.deleteFile);

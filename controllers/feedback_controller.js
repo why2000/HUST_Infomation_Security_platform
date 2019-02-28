@@ -108,6 +108,32 @@ const getStudentReport = async (req, res) => {
     }
 }
 
+const getModuleReport = async (req, res) => {
+    console.log(req.session.loginUser)
+    console.log(req.params.student_id)
+
+    if (req.session.loginUser &&
+        ((await UserValidator.getUserTypeById(req.session.loginUser) == "teacher")) ||
+        (req.session.loginUser == req.params.student_id)) {
+
+        feedback.getReportsByModuleID( req.params.course_id)
+            .catch(err => {
+                //need a logger
+                response(res, 500, "Server error.");
+            })
+            .then(result => {
+                if (result) {
+                    response(res, result);
+                } else {
+                    res.status(400).send("No data");
+                }
+            });
+    }
+    else {
+        res.status(401).send("permission denied");
+    }
+}
+
 const saveStudentReport = async (req, res) => {
     // 注意student_id和course_id是否存在
     // form内input file的id为upload
@@ -304,6 +330,7 @@ module.exports = {
     getStudentList,
     getPageByUserType,
     getStudentReport,
+    getModuleReport,
     saveStudentReport,
     deleteStudentReport,
     getAllTeacherJudgement,
