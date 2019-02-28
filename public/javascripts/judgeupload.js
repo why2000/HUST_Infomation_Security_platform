@@ -8,10 +8,10 @@ let username;
 
 $(document).ready(function () {
 
-  window.onbeforeunload=function(e){     
-    　　var e = window.event||e;  
-    　　e.returnValue=("确定离开当前页面吗？");
-    }
+  window.onbeforeunload = function (e) {
+    var e = window.event || e;
+    e.returnValue = ("确定离开当前页面吗？");
+  }
 
   getCourseid();
   getCourseList();
@@ -30,7 +30,7 @@ $(document).ready(function () {
       html += '</div>'
       html += '<div class="col-8">'
       html += '<div class=" btn-group pull-right">'
-      html += '<button type="button" class="my-many-download-button btn btn-primary" id="many-download" sid=' + studentList[n].id + '>批量下载该生所有报告</button>'
+      html += '<button type="button" class="my-many-download-button btn btn-primary" sname=' + studentList[n].name + ' id="many-download" sid=' + studentList[n].id + '>批量下载该生所有报告</button>'
       html += '<button type="button" class="my-upload-button btn btn-primary" id="submit">提交</button>'
       html += '</div>'
       html += '</div>'
@@ -87,20 +87,50 @@ $(document).ready(function () {
     $form.submit();
   })
   .on('click', '.my-many-download-button', function () {
+    let student_name = $(this).attr('sname')
     let studentID = $(this).attr('sid');
     $.get({
       url: `/feedback/${courseid}/${studentID}/report`,
     }).done((reportList) => {
-      for(let n =0;n<reportList.data.length;n++){
-        setTimeout(function(){
-          let url = 'http://' + window.location.host + '/file/' + reportList.data[n].file_id;
-          let $form = $('<form method="GET"></form>');
-          $form.attr('action', url);
-          $form.appendTo($('body'));
-          $form.submit();
-        },n*500);
+
+      let fileList = []
+
+      reportList.data.forEach(report => {
+        fileList.push(report.file_id);
+      })
+
+      let filesPackage = {
+        fileName: classname + ' ' + student_name + ' 报告合集',
+        fileList: fileList
       }
+
+      let url = 'http://' + window.location.host + '/file?' + $.param(filesPackage);
+      window.open(url);
+
     })
+  })
+  .on('click', '.my-all-download-button', function () {
+    $.get({
+      url: `/feedback/${courseid}/null/modulereport`,
+    }).done((reportList) => {
+
+      let fileList = []
+
+      reportList.data.forEach(report => {
+        report.report.forEach(file => {
+          fileList.push(file.file_id);
+        })
+      })
+
+      let filesPackage = {
+        fileName: classname + ' 报告合集',
+        fileList: fileList
+      }
+
+      let url = 'http://' + window.location.host + '/file?' + $.param(filesPackage);
+      window.open(url);
+    })
+
   })
 
 async function getReportList(nid) {

@@ -21,6 +21,7 @@ router.get('/:class_id/list', feedback.getStudentList);
 router.post('/:course_id/report', upload.single('upload'), feedback.saveStudentReport);
 router.delete('/:course_id/:student_id/:file_id/report', feedback.deleteStudentReport);
 router.get('/:course_id/:student_id/report', feedback.getStudentReport);
+router.get('/:course_id/:student_id/modulereport', feedback.getModuleReport);
 
 // 教师反馈
 router.get('/:course_id/:student_id/judgement', feedback.getAllTeacherJudgement);
