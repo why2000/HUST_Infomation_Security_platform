@@ -1,8 +1,25 @@
 var course = require('../models/course_db')
+var SemesterSet = require('../config/semester.json')
 var response = require('../utils/response')
 var UserValidator = require('../validators/user_validator');
 var CourseLogger = require('../logger').CourseLogger
 
+const getAllSemester = async (req, res) => {
+    response(res, SemesterSet.ALL_SEMESTER);
+}
+
+const getNowSemester = async (req, res) => {
+    response(res, SemesterSet.NOW_SEMESTER);
+}
+
+const changeSemesterTmp = async (req, res) => {
+    if (await UserValidator.getUserTypeById(req.session.loginUser) != "teacher") {
+        response(res, 401, 'Permission denied.');
+    } else {
+        req.session.semester = req.body.newSemester;
+        response(res, 200, 'Done');
+    }
+}
 
 const getAllCourses = async (req, res) => {
     course.getAllCourses()

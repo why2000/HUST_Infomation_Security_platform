@@ -2,7 +2,7 @@
     关于课程方面的处理的Model层
     按照老师最新(2018/9/23)的要求中，课程作为基本的单元。(近乎)所有的操作需要围绕着课程来进行
 */
-
+let SemesterSet = require('../config/semester.json');
 let ConfigSet = require('../config/course.json');
 let ErrorSet = require('../utils/error_util');
 let CourseLogger = require('../logger').CourseLogger;
@@ -64,6 +64,7 @@ const getCourseInfo = async (id) => {
  */
 const createCourse = async (data) => {
     data = await assembleCourseData(data);
+    data.semester = SemesterSet.NOW_SEMESTER;
     console.log(data);
     let colCourse = db.collection('course')
     return colCourse.insertOne(data).then(res => res.result.ok == 1);
@@ -132,9 +133,9 @@ const deleteTeacherToCourse = async (course_id, teacher_id) => {
  * 获取学生所拥有的所有课程
  * @param {string} id 学生ID
  */
-const getCoursesByStudent = async (id) => {
+const getCoursesByStudent = async (id , semester=SemesterSet.NOW_SEMESTER) => {
     let colCourse = db.collection('course');
-    return colCourse.find({ student: id })
+    return colCourse.find({ student: id , semester: semester})
         .project({ teacher: 0, student: 0 })
         .toArray();
 }
@@ -143,9 +144,9 @@ const getCoursesByStudent = async (id) => {
  * 获取教师所拥有的全部课程
  * @param {string} id 教师ID
  */
-const getCoursesByTeacher = async (id) => {
+const getCoursesByTeacher = async (id , semester=SemesterSet.NOW_SEMESTER) => {
     let colCourse = db.collection('course');
-    return colCourse.find({ teacher: id })
+    return colCourse.find({ teacher: id , semester: semester})
         .project({ teacher: 0, student: 0 })
         .toArray();
 }
