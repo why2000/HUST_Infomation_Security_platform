@@ -173,18 +173,18 @@ $(document).ready(function () {
       data: { newSemester: $(this).attr('mid') },
       method: 'POST'
     }).done(function () {
-      alert("学期切换成功");
       setSemester();
       getCourseList();
+      alert("学期切换成功");
     })
   })
   .on('click', '#semester-add-button', function () {
     $.get({
       url: `/course/createsemester`
     }).done(function () {
-      alert("开始学期成功");
       setSemester();
       getCourseList();
+      alert("开始学期成功");
     })
   })
 

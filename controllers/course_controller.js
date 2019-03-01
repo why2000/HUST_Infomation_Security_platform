@@ -27,28 +27,28 @@ const createNewSemester = async (req, res) => {
     if (await UserValidator.getUserTypeById(req.session.loginUser) != "teacher") {
         response(res, 401, 'Permission denied.');
     } else {
-        console.log(__dirname);
         let nowSemester = SemesterSet.NOW_SEMESTER;
         let firstyear = parseInt(nowSemester.substring(0, 2));
         let lastyear = parseInt(nowSemester.substring(2, 4));
         let seme = nowSemester.substring(4, 5) == "a" ? "b" : "a"
 
-        if(nowSemester.substring(4, 5) == "a"){
-            seme="b";
-        }else{
+        if (nowSemester.substring(4, 5) == "a") {
+            seme = "b";
+        } else {
             firstyear++;
             lastyear++;
         }
 
         SemesterSet.NOW_SEMESTER = `${firstyear}${lastyear}${seme}`
         SemesterSet.ALL_SEMESTER.push(SemesterSet.NOW_SEMESTER);
-        fs.writeFileSync(path.join(__dirname,'../config/semester.json'), JSON.stringify({
+        fs.writeFileSync(path.join(__dirname, '../config/semester.json'), JSON.stringify({
             "NOW_SEMESTER": SemesterSet.NOW_SEMESTER,
             "ALL_SEMESTER": SemesterSet.ALL_SEMESTER
         }));
 
-        req.session.semester=undefined;
+        course.copyCourseToNewSemester(SemesterSet.ALL_SEMESTER[SemesterSet.ALL_SEMESTER.length - 2], req.session.loginUser)
 
+        req.session.semester = undefined;
         response(res, SemesterSet.NOW_SEMESTER);
     }
 }
@@ -57,7 +57,6 @@ const changeSemesterTmp = async (req, res) => {
     if (await UserValidator.getUserTypeById(req.session.loginUser) != "teacher") {
         response(res, 401, 'Permission denied.');
     } else {
-        console.log(SemesterSet.ALL_SEMESTER.includes(req.body.newSemester))
         if (SemesterSet.ALL_SEMESTER.includes(req.body.newSemester)) {
             req.session.semester = req.body.newSemester;
             response(res, 200, 'Done');
@@ -108,7 +107,6 @@ const createCourse = async (req, res) => {
     }
 
     data = req.body;
-    console.log(data);
     course.createCourse(data)
         .then(r => {
             if (r) {
