@@ -3,21 +3,67 @@ var SemesterSet = require('../config/semester.json')
 var response = require('../utils/response')
 var UserValidator = require('../validators/user_validator');
 var CourseLogger = require('../logger').CourseLogger
+var fs = require('fs')
+var path = require('path');
 
 const getAllSemester = async (req, res) => {
-    response(res, SemesterSet.ALL_SEMESTER);
+    if (req.session.loginUser) {
+        response(res, SemesterSet.ALL_SEMESTER);
+    }
 }
 
 const getNowSemester = async (req, res) => {
-    response(res, SemesterSet.NOW_SEMESTER);
+    if (req.session.loginUser) {
+        if (req.session.semester) {
+            response(res, req.session.semester);
+        }
+        else {
+            response(res, SemesterSet.NOW_SEMESTER);
+        }
+    }
+}
+
+const createNewSemester = async (req, res) => {
+    if (await UserValidator.getUserTypeById(req.session.loginUser) != "teacher") {
+        response(res, 401, 'Permission denied.');
+    } else {
+        console.log(__dirname);
+        let nowSemester = SemesterSet.NOW_SEMESTER;
+        let firstyear = parseInt(nowSemester.substring(0, 2));
+        let lastyear = parseInt(nowSemester.substring(2, 4));
+        let seme = nowSemester.substring(4, 5) == "a" ? "b" : "a"
+
+        if(nowSemester.substring(4, 5) == "a"){
+            seme="b";
+        }else{
+            firstyear++;
+            lastyear++;
+        }
+
+        SemesterSet.NOW_SEMESTER = `${firstyear}${lastyear}${seme}`
+        SemesterSet.ALL_SEMESTER.push(SemesterSet.NOW_SEMESTER);
+        fs.writeFileSync(path.join(__dirname,'../config/semester.json'), JSON.stringify({
+            "NOW_SEMESTER": SemesterSet.NOW_SEMESTER,
+            "ALL_SEMESTER": SemesterSet.ALL_SEMESTER
+        }));
+
+        req.session.semester=undefined;
+
+        response(res, SemesterSet.NOW_SEMESTER);
+    }
 }
 
 const changeSemesterTmp = async (req, res) => {
     if (await UserValidator.getUserTypeById(req.session.loginUser) != "teacher") {
         response(res, 401, 'Permission denied.');
     } else {
-        req.session.semester = req.body.newSemester;
-        response(res, 200, 'Done');
+        console.log(SemesterSet.ALL_SEMESTER.includes(req.body.newSemester))
+        if (SemesterSet.ALL_SEMESTER.includes(req.body.newSemester)) {
+            req.session.semester = req.body.newSemester;
+            response(res, 200, 'Done');
+        } else {
+            response(res, 500, 'Server error');
+        }
     }
 }
 
@@ -38,7 +84,12 @@ const getCourses = async (req, res) => {
     if (await UserValidator.getUserTypeById(id) == "student") { // 学生
         p = course.getCoursesByStudent(id);
     } else { // 老师
-        p = course.getCoursesByTeacher(id);
+        if (req.session.semester) {
+            p = course.getCoursesByTeacher(id, req.session.semester);
+        }
+        else {
+            p = course.getCoursesByTeacher(id);
+        }
     }
 
     p.then(data => {
@@ -248,6 +299,10 @@ const getCoursesManagePage = async (req, res) => {
 
 module.exports = {
     getCoursesManagePage,
+    getAllSemester,
+    getNowSemester,
+    createNewSemester,
+    changeSemesterTmp,
     getAllCourses,
     getCourses,
     createCourse,
