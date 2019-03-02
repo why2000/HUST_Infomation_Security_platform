@@ -107,7 +107,11 @@ const removeCourse = async (id) => {
  */
 const addStudentToCourse = async (course_id, student_id) => {
     let colCourse = db.collection('course');
+    let user = db.collection('user');
     course_id = MongoDB.ObjectID(course_id);
+    if(!await user.findOne({userid: student_id})){
+        user.updateOne({userid: student_id, password: student_id, type: "user-info", usertype: "student", username:"未设置"}).then(r => r.result.ok == 1);
+    }
     return colCourse.updateOne({ _id: course_id }, { $addToSet: { "student": student_id } }).then(r => r.result.ok == 1);
 }
 
