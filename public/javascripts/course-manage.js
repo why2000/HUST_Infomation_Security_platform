@@ -167,6 +167,37 @@ $(document).ready(function () {
       alert('身份选择、工号不得为空。');
     }
   })
+  .on('click', '#course-member-multi-add-button-confirm', function () {
+    let new_members_id = $('#new-members-id').val();
+    alert(new_members_id);
+    $('#new-members-id').val('');
+    let new_members_ids = new_members_id.split(/[ \n\t,]/);
+    let new_member_type = 'student';
+    new_members_ids.forEach(function(new_member_id){
+      // alert(new_member_id);
+      if (teacherlist && studentlist) {
+        if (teacherlist.indexOf(new_member_id) != -1 && studentlist.indexOf(new_member_id) != -1) {
+          alert('请勿重复添加同一人');
+          return;
+        }
+      }
+
+      let type_url = 'student';
+      if (new_member_id && new_member_type) {
+        let select_courseid = $('.course-delete-button').attr('cid');
+        $.post({
+          url: `/course/${select_courseid}/${type_url}`,
+          data: { id: new_member_id }
+        }).done(function () {
+          getMemberList($('.course-delete-button').attr('cid'));
+        });
+      } else {
+        alert('添加失败，请检查格式');
+        // alert('身份选择、工号不得为空。');
+      }
+    });
+    alert('新成员添加成功!');
+  })
   .on('click', '.semester-select-item', function () {
     $.ajax({
       url: `/course/setsemester`,
