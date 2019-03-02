@@ -110,8 +110,6 @@ const addStudentToCourse = async (course_id, student_id) => {
     let user = db.collection('user');
     course_id = MongoDB.ObjectID(course_id);
     await user.findOne({userid: student_id}, function (err, res){
-        console.log('testadd9');
-        console.log(res);
         if(!res){
             user.insertOne({type: "user-info", username:"未设置", userid: student_id, usertype: "student", password: student_id}, function (err, res){
                 if(err){
@@ -120,8 +118,6 @@ const addStudentToCourse = async (course_id, student_id) => {
                 }
             });
         }
-        console.log('testadd');
-        console.log(res);
         if(err){
             CourseLogger.error(`database error => ${err.stack}`);
             throw err;
@@ -141,6 +137,20 @@ const addStudentToCourse = async (course_id, student_id) => {
 const addTeacherToCourse = async (course_id, teacher_id) => {
     let colCourse = db.collection('course');
     course_id = MongoDB.ObjectID(course_id);
+    await user.findOne({userid: student_id}, function (err, res){
+        if(!res){
+            user.insertOne({type: "user-info", username:"未设置", userid: student_id, usertype: "teacher", password: student_id}, function (err, res){
+                if(err){
+                    CourseLogger.error(`database error => ${err.stack}`);
+                    throw err;
+                }
+            });
+        }
+        if(err){
+            CourseLogger.error(`database error => ${err.stack}`);
+            throw err;
+        }
+    });
     return colCourse.updateOne({ _id: course_id }, { $addToSet: { student: teacher_id } }).then(r => r.result.ok == 1);
 }
 
