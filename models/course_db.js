@@ -109,9 +109,25 @@ const addStudentToCourse = async (course_id, student_id) => {
     let colCourse = db.collection('course');
     let user = db.collection('user');
     course_id = MongoDB.ObjectID(course_id);
-    if(!await user.findOne({userid: student_id})){
-        user.updateOne({userid: student_id, password: student_id, type: "user-info", usertype: "student", username:"未设置"}).then(r => r.result.ok == 1);
-    }
+    await user.findOne({userid: student_id}, function (err, res){
+        console.log('testadd9');
+        console.log(res);
+        if(!res){
+            user.insertOne({type: "user-info", username:"未设置", userid: student_id, usertype: "student", password: student_id}, function (err, res){
+                if(err){
+                    CourseLogger.error(`database error => ${err.stack}`);
+                    throw err;
+                }
+            });
+        }
+        console.log('testadd');
+        console.log(res);
+        if(err){
+            CourseLogger.error(`database error => ${err.stack}`);
+            throw err;
+        }
+    });
+       
     return colCourse.updateOne({ _id: course_id }, { $addToSet: { "student": student_id } }).then(r => r.result.ok == 1);
 }
 
