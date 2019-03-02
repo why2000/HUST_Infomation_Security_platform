@@ -169,7 +169,7 @@ $(document).ready(function () {
   })
   .on('click', '#course-member-multi-add-button-confirm', function () {
     let new_members_id = $('#new-members-id').val();
-    alert(new_members_id);
+    // alert(new_members_id);
     $('#new-members-id').val('');
     let new_members_ids = new_members_id.split(/[ \n\t,]/);
     let new_member_type = 'student';
@@ -181,7 +181,6 @@ $(document).ready(function () {
           return;
         }
       }
-
       let type_url = 'student';
       if (new_member_id && new_member_type) {
         let select_courseid = $('.course-delete-button').attr('cid');
@@ -192,7 +191,7 @@ $(document).ready(function () {
           getMemberList($('.course-delete-button').attr('cid'));
         });
       } else {
-        alert('添加失败，请检查格式');
+        alert('添加失败，请检查格式(末位空格未删除不会影响效果，可忽略此警告)');
         // alert('身份选择、工号不得为空。');
       }
     });
