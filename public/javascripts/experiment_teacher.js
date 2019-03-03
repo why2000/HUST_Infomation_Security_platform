@@ -42,11 +42,63 @@ function getExperimentContent(){
       $('#content').val(content);
 }
 
+function changeCurrentExperiment(title){
+    $.ajax({
+        url: '/experiment/current',
+        method: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            title: title
+        }),
+        success: () => {
+            alert('修改成功!'); 
+        },
+    });
+}
+
+function getExperimentList(){
+    $.get({
+        url: '/experiment/titlelist'
+      }).done(result => {
+        experimentlist = result.result;
+        $('#course-list').empty();
+        var length = 0;
+        if (experimentlist) {
+          length = experimentlist.length;
+        }
+        for (var i = 0; i < length; i++) {
+            var title = experimentlist[i].title;
+            $('#experiment-select').append(`<a class="list-group-item list-group-item-action experiment-select-item" mid="${title}">${title}</a>`);
+        }
+      });
+}
+
+function modifyExperimentContent() {
+    let title = $('#title').val();
+    let content = $('#content').val();
+    $.ajax({
+        url: '/experiment/modify',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            title: title,
+            content: content
+        }),
+        success: () => {
+            alert('修改成功!'); 
+        },
+    });
+}
+
+
 $(document).ready(function () {
     sideBarInit();
     getCourseList();
     getUserName();
     getExperimentContent();
+    getExperimentList();
+}).on('click', '.experiment-select-item', function(){
+    changeCurrentExperiment($(this).attr('mid'));
 });
 
 

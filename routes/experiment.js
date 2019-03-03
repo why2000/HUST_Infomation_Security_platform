@@ -4,6 +4,8 @@ var CatalogController = require('../controllers/experiment_controller');
 
 router.get('/', CatalogController.getExperimentPage);
 
+router.get('/titlelist', CatalogController.getExperimentList);
+
 router.post('/modify', CatalogController.getExperimentPage);
 
 router.put('/current', CatalogController.changeCurrentExperiment);
