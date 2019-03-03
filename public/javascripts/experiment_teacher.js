@@ -36,10 +36,10 @@ function getExperimentContent(){
       }).done(result => {
         title = result.result.title;
         content = result.result.content;
-        setUserName();
+        $('#title').val(title);
+        $('#content').val(content);
       });
-      $('#title').val(title);
-      $('#content').val(content);
+      
 }
 
 function changeCurrentExperiment(title){
@@ -52,6 +52,7 @@ function changeCurrentExperiment(title){
         }),
         success: () => {
             alert('修改成功!'); 
+            location.reload();
         },
     });
 }
@@ -86,6 +87,7 @@ function modifyExperimentContent() {
         }),
         success: () => {
             alert('修改成功!'); 
+            location.reload();
         },
     });
 }

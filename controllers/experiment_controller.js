@@ -43,7 +43,7 @@ exports.setExperimentContent = async (req, res, next) => {
 
 exports.getExperimentList = async (req, res, next) => {
     if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
-        var data = await ExperimentDB.changeCurrentExperiment();
+        var data = await ExperimentDB.getExperimentList();
         res.json({
             result: data
         });
@@ -78,12 +78,22 @@ exports.getCurrentExperiment = async (req, res, next) => {
         res.status(401).send("permission denied"); 
     }
     else{
-        var data = await ExperimentDB.getExperimentContent()
-        res.json({
-            result: {
-                title: data.title,
-                content: data.content
-            }
-        });
+        var data = await ExperimentDB.getCurrentExperiment();
+        console.log(data);
+        if(data){
+            res.json({
+                result: {
+                    title: data.title,
+                    content: data.content
+                }
+            });
+        }else{
+            res.json({
+                result: {
+                    title: "",
+                    content: ""
+                }
+            });
+        }
     }
 }

@@ -7,7 +7,42 @@ let ExperimentLogger = require('../logger').ExperimentLogger;
 let MongoDB = require('mongodb');
 let MongoClient = MongoDB.MongoClient;
 let IsEmpty = require('is-empty');
-
+let db;
+MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
+    if (err) {
+        ExperimentLogger.error(`database error => ${err.stack}`);
+        throw err;
+    } else {
+        db = client.db(ConfigSet.DATABASE_NAME);
+        db.createCollection(ConfigSet.COLLECTION_NAME, function (err, res) {
+            if (err) {
+                ExperimentLogger.error(`database error => ${err.stack}`);
+                throw err;
+            } else {
+                // Successfully creat col
+                ;
+            }
+        });
+        db.createCollection('report', function (err, res) {
+            if (err) {
+                ExperimentLogger.error(`database error => ${err.stack}`);
+                throw err;
+            } else {
+                // Successfully creat col
+                ;
+            }
+        });
+        db.createCollection('judgement', function (err, res) {
+            if (err) {
+                ExperimentLogger.error(`database error => ${err.stack}`);
+                throw err;
+            } else {
+                // Successfully creat col
+                ;
+            }
+        });
+    }
+});
 
 const setExperimentContent = async function (data) {
     var experiment = db.collection('experiment');
@@ -40,8 +75,7 @@ const setExperimentContent = async function (data) {
 
 const getExperimentList = async function () {
     var experiment = db.collection('experiment');
-    var data = await experiment.findMany({type: "expieriment"}, {title: 1});
-    return data;
+    return await experiment.find({type: "experiment"}, {title: 1}).toArray();
 }
 
 const changeCurrentExperiment = async function (data) {
@@ -77,7 +111,10 @@ const changeCurrentExperiment = async function (data) {
 const getCurrentExperiment = async function () {
     var experiment = db.collection('experiment');
     return experiment.findOne({type: "currentflag"}).then(res => {
-        var data = experiment.findOne({title: res.currenttitle});
+        var data;
+        if(res){
+            data = experiment.findOne({title: res.currenttitle});
+        }
         return data;
     });
 }

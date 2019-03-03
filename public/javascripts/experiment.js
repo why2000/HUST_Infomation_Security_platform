@@ -36,10 +36,10 @@ function getExperimentContent(){
       }).done(result => {
         title = result.result.title;
         content = result.result.content;
-        setUserName();
+        $('#title').val(title);
+        $('#content').val(content);
       });
-      $('#title').val(title);
-      $('#content').val(content);
+      
 }
 
 $(document).ready(function () {

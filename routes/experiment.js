@@ -6,7 +6,7 @@ router.get('/', CatalogController.getExperimentPage);
 
 router.get('/titlelist', CatalogController.getExperimentList);
 
-router.post('/modify', CatalogController.getExperimentPage);
+router.post('/modify', CatalogController.setExperimentContent);
 
 router.put('/current', CatalogController.changeCurrentExperiment);
 
