@@ -72,9 +72,22 @@ const findUserById = async function (userid) {
     return result;
 }
 
+const resetPasswd = async function (userid) {
+    var user = db.collection('user');
+    try {
+        console.log(userid);
+        var result = await user.updateMany({ type: 'user-info', userid: userid }, { $set: {password: userid } });
+    } catch (err) {
+        UserLogger.error(`database error => ${err.stack}`);
+        throw err
+    }
+    return result;
+}
+
 module.exports = {
     findUserByName,
     findUserById,
     getStudentListByTeaID,
-    changeUserData
+    changeUserData,
+    resetPasswd
 }

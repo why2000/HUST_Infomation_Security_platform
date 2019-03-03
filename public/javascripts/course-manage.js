@@ -110,6 +110,29 @@ $(document).ready(function () {
       $this.text('删除成功');
       getMemberList($('.course-delete-button').attr('cid'));
     })
+  }).on('click', '.password-reset-button.btn-warning', function () {
+    $(this).addClass('btn-danger');
+    $(this).removeClass('btn-warning');
+    $(this).text('确认重置?');
+  })
+  .on('mouseleave', '.password-reset-button.btn-danger', function () {
+    $(this).addClass('btn-warning');
+    $(this).removeClass('btn-danger');
+    $(this).text('重置');
+  })
+  .on('click', '.password-reset-button.btn-danger', function () {
+    let $this = $(this)
+    $(this).attr('disabled', 'disabled');
+    $(this).text('重置中...');
+    $.ajax({
+      url: `/user/reset`,
+      data: { id: $(this).attr('uid') },
+      method: 'PUT'
+    }).done(function () {
+      $this.addClass('btn-success');
+      $this.removeClass('btn-danger');
+      $this.text('重置成功');
+    });
   })
   .on('click', '#course-add-button-confirm', function () {
     let new_course_name = $('#new-course-name').val();
@@ -351,7 +374,7 @@ function appendMemberList(name, user, type) {
   html += `<td class="member-row-name">${name}</td>`
   html += `<td class="member-row-id">${user}</td>`
   html += `<td class="member-row-type">${type}</td>`
-  html += `<td><button type="button" class="${oritype}-delete-button btn btn-warning" uid='${user}'>删除</button></td>`
+  html += `<td><button type="button" class="${oritype}-delete-button btn btn-warning" uid='${user}'>删除</button> <button type="button" class="password-reset-button btn btn-warning" uid='${user}'>重置密码</button></td>`
 
   $('#course-member-table').append(html);
 }
