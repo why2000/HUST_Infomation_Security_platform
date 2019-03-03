@@ -119,9 +119,21 @@ const getCurrentExperiment = async function () {
     });
 }
 
+const deleteExperimentContent = async function(data){
+    var experiment = db.collection('experiment');
+    await experiment.deleteMany({title: data.title}, function (err, res){
+        if(err){
+            ExperimentLogger.error(`database error => ${err.stack}`);
+            throw err;
+        }
+    });
+    return true;
+}
+
 module.exports = {
     setExperimentContent,
     changeCurrentExperiment,
     getCurrentExperiment,
-    getExperimentList
+    getExperimentList,
+    deleteExperimentContent
 }

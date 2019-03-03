@@ -26,7 +26,21 @@ function creatURL(URLarray) {
     return result;
 }
 
-
+function deleteExperimentContent(title){
+  $.ajax({
+    url: '/experiment/modify',
+        method: 'DELETE',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            title: title,
+            content: content
+        }),
+        success: () => {
+            alert('修改成功!'); 
+            location.reload();
+        },
+  });
+}
 
 function getExperimentContent(){
     let title;
@@ -69,7 +83,8 @@ function getExperimentList(){
         }
         for (var i = 0; i < length; i++) {
             var title = experimentlist[i].title;
-            $('#experiment-select').append(`<a class="list-group-item list-group-item-action experiment-select-item" mid="${title}">${title}</a>`);
+            $('#experiment-select').append(`<a class="list-group-item list-group-item-action experiment-select-item" mid="${title}">${title}<button type="button" class="badge delete-experiment-select" mid="${title}" style="float: right">删除</button>
+            </a>`);
         }
       });
 }
@@ -99,8 +114,42 @@ $(document).ready(function () {
     getUserName();
     getExperimentContent();
     getExperimentList();
-}).on('click', '.experiment-select-item', function(){
+})
+.on('click', '.experiment-select-item', function(){
+  if($(this).attr('disabled') == 'disabled'){
+    ;
+  }
+  else{
     changeCurrentExperiment($(this).attr('mid'));
+  }
+})
+.on('mouseover', '.delete-experiment-select', function(){
+  $('.experiment-select-item').attr('disabled', 'disabled');
+})
+.on('mouseleave', '.delete-experiment-select', function(){
+  $('.experiment-select-item').removeAttr('disabled');
+})
+.on('click', '.delete-experiment-select', function(){
+    $(this).addClass('btn-danger');
+    $(this).text('确认删除?');
+})
+.on('mouseleave', '.delete-experiment-select.btn-danger', function () {
+  $(this).removeClass('btn-danger');
+  $(this).text('删除');
+})
+.on('click', '.delete-experiment-select.btn-danger', function () {
+  let $this = $(this);
+  $(this).attr('disabled', 'disabled');
+  $(this).text('删除中...');
+  $.ajax({
+    url: `/experiment/delete`,
+    data: { title: $(this).attr('mid') },
+    method: 'DELETE'
+  }).done(function () {
+    $this.addClass('btn-success');
+    $this.removeClass('btn-danger');
+    $this.text('删除成功');
+  });
 });
 
 

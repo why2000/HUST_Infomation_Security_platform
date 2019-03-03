@@ -82,7 +82,7 @@ const getCourseInfo = async (id) => {
 const createCourse = async (data) => {
     data = await assembleCourseData(data);
     data.semester = require('../config/semester.json').NOW_SEMESTER;
-    console.log(data);
+    // console.log(data);
     let colCourse = db.collection('course')
     return colCourse.insertOne(data).then(res => res.result.ok == 1);
 }

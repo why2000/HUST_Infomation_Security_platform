@@ -8,6 +8,8 @@ router.get('/titlelist', CatalogController.getExperimentList);
 
 router.post('/modify', CatalogController.setExperimentContent);
 
+router.delete('/delete', CatalogController.deleteExperimentContent);
+
 router.put('/current', CatalogController.changeCurrentExperiment);
 
 router.get('/current', CatalogController.getCurrentExperiment);

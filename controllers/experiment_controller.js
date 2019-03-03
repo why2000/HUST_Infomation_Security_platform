@@ -79,7 +79,7 @@ exports.getCurrentExperiment = async (req, res, next) => {
     }
     else{
         var data = await ExperimentDB.getCurrentExperiment();
-        console.log(data);
+        // console.log(data);
         if(data){
             res.json({
                 result: {
@@ -95,5 +95,23 @@ exports.getCurrentExperiment = async (req, res, next) => {
                 }
             });
         }
+    }
+}
+
+exports.deleteExperimentContent = async (req, res, next) => {
+    if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+        //不安全,但是是教师专用功能
+        let data = {
+            title: req.body.title
+        };
+        if (await ExperimentDB.deleteExperimentContent(data)) {
+            res.status(200).send("delete content successfully");
+        }
+        else {
+            res.status(500).send("data error");
+        }
+    }
+    else {
+        res.status(401).send("permission denied"); 
     }
 }
