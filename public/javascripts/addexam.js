@@ -192,7 +192,7 @@ function AddOption(o) {
 }
 
 function AddmOption(o) {
-  var current = $(o).parent().parent().parent().parent().parent().parent().attr("nid");
+  var current = $(o).parent().parent().parent().parent().parent().parent().attr("id");
   current = current.substr(11);
   $(o).parent().parent().parent().find('#options').append("<div class=\"input-group mb-3\"><div class=\"input-group-prepend\"><div class=\"input-group-text\"><input type=\"checkbox\" aria-label=\"Checkbox for following text input\" name=\"multi" + current + "\"></div></div><input type=\"text\" id= \"multioption\" class=\"form-control text-center\" aria-label=\"Text input with checkbox\" placeholder=\"选项\" ></div>");
 }
