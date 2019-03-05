@@ -150,8 +150,8 @@ function Submit() {
     request["timelimit"] = timelimit;
   }
 
-  console.log(request);
-  /*
+  // console.log(request);
+
   $.post({
     url: `/exam/${courseid}`,
     contentType: 'application/json',
@@ -164,7 +164,7 @@ function Submit() {
       window.history.back(-1);
     }
   })
-  */
+  
 }
 
 function DecQuestion(o) {
