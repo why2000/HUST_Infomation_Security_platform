@@ -62,7 +62,7 @@ function logout() {
     });
 }
 
-function setExperimentContent() {
+function setData() {
     if ($('#pw').val() != $('#rpw').val()) {
         alert('两次输入密码不一致');
     } else if ($('#pw').val() == '') {
