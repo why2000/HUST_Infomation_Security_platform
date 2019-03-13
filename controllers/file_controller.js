@@ -58,40 +58,44 @@ const getFile = (req, res) => {
 const getFiles = async function (req, res) {
     let fileList = req.query.fileList;
     let fileName = req.query.fileName;
-    
-    if(!fileList || !fileName){
+
+    if (!fileList || !fileName) {
         response(res, 404, 'Not found!');
     }
 
-    var output = fs.createWriteStream('/tmp/' + fileName + '.zip');
-    var archive = arch('zip', {
-        zlib: { level: 1 }
+    let file_path = '/tmp/' + fileName + '.zip'
+    let output = fs.createWriteStream(file_path);
+    let archive = arch('zip', {
+        zlib: { level: 5 }
     });
 
     archive.pipe(output);
 
-    var ep = new eventproxy();
+    let ep = new eventproxy();
     ep.after('got_file', fileList.length, function (list) {
-        let archFileStream = fs.createReadStream('/tmp/' + fileName + '.zip')
-        archive.finalize();
-
-        res.set({
-            "Content-type": "application/octet-stream",
-            "Content-Disposition": "attachment;filename=" + encodeURIComponent(fileName + '.zip')
-        })
-
-        archFileStream.on("data", function (chunk) { res.write(chunk, "binary") });
-        archFileStream.on("end", function () {
-            res.end();
+        archive.finalize().then(function () {
+            setTimeout(function () {
+                let stats = fs.statSync(file_path);
+                console.log(stats.size);
+                res.set({
+                    "Content-type": "application/octet-stream",
+                    "Content-Disposition": "attachment;filename=" + encodeURIComponent(fileName + '.zip'),
+                    'Content-Length': stats.size
+                });
+                fs.createReadStream(file_path).pipe(res);
+            }, 1000);
         });
-    })
+    });
 
     fileList.forEach(file_id => {
         file.getFile(file_id)
             .then(info => {
                 if (info) {
+                    info.stream.on('end', function () {
+                        ep.emit('got_file', file_id);
+                    });
+
                     archive.append(info.stream, { name: info.name });
-                    ep.emit('got_file', file_id);
                 } else {
                     response(res, 404, 'Not found!');
                 }
