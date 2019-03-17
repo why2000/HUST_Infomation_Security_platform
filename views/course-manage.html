@@ -101,6 +101,77 @@
     <div class="container">
       <div class="row">
         <div class="col-4">
+          <div class='row'>
+            <div class="col-12">
+              <button type="button" data-toggle="modal" data-target="#semester-manager-modal"
+                id="semester-manager-button" class="btn btn-block btn-success">学期操作</button>
+              <div class="modal fade" id="semester-manager-modal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <!-- 模态框头部 -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">学期操作</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- 模态框主体 -->
+                    <div class="modal-body">
+                      <form role="form">
+                        <div class="form-group">
+                          <label id="now-semester-label" style="color:black; font-size:14px;">开始新学期</label>
+                          <br>
+                          <button type="button" data-toggle="modal" data-target="#semester-create-modal" class="btn btn-primary btn-block">开始新学期</button>
+
+                          <div class="modal fade" id="semester-create-modal">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <!-- 模态框头部 -->
+                                <div class="modal-header">
+                                  <h4 class="modal-title">开始新学期</h4>
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <!-- 模态框主体 -->
+                                <div class="modal-body">
+                                  <form role="form">
+                                    <div class="form-group">
+                                      <label id="now-semester-label" style="color:black; font-size:14px;">警告！此操作不可逆！</label>
+                                    </div>
+                                  </form>
+                                </div>
+
+                                <!-- 模态框底部 -->
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                                  <button id="semester-add-button" type="button" class="btn btn-danger" data-dismiss="modal">确认添加</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label style="color:black; font-size:14px;">浏览历史学期（不影响学生端；阅览完毕后手动改回当前学期）</label>
+                          <div class="row pre-scrollable" style="max-height: 35vh">
+                            <div class="col-12">
+                              <div id="semester-select" class="list-group">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+
+                    <!-- 模态框底部 -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <br>
           <div class="row">
             <div class="col-12">
               <div class="card">
@@ -118,7 +189,6 @@
                   <div class="modal fade" id="course-add-modal">
                     <div class="modal-dialog">
                       <div class="modal-content">
-
                         <!-- 模态框头部 -->
                         <div class="modal-header">
                           <h4 class="modal-title">添加新课程</h4>
@@ -130,12 +200,14 @@
                           <form role="form">
                             <div class="form-group">
                               <label style="color:black; font-size:14px;">名称</label>
-                              <input class="form-control" type="text" style="background-color: white; border:#ced4da solid 1px; color:black"
+                              <input class="form-control" type="text"
+                                style="background-color: white; border:#ced4da solid 1px; color:black"
                                 id="new-course-name" placeholder="课程名称" value=''>
                             </div>
                             <div class="form-group">
                               <label style="color:black; font-size:14px;">课程简介</label>
-                              <textarea class="form-control" rows="4" style="background-color: white; border:#ced4da solid 1px; color:black;"
+                              <textarea class="form-control" rows="4"
+                                style="background-color: white; border:#ced4da solid 1px; color:black;"
                                 id="new-course-description"></textarea>
                             </div>
                           </form>
@@ -165,7 +237,8 @@
                     <h5 style="font-size:16px">课程简介:</h5>
                     <p id="course-info-description"></p>
                   </div>
-                  <button id="course-delete-btn" type="button" class='btn btn-warning btn-block course-delete-button'>删除课程</button>
+                  <button id="course-delete-btn" type="button"
+                    class='btn btn-warning btn-block course-delete-button'>删除课程</button>
                 </div>
               </div>
             </div>
@@ -175,7 +248,10 @@
           <div class="card">
             <div class="card-body">
               <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">课程人员管理</h5>
-              <button type="button" data-toggle="modal" data-target="#course-member-add-modal" class="course-add-member-button btn btn-block btn-primary" disabled="disabled">添加人员</button>
+              <button type="button" data-toggle="modal" data-target="#course-member-add-modal"
+                class="course-add-member-button btn btn-block btn-primary" disabled="disabled">添加人员</button>
+                <button type="button" data-toggle="modal" data-target="#course-member-multi-add-modal"
+                class="course-add-member-button btn btn-block btn-primary" disabled="disabled">批量添加学生</button>
               <br>
               <div class="card">
                 <div class="card-body">
@@ -218,7 +294,8 @@
                                 </div>
                                 <div class="form-group">
                                   <label style="color:black; font-size:14px;">新成员工号</label>
-                                  <input class="form-control" type="text" style="background-color: white; border:#ced4da solid 1px; color:black"
+                                  <input class="form-control" type="text"
+                                    style="background-color: white; border:#ced4da solid 1px; color:black"
                                     id="new-member-id" placeholder="工号" value=''>
                                 </div>
                               </form>
@@ -227,12 +304,45 @@
                             <!-- 模态框底部 -->
                             <div class="modal-footer">
                               <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                              <button type="button" id="course-member-add-button-confirm" class="btn btn-primary">确认提交</button>
+                              <button type="button" id="course-member-add-button-confirm"
+                                class="btn btn-primary">确认提交</button>
                             </div>
 
                           </div>
                         </div>
                       </div>
+                      <div class="modal fade" id="course-member-multi-add-modal">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+  
+                              <!-- 模态框头部 -->
+                              <div class="modal-header">
+                                <h4 class="modal-title">添加新成员</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+  
+                              <!-- 模态框主体 -->
+                              <div class="modal-body">
+                                <form role="form">
+                                  <div class="form-group">
+                                    <label style="color:black; font-size:14px;">学号序列</label>
+                                    <input class="form-control" type="text"
+                                      style="background-color: white; border:#ced4da solid 1px; color:black"
+                                      id="new-members-id" placeholder="学号" value=''>
+                                  </div>
+                                </form>
+                              </div>
+  
+                              <!-- 模态框底部 -->
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" id="course-member-multi-add-button-confirm"
+                                  class="btn btn-primary">确认提交</button>
+                              </div>
+  
+                            </div>
+                          </div>
+                        </div>
                     </div>
                   </div>
                 </div>

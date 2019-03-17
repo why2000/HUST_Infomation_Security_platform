@@ -2,6 +2,7 @@
 
 let UserLogger = require('../logger').UserLogger;
 let UserValidator = require('../validators/user_validator');
+let User = require('../models/user_db');
 
 exports.getLoginPage = async (req, res, next) => {
     res.render('login');
@@ -96,4 +97,20 @@ exports.getUserId = async (req, res, next) => {
             userid: userid
         }
     });
+}
+
+exports.resetPasswd = async (req, res, next) => {
+    if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+        //不安全,但是是教师专用功能
+        if (await User.resetPasswd(req.body.id)) {
+            res.status(200).send("set content successfully");
+        }
+        else {
+            res.status(500).send("data error");
+        }
+    }
+    else {
+        res.status(401).send("permission denied"); 
+    }
+    
 }

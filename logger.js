@@ -60,11 +60,22 @@ const CourseLogger = winston.createLogger({
     ]
 })
 
+const ExperimentLogger = winston.createLogger({
+    level: "verbose",
+    transports: [
+        new (winston.transports.File)({
+            filename: 'logs/experiment.log'
+        }),
+        new (winston.transports.Console)()
+    ]
+})
+
 module.exports = {
     ContactLogger,
     UserLogger,
     ExamLogger,
     FeedbackLogger,
     TutorialLogger,
-    CourseLogger
+    CourseLogger,
+    ExperimentLogger
 }

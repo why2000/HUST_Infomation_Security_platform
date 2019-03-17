@@ -33,6 +33,23 @@ const assembleCourseData = async (data) => {
 }
 
 /**
+ * 复制课程到新学期
+ */
+const copyCourseToNewSemester = async (oldSemester, teacherID) => {
+    let colCourse = db.collection('course');
+    let oldSemesterCourse = await colCourse.find({ semester: oldSemester }).toArray();
+    oldSemesterCourse.forEach(course => {
+        console.log(oldSemesterCourse);
+        let data = {
+            "name": course.name,
+            "description": course.description,
+            "teacher": [teacherID]
+        };
+        createCourse(data);
+    })
+}
+
+/**
  * 获取全部课程
  */
 const getAllCourses = async () => {
@@ -64,7 +81,8 @@ const getCourseInfo = async (id) => {
  */
 const createCourse = async (data) => {
     data = await assembleCourseData(data);
-    console.log(data);
+    data.semester = require('../config/semester.json').NOW_SEMESTER;
+    // console.log(data);
     let colCourse = db.collection('course')
     return colCourse.insertOne(data).then(res => res.result.ok == 1);
 }
@@ -89,7 +107,23 @@ const removeCourse = async (id) => {
  */
 const addStudentToCourse = async (course_id, student_id) => {
     let colCourse = db.collection('course');
+    let user = db.collection('user');
     course_id = MongoDB.ObjectID(course_id);
+    await user.findOne({userid: student_id}, function (err, res){
+        if(!res){
+            user.insertOne({type: "user-info", username:"未设置", userid: student_id, usertype: "student", password: student_id}, function (err, res){
+                if(err){
+                    CourseLogger.error(`database error => ${err.stack}`);
+                    throw err;
+                }
+            });
+        }
+        if(err){
+            CourseLogger.error(`database error => ${err.stack}`);
+            throw err;
+        }
+    });
+       
     return colCourse.updateOne({ _id: course_id }, { $addToSet: { "student": student_id } }).then(r => r.result.ok == 1);
 }
 
@@ -103,6 +137,20 @@ const addStudentToCourse = async (course_id, student_id) => {
 const addTeacherToCourse = async (course_id, teacher_id) => {
     let colCourse = db.collection('course');
     course_id = MongoDB.ObjectID(course_id);
+    await user.findOne({userid: student_id}, function (err, res){
+        if(!res){
+            user.insertOne({type: "user-info", username:"未设置", userid: student_id, usertype: "teacher", password: student_id}, function (err, res){
+                if(err){
+                    CourseLogger.error(`database error => ${err.stack}`);
+                    throw err;
+                }
+            });
+        }
+        if(err){
+            CourseLogger.error(`database error => ${err.stack}`);
+            throw err;
+        }
+    });
     return colCourse.updateOne({ _id: course_id }, { $addToSet: { student: teacher_id } }).then(r => r.result.ok == 1);
 }
 
@@ -132,9 +180,9 @@ const deleteTeacherToCourse = async (course_id, teacher_id) => {
  * 获取学生所拥有的所有课程
  * @param {string} id 学生ID
  */
-const getCoursesByStudent = async (id) => {
+const getCoursesByStudent = async (id, semester = require('../config/semester.json').NOW_SEMESTER) => {
     let colCourse = db.collection('course');
-    return colCourse.find({ student: id })
+    return colCourse.find({ student: id, semester: semester })
         .project({ teacher: 0, student: 0 })
         .toArray();
 }
@@ -143,9 +191,9 @@ const getCoursesByStudent = async (id) => {
  * 获取教师所拥有的全部课程
  * @param {string} id 教师ID
  */
-const getCoursesByTeacher = async (id) => {
+const getCoursesByTeacher = async (id, semester = require('../config/semester.json').NOW_SEMESTER) => {
     let colCourse = db.collection('course');
-    return colCourse.find({ teacher: id })
+    return colCourse.find({ teacher: id, semester: semester })
         .project({ teacher: 0, student: 0 })
         .toArray();
 }
@@ -196,6 +244,7 @@ const getTeachersByCourseID = async (id) => {
 
 
 module.exports = {
+    copyCourseToNewSemester,
     getCourseInfo,
     createCourse,
     removeCourse,

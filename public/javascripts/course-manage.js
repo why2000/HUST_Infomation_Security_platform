@@ -9,10 +9,11 @@ let userID;
 
 $(document).ready(function () {
   getUserId();
-  getCourseid();
+  //getCourseid();
   getCourseList();
   getUserName();
   sideBarInit();
+  setSemester();
 })
   .on('click', '.course-select-item', function () {
     $('#course-info-name').text(`${courselist[$(this).attr('nid')].name}`);
@@ -62,10 +63,10 @@ $(document).ready(function () {
     $(this).text('删除');
   })
   .on('click', '.teacher-delete-button.btn-danger', function () {
-    if ($(this).attr('uid') == userID){
+    if ($(this).attr('uid') == userID) {
       alert("不能删除自己！")
     }
-    else{
+    else {
       let $this = $(this)
       $(this).attr('disabled', 'disabled');
       $(this).text('删除中...');
@@ -73,7 +74,7 @@ $(document).ready(function () {
       let select_courseid = $('.course-delete-button').attr('cid');
       $.ajax({
         url: `/course/${select_courseid}/teacher/delete`,
-        data: {id: $(this).attr('uid')},
+        data: { id: $(this).attr('uid') },
         method: 'POST'
       }).done(function () {
         $this.addClass('btn-success');
@@ -101,7 +102,7 @@ $(document).ready(function () {
     let select_courseid = $('.course-delete-button').attr('cid');
     $.ajax({
       url: `/course/${select_courseid}/student/delete`,
-      data: {id: $(this).attr('uid')},
+      data: { id: $(this).attr('uid') },
       method: 'POST'
     }).done(function () {
       $this.addClass('btn-success');
@@ -109,6 +110,29 @@ $(document).ready(function () {
       $this.text('删除成功');
       getMemberList($('.course-delete-button').attr('cid'));
     })
+  }).on('click', '.password-reset-button.btn-warning', function () {
+    $(this).addClass('btn-danger');
+    $(this).removeClass('btn-warning');
+    $(this).text('确认重置?');
+  })
+  .on('mouseleave', '.password-reset-button.btn-danger', function () {
+    $(this).addClass('btn-warning');
+    $(this).removeClass('btn-danger');
+    $(this).text('重置');
+  })
+  .on('click', '.password-reset-button.btn-danger', function () {
+    let $this = $(this)
+    $(this).attr('disabled', 'disabled');
+    $(this).text('重置中...');
+    $.ajax({
+      url: `/user/reset`,
+      data: { id: $(this).attr('uid') },
+      method: 'PUT'
+    }).done(function () {
+      $this.addClass('btn-success');
+      $this.removeClass('btn-danger');
+      $this.text('重置成功');
+    });
   })
   .on('click', '#course-add-button-confirm', function () {
     let new_course_name = $('#new-course-name').val();
@@ -166,18 +190,103 @@ $(document).ready(function () {
       alert('身份选择、工号不得为空。');
     }
   })
+  .on('click', '#course-member-multi-add-button-confirm', function () {
+    let new_members_id = $('#new-members-id').val();
+    // alert(new_members_id);
+    $('#new-members-id').val('');
+    let new_members_ids = new_members_id.split(/[ \n\t,]/);
+    let new_member_type = 'student';
+    new_members_ids.forEach(function(new_member_id){
+      // alert(new_member_id);
+      if (teacherlist && studentlist) {
+        if (teacherlist.indexOf(new_member_id) != -1 && studentlist.indexOf(new_member_id) != -1) {
+          alert('请勿重复添加同一人');
+          return;
+        }
+      }
+      let type_url = 'student';
+      if (new_member_id && new_member_type) {
+        let select_courseid = $('.course-delete-button').attr('cid');
+        $.post({
+          url: `/course/${select_courseid}/${type_url}`,
+          data: { id: new_member_id }
+        }).done(function () {
+          getMemberList($('.course-delete-button').attr('cid'));
+        });
+      } else {
+        alert('添加失败，请检查格式(末位空格未删除不会影响效果，可忽略此警告)');
+        // alert('身份选择、工号不得为空。');
+      }
+    });
+    alert('新成员添加成功!');
+  })
+  .on('click', '.semester-select-item', function () {
+    $.ajax({
+      url: `/course/setsemester`,
+      data: { newSemester: $(this).attr('mid') },
+      method: 'POST'
+    }).done(function () {
+      setSemester();
+      getCourseList();
+      alert("学期切换成功");
+    })
+  })
+  .on('click', '#semester-add-button', function () {
+    $.get({
+      url: `/course/createsemester`
+    }).done(function () {
+      setSemester();
+      getCourseList();
+      alert("开始学期成功");
+    })
+  })
 
+function setSemester() {
+  let now_buffer;
+  $.get({
+    url: '/course/semester'
+  }).done(now_semester => {
+    now_semester = now_semester.data;
+    let char_buffer = "";
+    if (now_semester.substring(4, 5) == 'a') {
+      char_buffer = "第一学期";
+    } else {
+      char_buffer = "第二学期";
+    }
+    now_buffer = `当前学期为 20${now_semester.substring(0, 2)}-20${now_semester.substring(2, 4)} ` + char_buffer;
+
+    $.get({
+      url: '/course/allsemester'
+    }).done(all_semester => {
+      all_semester = all_semester.data;
+      let new_semester = all_semester[all_semester.length - 1];
+      let char_buffer = "";
+      if (new_semester.substring(4, 5) == 'a') {
+        char_buffer = "第一学期";
+      } else {
+        char_buffer = "第二学期";
+      }
+      $('#now-semester-label').text(now_buffer + ` / 最新学期为 20${new_semester.substring(0, 2)}-20${new_semester.substring(2, 4)} ` + char_buffer)
+      $('#semester-select').empty();
+      all_semester.forEach(semester => {
+        let char_buffer = "";
+        if (semester.substring(4, 5) == 'a') {
+          char_buffer = "第一学期";
+        } else {
+          char_buffer = "第二学期";
+        }
+        $('#semester-select').append(`<a class="list-group-item list-group-item-action semester-select-item" mid="${semester}">20${semester.substring(0, 2)}-20${semester.substring(2, 4)} ${char_buffer}</a>`)
+      })
+
+    })
+  })
+}
 
 function getCourseid() {
   courseid = window.location.href.substring(window.location.href.lastIndexOf('#') + 1, window.location.href.length);
 }
 
 function sideBarInit() {
-  $('#class-to-exam').attr('href', `/exam/index#${courseid}`);
-  $('#class-to-feedback').attr('href', `/feedback/index#${courseid}`);
-  $('#class-to-courseware').attr('href', `/courseware/course/${courseid}`);
-  $('#class-to-video').attr('href', `/tutorial/video#${courseid}`);
-  $('#class-home-page').attr('href', `/tutorial/index#${courseid}`);
   $('#class-to-logout').attr('href', `/login/logout`);
 
   $(".has-submenu").hover(function () {
@@ -259,15 +368,15 @@ function getMemberListUnit(userlist, type) {
 function appendMemberList(name, user, type) {
   let html = '<tr class="member-row">';
   let oritype = 'student';
-  if (type === '管理员'){
+  if (type === '管理员') {
     oritype = 'teacher'
   }
   html += `<td class="member-row-name">${name}</td>`
   html += `<td class="member-row-id">${user}</td>`
   html += `<td class="member-row-type">${type}</td>`
-  html += `<td><button type="button" class="${oritype}-delete-button btn btn-warning" uid='${user}'>删除</button></td>`
+  html += `<td><button type="button" class="${oritype}-delete-button btn btn-warning" uid='${user}'>删除</button> <button type="button" class="password-reset-button btn btn-warning" uid='${user}'>重置密码</button></td>`
 
-    $('#course-member-table').append(html);
+  $('#course-member-table').append(html);
 }
 
 function getUserName() {

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>华中科技大学计算机网络实训平台 - 实验步骤</title>
+  <!-- load JS-->
+  <script type="text/javascript" src="/public/javascripts/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/public/javascripts/experiment.js"></script>
+  <!-- load CSS -->
+  <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
+  <!-- Google web font "Open Sans" -->
+  <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
+  <!-- https://getbootstrap.com/ -->
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css" />
+  <!-- http://kenwheeler.github.io/slick/ -->
+  <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <!-- https://fontawesome.com/ -->
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/skin.css">
+  <script>
+    document.documentElement.className = "js";
+    var supportsCssVars = function () {
+      var e, t = document.createElement("style");
+      return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS
+        .supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e
+    };
+    supportsCssVars() || alert(
+      "Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");
+  </script>
+
+</head>
+
+<body>
+  <div class="header" style="z-index:999">
+    <div class="headerb">
+      <div class="top-logo" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
+      <div class="headern">
+        华中科技大学计算机网络实训平台
+      </div>
+
+      <div class="logout pointer" title="退出登录" onclick="logout()" style="cursor: pointer;">
+        <div class="logout-icon"></div>
+        <span>退出</span>
+      </div>
+    </div>
+  </div>
+  <br>
+  <nav class="main-menu">
+      <div title="App:app42.dc.hust.edu.cn:app421" class="logo" style="display: block">
+        <img src="/public/images/logo.gif" />
+      </div>
+      <div class="settings" , style="text-align: center; font-size: 18px;">
+      </div>
+      <ul class="parent-menu" , id="parent">
+        <li>
+          <a id="home-page" href="/catalog">
+            <i class="fa fa-home fa-lg"></i>
+            <span class="nav-text">首页</span>
+          </a>
+        </li>
+        <li class="has-submenu" id="course-list-parent">
+          <a>
+            <i class="fa fa-chevron-right fa-lg mlist-icon" id="course-list-icon"></i>
+            <span class="nav-text">
+              课程列表
+            </span>
+          </a>
+          <div class="row pre-scrollable">
+            <ul id="course-list" class="submenu" style="display: none">
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a id='class-to-information'>
+            <i class="fa fa-id-card fa-lg"></i>
+            <span class="nav-text">修改信息</span>
+          </a>
+        </li>
+        <li>
+          <a id='class-to-logout'>
+            <i class="fa fa-power-off fa-lg"></i>
+            <span class="nav-text">退出系统</span>
+          </a>
+        </li>
+      </ul>
+      <ul id="sidebar-back" class="back">
+        <li>
+          <a href="javascript:history.go(-1);">
+            <i class="fa fa-chevron-left fa-lg"></i>
+            <span class="nav-text">
+              后退
+            </span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  <div class="container" style="width: 1200px ; margin-top: auto;">
+      <div class="row" style="margin-top:80px">
+        <div class="col-12">
+          <h5 style="color: black; border-bottom: 1px solid #19213d; padding-bottom: 16px;">实验步骤 </h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <form>
+                <div class="form-group">
+                  <label for="exampleInputEmail1" style="color:black; font-size:14px;">步骤名</label>
+                  <input class="form-control" style="background-color: white; border:#ced4da solid 1px;color:black;" id="title" readonly="readonly"
+                    placeholder="">
+                </div>
+  
+  
+                <div class="form-group">
+                  <label for="exampleInputEmail1" style="color:black; font-size:14px;">步骤内容</label>
+                  <textarea class="form-control" autocomplete="off" style="background-color: white; border:#ced4da solid 1px; color:black;" id="content" rows="20"></textarea>
+                </div>
+
+
+                <button id="back_button" type="button" class="btn btn-primary" onclick="window.location.href = '/'" style="float:left">返回</button>
+                
+              </form>
+            </div>
+          </div>
+</body>

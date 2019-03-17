@@ -135,8 +135,8 @@ exports.startExam = async (req, res) => {
     let eid = req.params.exam_id,
         cid = req.params.course_id,
         sid = req.session.loginUser;
-
-    if (await UserValidator.getUserTypeById(sid) != 'student') {
+    var usertype;
+    if ((usertype = await UserValidator.getUserTypeById(sid)) == null) {
         response(res, 401, 'Permission denied.');
         return;
     }
@@ -146,37 +146,45 @@ exports.startExam = async (req, res) => {
         response(res, 404, 'Exam not found.');
         return;
     }
+    if(usertype == 'teacher'){
+        response(res, { timelimit: inf.timelimit, content: inf.content });
+    }
+    else if(usertype == 'student'){
+        let studentScore = await Exam.getStudentScoreUndone(sid, eid);
 
-    let studentScore = await Exam.getStudentScoreUndone(sid, eid);
-
-    if (!studentScore) { // 如果没有未完成的测试
-        Exam.createStudentScore(eid, sid, time())
-            .then(r => {
-                if (r) {
-                    response(res, { timelimit: inf.timelimit, content: inf.content });
-                } else {
-                    response(res, 500, 'Unknown error.');
-                }
-            })
-    } else { // 有未完成的测试
-        let t = studentScore.start_time + inf.timelimit - time();
-        if (t > 0) { // 未超时
-            response(res, { timelimit: t, content: inf.content });
-        } else {
-            Exam.setStudentScoreDone(eid, sid, "超时") // 超时自动交卷，但是没有成绩
+        if (!studentScore) { // 如果没有未完成的测试
+            Exam.createStudentScore(eid, sid, time())
                 .then(r => {
                     if (r) {
-                        response(res, 400, 'Time Limit Exceeded.');
+                        response(res, { timelimit: inf.timelimit, content: inf.content });
                     } else {
                         response(res, 500, 'Unknown error.');
                     }
                 })
-                .catch(err => {
-                    UserLogger.error(`startExam error => ${err.stack}`);
-                    response(res, 500, 'Server error.');
-                })
-        }
+        } else { // 有未完成的测试
+            let t = studentScore.start_time + inf.timelimit - time();
+            if (t > 0) { // 未超时
+                response(res, { timelimit: t, content: inf.content });
+            } else {
+                Exam.setStudentScoreDone(eid, sid, "超时") // 超时自动交卷，但是没有成绩
+                    .then(r => {
+                        if (r) {
+                            response(res, 400, 'Time Limit Exceeded.');
+                        } else {
+                            response(res, 500, 'Unknown error.');
+                        }
+                    })
+                    .catch(err => {
+                        UserLogger.error(`startExam error => ${err.stack}`);
+                        response(res, 500, 'Server error.');
+                    })
+            }
 
+        }
+    }
+    else{
+        response(res, 401, 'Permission denied.');
+        return null;
     }
 }
 
