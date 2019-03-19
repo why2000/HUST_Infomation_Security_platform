@@ -250,7 +250,7 @@ async function setExamStart(time, questions) {
          <input type="text" class="fb-options" class="question-options" qid="${question.id} "style="border: 0;border-bottom:1px solid #666666; outline: none;">
          </label>`
       )
-      html += '<button type="button" id="btn-open-cisco" class="btn btn-sm btn-primary pull-right">打开cisco</button>';
+      html += '<button type="button" id="btn-open-cisco" class="btn btn-sm btn-primary pull-right" href="ciscoClient://test/">打开cisco</button>';
       html += '</div>';
     }
   });
