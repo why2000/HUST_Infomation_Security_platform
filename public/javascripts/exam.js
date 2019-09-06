@@ -93,6 +93,11 @@ $(document).ready(function () {
     examid = $(this).attr('eid');
     getExamInformation();
   })
+  .on('click', '#btn-open-cisco', function(){
+
+    // write something here
+
+  })
 
 function setTimeCount(time) {
   let curr_time = parseInt(Date.parse(new Date()) / 1000);
@@ -245,6 +250,7 @@ async function setExamStart(time, questions) {
          <input type="text" class="fb-options" class="question-options" qid="${question.id} "style="border: 0;border-bottom:1px solid #666666; outline: none;">
          </label>`
       )
+      html += `<button type="button" id="btn-open-cisco" class="btn btn-sm btn-primary pull-right" onclick="window.location.href='ciscoClient://'">打开cisco</button>`;
       html += '</div>';
     }
   });
