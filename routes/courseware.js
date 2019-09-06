@@ -18,4 +18,7 @@ router.get('/list', CoursewareController.getAllCoursewareList);
 router.post("/file/:course_id", upload.single('upload'), CoursewareController.uploadCoursewareFile);
 router.delete("/file/:file_id", CoursewareController.deleteCoursewareFile);
 
+router.post("/video/:course_id", upload.any(), CoursewareController.uploadVideoFile);
+router.get("/videolist/:course_id", CoursewareController.getVideoList);
+
 module.exports = router; 

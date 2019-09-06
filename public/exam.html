@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content=="IE=edge" />
+    <meta name="google" value="notranslate" />
+    <title>华中科技大学信息安全实验平台 - 在线答题</title>
+    <link href="/public/stylesheets/exammain.css" rel="stylesheet" type="text/css" />
+    <link href="/public/stylesheets/examiconfont.css" rel="stylesheet" type="text/css" />
+    <link href="/public/stylesheets/examtest.css" rel="stylesheet" type="text/css" />
+    <link href="/public/stylesheets/examsidebar.css" rel="stylesheet" media="screen" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <style>
+        .hasBeenAnswer {
+            background: #206db0;
+            color: #fff;
+        }
+    </style>
+    <script src="/public/javascripts/jquery-1.11.3.min.js"></script>
+    <script src="/public/javascripts/exam.js"></script>
+
+</head>
+<body>
+        <nav class="main-menu">
+           
+            <div class="logo" style="display: block">
+                <img src="/public/images/logo.gif"></img>
+            </div>
+            <div class="settings" , style="text-align: center; font-size: 18px;">
+            </div>
+            <ul class="parent-menu" , id="parent">
+                <li>
+
+                    <a href="/exam/index">
+                        <i class="fa fa-home fa-lg"></i>
+                        <span class="nav-text">首页</span>
+
+                    </a>
+                </li>
+                <li class="has-submenu" id="favor-list-parent">
+                    <a>
+                        <i class="fa fa-chevron-right fa-lg list-icon" id="favor-list-icon"></i>
+                        <span class="nav-text">
+                            我的收藏
+                        </span>
+                    </a>
+                    <ul id="favor-list" class="submenu" style="display: none">
+                    </ul>
+                </li>
+                <li>
+                    <a href="###" class="favor" , id="favor">
+                        <i class="fa fa-star-o fa-lg" id="favor-icon"></i>
+                        <span class="nav-text">
+                            收藏本节
+                        </span>
+                    </a>
+                </li>
+                <li class="has-submenu" id="task-list-parent">
+                    <a>
+                        <i class="fa fa-chevron-right fa-lg list-icon" id="task-list-icon"></i>
+                        <span class="nav-text">
+                            练习列表
+                        </span>
+                    </a>
+                    <ul id="task-list" class="submenu" style="display: none">
+                    </ul>
+                </li>
+            </ul>
+            <ul class="logout">
+                <li>
+                    <a href="javascript:history.go(-1);">
+                        <i class="fa fa-chevron-left fa-lg"></i>
+                        <span class="nav-text">
+                            后退
+                        </span>
+
+                    </a>
+                </li>
+            </ul>
+        </nav>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        <script src="/public/javascripts/jquery-1.11.3.min.js"></script>
+        <script src="/public/javascripts/exam.js"></script>
+=======
+        <script src="../public/javascripts/jquery-1.11.3.min.js"></script>
+>>>>>>> why
+        <script>
+            if(!name){
+                name = "伍瀚缘testingtestingtesting";
+            }
+            var hello = "欢迎！" + name;
+            $(".settings").text(hello);
+        </script>
+        <script>
+            getTaskList(setTaskList);
+            getFavorList(setFavorList);
+            getFavor();
+        </script>
+        <script>
+            $("#favor").click(function(){
+                // alert(favor);
+                if(!favor){
+                    postFavor();
+                    getFavorList(setFavorList);
+                }else{
+                    deleteFavor();
+                    getFavorList(setFavorList);
+                }
+            });
+        </script>
+        <div style="text-align:center;clear:both">
+            <!-- maincode -->
+        </div>
+        <script>
+            // getTaskInfo();
+        </script>
+    </body>
+>>>>>>> 485e97f62b83b14868d8399693959feaf72f17a7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+        <div class="main" style="clear: both">
+            <div class="test_main">
+                <div class="nr_left">
+                    <div class="test">
+                        <form method="post">
+                            <div class="test_footer">
+                                <p class="test_time">
+                                    <i class="icon iconfont">&#xe6fb;</i>
+                                    <b class="alt-1"></b>
+                                </p>
+                                <font>
+                                    <input type="submit" name="test_jiaojuan" value="交卷" id="all-submit">
+                                </font>
+                            </div>
+
+                            <div class="test_content">
+                                <div class="test_content_title">
+                                    <h2>单选题</h2>
+                                    <p>
+                                        <span>共</span>
+                                        <i class="content_lit">60</i>
+                                        <span>题，</span>
+                                        <span>合计</span>
+                                        <i class="content_fs">60</i>
+                                        <span>分</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="test_content_nr">
+                                <ul>
+
+                                    <li id="sc0">
+                                        <div class="test_content_nr_tt">
+                                            <i>1</i>
+                                            <span>(1分)</span>
+                                            <font>在生产管理信息系统中，下列操作步骤能正确将工单推进流程的是（ ）</font>
+                                            <b class="icon iconfont">&#xe881;</b>
+                                        </div>
+
+                                        <div class="test_content_nr_main">
+                                            <ul>
+
+                                                <li class="option">
+
+                                                    <input type="radio" class="radioOrCheck" name="sc0" id="0_answer_1_option_1" value="A"/>
+
+
+                                                    <label for="0_answer_1_option_1">
+                                                        A.
+                                                        <p class="ue" style="display: inline;">在工具栏中点击“workflow”标签</p>
+                                                    </label>
+                                                </li>
+
+                                                <li class="option">
+
+                                                    <input type="radio" class="radioOrCheck" name="sc0" id="0_answer_1_option_2" value="B"/>
+
+
+                                                    <label for="0_answer_1_option_2">
+                                                        B.
+                                                        <p class="ue" style="display: inline;">在缺陷单界面中点击“推进流程”按钮</p>
+                                                    </label>
+                                                </li>
+
+                                                <li class="option">
+
+                                                    <input type="radio" class="radioOrCheck" name="sc0" id="0_answer_1_option_3" value="C"/>
+
+
+                                                    <label for="0_answer_1_option_3">
+                                                        C.
+                                                        <p class="ue" style="display: inline;">在缺陷单界面中点击“提交”按钮</p>
+                                                    </label>
+                                                </li>
+
+                                                <li class="option">
+
+                                                    <input type="radio" class="radioOrCheck" name="sc0" id="0_answer_1_option_4" value="D"/>
+
+
+                                                    <label for="0_answer_1_option_4">
+                                                        D.
+                                                        <p class="ue" style="display: inline;">后台启动流程推进</p>
+                                                    </label>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </li>
+
+                                    <li id="sc1">
+                                        <div class="test_content_nr_tt">
+                                            <i>2</i>
+                                            <span>(1分)</span>
+                                            <font>在营销系统中查询客户有无欠费、余额及抄表数据接待客户时应做到哪些最基本的礼仪？</font>
+                                            <b class="icon iconfont">&#xe881;</b>
+                                        </div>
+
+                                        <div class="test_content_nr_main">
+                                            <ul>
+
+                                                <li class="option">
+
+                                                    <input type="radio" class="radioOrCheck" name="sc1" id="0_answer_2_option_1" value="A"/>
+
+
+                                                    <label for="0_answer_2_option_1">
+                                                        A.
+                                                        <p class="ue" style="display: inline;">起身、微笑、示坐、问候客户</p>
+                                                    </label>
+                                                </li>
+
+                                                <li class="option">
+
+                                                    <input type="radio" class="radioOrCheck" name="sc1" id="0_answer_2_option_2" value="B"/>
+
+
+                                                    <label for="0_answer_2_option_2">
+                                                        B.
+                                                        <p class="ue" style="display: inline;">坐着，问候客户</p>
+                                                    </label>
+                                                </li>
+
+                                                <li class="option">
+
+                                                    <input type="radio" class="radioOrCheck" name="sc1" id="0_answer_2_option_3" value="C"/>
+
+
+                                                    <label for="0_answer_2_option_3">
+                                                        C.
+                                                        <p class="ue" style="display: inline;">坐着，问候客户</p>
+                                                    </label>
+                                                </li>
+
+                                                <li class="option">
+
+                                                    <input type="radio" class="radioOrCheck" name="sc1" id="0_answer_2_option_4" value="D"/>
+
+
+                                                    <label for="0_answer_2_option_4">
+                                                        D.
+                                                        <p class="ue" style="display: inline;">请问需要办理什么业务</p>
+                                                    </label>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </li>
+
+
+                                </ul>
+                            </div>
+
+                            <div class="test_content">
+                                <div class="test_content_title">
+                                    <h2>多选题</h2>
+                                    <p>
+                                        <span>共</span>
+                                        <i class="content_lit">30</i>
+                                        <span>题，</span>
+                                        <span>合计</span>
+                                        <i class="content_fs">30</i>
+                                        <span>分</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="test_content_nr">
+                                <ul>
+
+                                    <li id="mc0">
+                                        <div class="test_content_nr_tt">
+                                            <i>1</i>
+                                            <span>(1分)</span>
+                                            <font>以下属于南方电网员工职业操守中明文规定的有()</font>
+                                            <b class="icon iconfont">&#xe881;</b>
+                                        </div>
+
+                                        <div class="test_content_nr_main">
+                                            <ul>
+
+                                                <li class="option">
+
+
+                                                    <input type="checkbox" class="radioOrCheck" name="mc0" id="1_answer_1_option_1" value="A"/>
+
+                                                    <label for="1_answer_1_option_1">
+                                                        A.
+                                                        <p class="ue" style="display: inline;">热爱祖国、热爱南网、热爱岗位</p>
+                                                    </label>
+                                                </li>
+
+                                                <li class="option">
+
+
+                                                    <input type="checkbox" class="radioOrCheck" name="mc0" id="1_answer_1_option_2" value="B"/>
+
+                                                    <label for="1_answer_1_option_2">
+                                                        B.
+                                                        <p class="ue" style="display: inline;">遵纪守法、忠于职守、令行禁止</p>
+                                                    </label>
+                                                </li>
+
+                                                <li class="option">
+
+
+                                                    <input type="checkbox" class="radioOrCheck" name="mc0" id="1_answer_1_option_3" value="C"/>
+
+                                                    <label for="1_answer_1_option_3">
+                                                        C.
+                                                        <p class="ue" style="display: inline;">客户至上、诚实守信、优质服务</p>
+                                                    </label>
+                                                </li>
+
+                                                <li class="option">
+                                                    <input type="checkbox" class="radioOrCheck" name="mc0" id="1_answer_1_option_4" value="D"/>
+
+                                                    <label for="1_answer_1_option_4">
+                                                        D.
+                                                        <p class="ue" style="display: inline;">公平竞争、互相监督、服从监管</p>
+                                                    </label>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </li>
+
+                                    <li id="mc1">
+                                        <div class="test_content_nr_tt">
+                                            <i>2</i>
+                                            <span>(1分)</span>
+                                            <font>以下属于南方电网员工职业禁区的有()</font>
+                                            <b class="icon iconfont">&#xe881;</b>
+                                        </div>
+
+                                        <div class="test_content_nr_main">
+                                            <ul>
+
+                                                <li class="option">
+
+
+                                                    <input type="checkbox" class="radioOrCheck" name="mc1" id="1_answer_2_option_1" value="A"/>
+
+                                                    <label for="1_answer_2_option_1">
+                                                        A.
+                                                        <p class="ue" style="display: inline;">严禁违反人文道德</p>
+                                                    </label>
+                                                </li>
+
+                                                <li class="option">
+
+
+                                                    <input type="checkbox" class="radioOrCheck" name="mc1" id="1_answer_2_option_2" value="B"/>
+
+                                                    <label for="1_answer_2_option_2">
+                                                        B.
+                                                        <p class="ue" style="display: inline;">严禁违反安全规定</p>
+                                                    </label>
+                                                </li>
+
+                                                <li class="option">
+
+
+                                                    <input type="checkbox" class="radioOrCheck" name="mc1" id="1_answer_2_option_3" value="C" />
+
+                                                    <label for="1_answer_2_option_3">
+                                                        C.
+                                                        <p class="ue" style="display: inline;">严禁违背行风规定</p>
+                                                    </label>
+                                                </li>
+
+                                                <li class="option">
+
+
+                                                    <input type="checkbox" class="radioOrCheck" name="mc1" id="1_answer_2_option_4" value="D"/>
+
+                                                    <label for="1_answer_2_option_4">
+                                                        D.
+                                                        <p class="ue" style="display: inline;">严禁违反财经纪律</p>
+                                                    </label>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </li>
+
+
+
+                                </ul>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+                <div class="nr_right">
+                    <div class="nr_rt_main">
+                        <div class="rt_nr1">
+                            <div class="rt_nr1_title">    
+                                    <a href="###" id="all-start" class="waiting">
+                                        <i class="icon iconfont">&#xe692;</i>
+                                        <span>开始答题</span>
+                                    </a>
+                                <p class="test_time">
+                                    <i class="icon iconfont">&#xe6fb;</i>
+                                    <b class="alt-1"></b>
+                                </p>
+                            </div>
+
+                            <div class="rt_content" id="rt_content_sc">
+                                <div class="rt_content_tt" >
+                                    <h2>单选题</h2>
+                                    <p>
+                                        <span>共</span>
+                                        <i class="content_lit"></i>
+                                        <span>题</span>
+                                    </p>
+                                </div>
+                                <div class="rt_content_nr answerSheet">
+                                    <ul>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="rt_content" id="rt_content_mc">
+                                <div class="rt_content_tt" >
+                                    <h2>多选题</h2>
+                                    <p>
+                                        <span>共</span>
+                                        <i class="content_lit"></i>
+                                        <span>题</span>
+                                    </p>
+                                </div>
+                                <div class="rt_content_nr answerSheet">
+                                    <ul>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="rt_content" id="rt_content_fb">
+                                <div class="rt_content_tt" >
+                                    <h2>填空题</h2>
+                                    <p>
+                                        <span>共</span>
+                                        <i class="content_lit"></i>
+                                        <span>题</span>
+                                    </p>
+                                </div>
+                                <div class="rt_content_nr answerSheet">
+                                    <ul>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--nr end-->
+            <div class="foot"></div>
+        </div>
+
+        <script src="/public/javascripts/jquery-1.11.3.min.js"></script>
+        <script src="/public/javascripts/jquery.easy-pie-chart.js"></script>
+        <!--时间js-->
+        <script src="/public/javascripts/jquery.countdown.js"></script>
+</body>
+
+</html>

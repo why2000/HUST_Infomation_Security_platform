@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>联系我们</title>
+        <!-- load CSS -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300">  <!-- Google web font "Open Sans" -->
+        <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">                                  <!-- https://getbootstrap.com/ -->
+        <link rel="stylesheet" href="/public/stylesheets/fontawesome/css/fontawesome-all.min.css">                <!-- https://fontawesome.com/ -->
+        <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick.css"/>                       <!-- http://kenwheeler.github.io/slick/ -->
+        <link rel="stylesheet" type="text/css" href="/public/stylesheets/slick/slick-theme.css"/>
+        <link rel="stylesheet" href="/public/stylesheets/tooplate-style.css">                               
+    
+        <script>document.documentElement.className="js";var supportsCssVars=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};supportsCssVars()||alert("Please view this in a modern browser such as latest version of Chrome or Microsoft Edge.");</script>
+        <script type="text/javascript">
+            var sendmessage = '<%=success%>';
+            if(sendmessage){
+                if(sendmessage=="no"){
+                    alert("提交失败，请检查你的输入格式");
+                }else{
+                    alert("提交成功！");
+                }
+            }
+            sendmessage = null;
+        </script>
+        
+</head>
+<body style="background-color: #2c2a35">                                                           
+    <div class="detail detail-open">
+            <div class="pt-sm-4 pb-sm-4 pl-sm-5 pr-sm-5 pt-2 pb-2 pl-3 pr-3">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <h2 class="tm-page-title" style="color: #ffffff">意见反馈</h2>
+
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <p style="color: #ffffff">发现任何Bug请随时在此提交或发送邮件至hustwhy2000@foxmail.com。<br>您的个人信息仅用于防止恶意灌水或在意见有效时提供奖励，因此即使是微小的Bug也可以提交，无需担心信息泄露。</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <form action="contact" method="post" class="contact-form">
+                            <div class="row">
+                                <div class="form-group col-md-6 col-lg-6 col-xl-6">
+                                <input type="text" id="contact_name" name="contact_name" class="form-control" placeholder="姓名"  required/>
+                                </div>
+                                <div class="form-group col-md-6 col-lg-6 col-xl-6 tm-col-email">
+                                <input type="email" id="contact_email" name="contact_email" class="form-control" placeholder="邮箱"  required/>
+                                </div>
+                            </div>                                                        
+                            <div class="form-group">
+                            <textarea id="contact_message" name="contact_message" class="form-control" rows="9" placeholder="反馈信息（包含单/双引号及特定符号的信息无效）" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary tm-btn-submit">提交</button>
+                        </form>
+                    </div>
+                </div>
+            </div>                                            
+    </div>
+    
+</body>
+</html>
