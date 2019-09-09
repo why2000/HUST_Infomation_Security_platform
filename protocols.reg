@@ -1,0 +1,23 @@
+Windows Registry Editor Version 5.00
+[HKEY_CLASSES_ROOT\vmware]  
+@="URL:vmware"  
+"URL Protocol"="C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmware.exe"   
+[HKEY_CLASSES_ROOT\vmware\DefaultIcon]
+@="\"C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmware.exe\",1" 
+[HKEY_CLASSES_ROOT\vmware\shell]
+@="open"
+[HKEY_CLASSES_ROOT\vmware\shell\open]
+@="open"
+[HKEY_CLASSES_ROOT\vmware\shell\open\command] 
+@="C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmware.exe"
+[HKEY_CLASSES_ROOT\cisco]  
+@="URL:cisco"  
+"URL Protocol"="C:\\Program Files (x86)\\Cisco Packet Tracer 6.2sv\\bin\\PacketTracer6.exe"   
+[HKEY_CLASSES_ROOT\cisco\DefaultIcon]
+@="\"C:\\Program Files (x86)\\Cisco Packet Tracer 6.2sv\\bin\\PacketTracer6.exe\",1" 
+[HKEY_CLASSES_ROOT\cisco\shell]
+@="open"
+[HKEY_CLASSES_ROOT\cisco\shell\open]
+@="open"
+[HKEY_CLASSES_ROOT\cisco\shell\open\command] 
+@="C:\\Program Files (x86)\\Cisco Packet Tracer 6.2sv\\bin\\PacketTracer6.exe"
