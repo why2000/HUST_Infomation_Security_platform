@@ -50,17 +50,20 @@ $(document).ready(function () {
   $(this).addClass('list-group-item-success');
 
   let vid = $(this).attr('vid');
-  $.get({
-    url: `/tutorial/${courseid}/${vid}`
-  }).done(result => {
-    $('#video-description').text(result.data.description);
-  })
-  setVideo(vid);
+  // $.get({
+  //   url: `/tutorial/${courseid}/${vid}`
+  // }).done(result => {
+  //   $('#video-description').text(result.data.description);
+  // })
+
+  let v = videolist.filter(i => i._id === vid)[0]
+  $('#video-description').text(v.description)
+  setVideo(v.file_id);
 })
 
 function getVideoList() {
   $.get({
-    url: `/tutorial/` + courseid
+    url: `/courseware/videolist/` + courseid
   }).done(result => {
     videolist = result.data;
     let html = '';
@@ -124,5 +127,5 @@ function setCourseName() {
 }
 
 function setVideo(videofile) {
-  $('.video-body').empty().append(`<div class="flowplayer"><video controls="controls" width="100%"><source type="video/mp4" src='/public/videos/${videofile}'></video></div>`)
+  $('.video-body').empty().append(`<div class="flowplayer"><video controls="controls" width="100%"><source type="video/mp4" src='/file/${videofile}'></video></div>`)
 }

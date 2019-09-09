@@ -50,6 +50,22 @@ exports.getAllCoursewareList = async (req, res, next) => {
   }
 }
 
+exports.getVideoList = async (req, res, next) => {
+  if (req.session.loginUser) {
+    courseware.getCoursewareStatusByCourseID(req.params.course_id, 'video')
+      .then(result => {
+        res.json({
+          data: result
+        })
+      })
+      .catch(err => {
+        res.status(500).send("Server error");
+      })
+  } else {
+    res.status(401).send("No login");
+  }
+}
+
 exports.uploadCoursewareFile = async (req, res, next) => {
   if (req.session.loginUser) {
     if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
@@ -84,6 +100,48 @@ exports.uploadCoursewareFile = async (req, res, next) => {
 
 }
 
+exports.uploadVideoFile = async (req, res, next) => {
+  if (req.session.loginUser) {
+    if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
+      let course_id = req.params.course_id;
+
+      console.log(req.body);
+
+      let title = req.body.title;
+      let description = req.body.description;
+
+      if (!(await course.teacherInCourse(course_id, req.session.loginUser))) {
+        res.status(401).send('You are not an admin of this course');
+        return;
+      }
+
+      if (!req.files) { // 没上传文件
+        res.status(400).send("No file upload");
+        return;
+      }
+
+      let f = req.files[0];
+
+      file.saveFile(f.originalname, f.path, `teacher:${req.session.loginUser}`)
+        .then(file_id => {
+          return courseware.uploadVideo(course_id, file_id, f.originalname, title, description);
+        })
+        .then(() => {
+          res.status(200).send();
+        })
+        .catch(err => {
+          console.log(err)
+          res.status(500).send("Server error");
+        })
+    } else {
+      req.status(401).send("Permission denied");
+    }
+  } else {
+    res.status(401).send("No login");
+  }
+
+}
+
 exports.deleteCoursewareFile = async (req, res, next) => {
   if (req.session.loginUser) {
     if (await UserValidator.getUserTypeById(req.session.loginUser) == "teacher") {
@@ -107,6 +165,7 @@ exports.deleteCoursewareFile = async (req, res, next) => {
                 res.status(200).send();
               })
               .catch(err => {
+                console.log(err)
                 res.status(500).send("Server error");
               });
           } else {

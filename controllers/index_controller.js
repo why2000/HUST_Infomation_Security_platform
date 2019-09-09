@@ -8,3 +8,12 @@ exports.getIndexPage = async (req, res, next) => {
         res.redirect('/catalog');        
     }
 }
+
+exports.getSimulatorPage = async (req, res, next) => {
+    if(!req.session.loginUser){
+        res.redirect('/');
+    }
+    else{
+        res.render('simulator');        
+    }
+}

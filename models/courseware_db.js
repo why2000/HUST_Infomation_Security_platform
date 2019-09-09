@@ -24,16 +24,17 @@ MongoClient.connect(ConfigSet.DATABASE_URL, (err, client) => {
     }
 })
 
-const getCoursewareStatusByCourseID = async function (course_id) {
+const getCoursewareStatusByCourseID = async function (course_id, type = null) {
     var collection = db.collection('coursefile');
     return collection.find({
-        course_id: course_id
+        course_id: course_id,
+        type: type
     }).toArray();
 }
 
-const getAllCoursewareStatus = async function () {
+const getAllCoursewareStatus = async function (type = null) {
     var collection = db.collection('coursefile');
-    return collection.find().toArray();
+    return collection.find({type: type}).toArray();
 }
 
 const getCoursewareStatusByFileID = async function (file_id) {
@@ -55,14 +56,27 @@ const uploadFile = async function (course_id, file_id, file_name) {
     return collection.insertOne({
         course_id: course_id,
         file_id: file_id,
-        file_name: file_name
+        file_name: file_name,
+        type: type
     }).then(res => res.result.ok == 1);
 }
 
+const uploadVideo = async function (course_id, file_id, file_name, title, description) {
+    var collection = db.collection('coursefile');
+    return collection.insertOne({
+        course_id: course_id,
+        file_id: file_id,
+        file_name: file_name,
+        title: title,
+        description: description,
+        type: 'video'
+    }).then(res => res.result.ok == 1);
+}
 module.exports = {
     getAllCoursewareStatus,
     uploadFile,
     removeFile,
     getCoursewareStatusByCourseID,
-    getCoursewareStatusByFileID
+    getCoursewareStatusByFileID,
+    uploadVideo
 }

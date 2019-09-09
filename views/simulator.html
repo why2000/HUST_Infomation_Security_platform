@@ -10,76 +10,33 @@
     <meta http-equiv="X-UA-Compatible" content=="IE=edge" />
     <meta name="google" value="notranslate" />
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
-    crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href='/public/stylesheets/examsidebar.css' />
-
+    
+    <link rel="stylesheet" href="/public/stylesheets/bootstrap.min.css">
+    <link href="../public/stylesheets/login.css" rel="stylesheet" />
+    <script src="/public/javascripts/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/public/javascripts/popper.min.js"></script>
+    <script type="text/javascript" src="/public/javascripts/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <div class="header" style="z-index:999">
-        <div class="headerb">
-            <div class="top-logo" onclick="window.open('http://hub.hust.edu.cn')" style="cursor: pointer;"></div>
-            <div class="headern">
-                华中科技大学计算机网络实训平台
-            </div>
+    <div class="form">
 
-            <div class="logout pointer" title="退出登录" onclick="logout()" style="cursor: pointer;">
-                <div class="logout-icon"></div>
-                <span>退出</span>
+        <div id="logo">
+            <img src="/public/images/logo2.gif" style="display: block; margin: 0 auto;width: 60px; height: 48px;">
+            <span>华中科技大学<br>计算机网络实训平台</span>
+        </div>
+        <div id="land_area">
+            <div id="button-1">
+                <a href="vmware://start"><button type="button" class="btn btn-primary btn-lg">启动Vmware</button></a>
+            </div>
+            <div id="button-2" style="margin: 8%">
+                    <a href="cisco://start"><button type="button" class="btn btn-primary btn-lg">启动Cisco模拟</button></a>
             </div>
         </div>
     </div>
-    <div style="position: relative;z-index: 0; margin-top: 80px">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-8" style="margin-top:20px;background-color: black">
-                    <div class="embed-responsive embed-responsive-4by3">
-                        <iframe id="simulator_window" class="embed-responsive-item" src="" style="display: none"></iframe>
-                    </div>
-                </div>
-                <div class="col-sm-4" style="margin-top:20px;">
-                    <div class="control_panel" style="height: 90%; margin-left:50px; margin-top: 20px; border: 2px solid #838383; position: relative;">
-                        <div class="connect_panel" style="height:45px">
-                            <a id="start_stop_sim_a" href="javascript:void(0);" onclick="connectToCon()">
-                                <div id="start_stop_sim_button" class="control_panel_start" style="line-height: 45px;width: 50%; background: #206db0; color:#fff; font-size:16px; display:block; font-weight:bold; text-align:center; float:left">
-                                    <span id="start_stop_sim_text">开始模拟</span>
-                                </div>
-                            </a>
-                            <div style="font-size:16px; font-weight:bold; text-align:center; line-height:45px; border-bottom:1px solid #838383">
-                                <span id="start_stop_sim_statue">未连接</span>
-                            </div>
-                        </div>
-                        <div class="task_panel" style="margin-top: 10px">
-                            <h5 style="font-weight:bold;">任务描述</h5>
-                            <p id="sim_tasks_text">正在加载中...</p>
-                        </div>
-                        <div class="back_button" style="position:absolute; bottom: 0px; width: 100%;">
-                            <button id="back_button" type="button"  style="line-height: 45px;width: 100%; background: #206db0; color:#fff; font-size:16px; display:block; font-weight:bold; text-align:center; float:left; cursor: pointer; border: 0px; " onclick="window.location.href = '/'" >返回首页</button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <footer>
-                <p style="width: 100%; text-align: center">© 2017-2018 Company, Inc. ·
-                    <a href="#">Privacy</a> ·
-                    <a href="#">Terms</a>
-                </p>
-            </footer>
-        </div>
-
-    </div>
-
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
-        crossorigin="anonymous"></script>
-    <!-- Optional JavaScript -->
-    <script src="../public/javascripts/simulator.js"></script>
+    
 </body>
+
 
 </html>

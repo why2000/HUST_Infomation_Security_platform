@@ -5,15 +5,15 @@ let UserController = require('../controllers/user_controller');
 
 router.get('/', SimulatorController.getIndex);
 
-/* docker control */
+// /* docker control */
 
-router.get('/tasks', SimulatorController.getTasks);
+// router.get('/tasks', SimulatorController.getTasks);
 
-router.get('/start', SimulatorController.getStart);
+// router.get('/start', SimulatorController.getStart);
 
-router.get('/keep', SimulatorController.getKeep);
+// router.get('/keep', SimulatorController.getKeep);
 
-router.get('/stop', SimulatorController.getStop);
+// router.get('/stop', SimulatorController.getStop);
 
 /* logout control */
 

@@ -108,9 +108,11 @@ $(document).ready(function () {
       if (acceptFile.test(file.name)) {
         let form = new FormData();
         form.append('upload', file);
+        form.append('title', $('#video-title').val());
+        form.append('description', $('#video-description').val());
         $.ajax({
           type: 'post',
-          url: `/courseware/file/${cid}`,
+          url: `/courseware/video/${cid}`, // 用视频专门的上传接口
           data: form,
           contentType: false,
           processData: false,
@@ -138,8 +140,8 @@ async function render() {
     html += '<li class="list-group-item" >'
       + "  课程名称: " + classname + " 视频名称: " + videolist[n].title
       + '<div class="btn-group pull-right">'
-    html += `<button type="button" class="my-delete-button btn btn-primary btn-warning" fid='${videolist[n].video}'>删除</button>`
-      + `<button type="button" class="my-download-button btn btn-primary" fid='${videolist[n].video}'>下载</button>`
+    html += `<button type="button" class="my-delete-button btn btn-primary btn-warning" fid='${videolist[n].file_id}'>删除</button>`
+      + `<button type="button" class="my-download-button btn btn-primary" fid='${videolist[n].file_id}'>下载</button>`
       + '</div > </li>';
   }
   $('#video-list').append(html);
@@ -173,7 +175,7 @@ function getCourseList() {
 
 function getVideolist() {
   $.get({
-    url: '/tutorial/' + courseid,
+    url: '/courseware/videolist/' + courseid,
     success: (data) => {
       videolist = data.data;
       if (videolist.length) {

@@ -26,7 +26,7 @@ exports.getIndex = async (req, res, next) => {
   if (!req.session.loginUser) {
     res.redirect('/');
   } else {
-    res.render('simulator', { student_name:await user.getUserTypeById(req.session.loginUser) });
+    res.render('simulator');
   }
 };
 

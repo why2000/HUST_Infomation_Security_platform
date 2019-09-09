@@ -100,7 +100,7 @@ const removeFile = async (file_id) => {
     
     return colFiles.deleteOne({file_id: file_id})
            .then(res => {
-                fs.unlink(path.join(cfg.PATH, file_id))
+                fs.unlink(path.join(cfg.PATH, file_id), err => {})
            })
            .then(() => true)
 }
